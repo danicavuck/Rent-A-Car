@@ -9,4 +9,7 @@ import java.util.List;
 @Transactional
 public interface AgentRepository extends JpaRepository<Agent, Long> {
     List<Agent> findAll();
+    boolean existsByRegistrationNumber(String registrationNumber);
+    boolean existsByAgentName(String agentName);
+    Agent findByAgentName(String agentName);
 }

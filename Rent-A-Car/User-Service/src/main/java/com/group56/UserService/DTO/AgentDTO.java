@@ -16,14 +16,12 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @ToString
-public class UserDTO {
+public class AgentDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
+    private String agentName;
     private String password;
-    private String firstName;
-    private String lastName;
     private String address;
     private String registrationNumber;
 }

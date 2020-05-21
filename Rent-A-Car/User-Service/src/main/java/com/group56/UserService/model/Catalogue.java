@@ -1,14 +1,13 @@
-package com.group56.UserService.DTO;
+package com.group56.UserService.model;
 
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.math.BigDecimal;
 
-@Component
 @Entity
 @Getter
 @Setter
@@ -16,14 +15,13 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @ToString
-public class UserDTO {
+public class Catalogue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String registrationNumber;
+    private BigDecimal priceDaily;
+    private BigDecimal pricePerKilometer;
+    private BigDecimal priceForAssurance;
+    private float discount;
+    private int daysInARowRented;
 }

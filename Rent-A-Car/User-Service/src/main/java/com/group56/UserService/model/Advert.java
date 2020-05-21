@@ -22,6 +22,8 @@ public class Advert {
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
+    private LocalDateTime availableForRentFrom;
+    private LocalDateTime availableForRentUntil;
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
@@ -37,4 +39,6 @@ public class Advert {
     private List<Comment> comments = new ArrayList<>();
     @ManyToMany
     private List<RentRequest> rentRequests = new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    private RentReport rentReport;
 }

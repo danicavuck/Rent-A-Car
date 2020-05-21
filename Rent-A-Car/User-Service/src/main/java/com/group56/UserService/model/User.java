@@ -21,7 +21,12 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private boolean isAllowedToRent;
+    private String address;
+    private String registrationNumber;
+    private boolean isActive = true;
+    private boolean isBlocked = false;
+    private boolean isAllowedToRent = true;
+    private int numberOfCancelledReservations;
     @OneToMany(mappedBy = "publisher")
     private List<Advert> advertsPublished = new ArrayList<>();
     @OneToMany(mappedBy = "user")

@@ -46,7 +46,7 @@ public class UserConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/h2-console/**", "/hello", "/create/**", "/verify/**")
+                .antMatchers("/h2-console/**", "/users/**", "/agents/**")
                 .permitAll()
                 .anyRequest().authenticated();
 
