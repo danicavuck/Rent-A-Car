@@ -10,10 +10,16 @@
 	<description>A Service for renting a car</description>
 
 	<modules>
-		<module>Admin-Service</module>
-		<module>Agent-Service</module>
-		<module>User-Service</module>
-		<module>Core-API</module>
+		<module>admin-service</module>
+		<module>auth-service</module>
+		<module>eureka</module>
+		<module>messaging-service</module>
+		<module>notification-service</module>
+		<module>posting-service</module>
+		<module>renting-service</module>
+		<module>review-service</module>
+		<module>search-service</module>
+		<module>Zuul</module>
 	</modules>
 
 </project>
