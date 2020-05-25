@@ -13,6 +13,7 @@
 		<module>admin-service</module>
 		<module>auth-service</module>
 		<module>eureka</module>
+		<module>image-service</module>
 		<module>messaging-service</module>
 		<module>notification-service</module>
 		<module>posting-service</module>

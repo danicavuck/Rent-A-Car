@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class AdminService {
     private AdminRepository adminRepository;
@@ -21,6 +23,7 @@ public class AdminService {
         this.identityCheck = identityCheck;
     }
 
+    @Transactional
     public ResponseEntity<?> registerNewAdmin(AdminDTO adminDTO) {
         if(identityCheck.isUsernameUnique(adminDTO.getAdminName())){
             if(identityCheck.isRegistrationNumberUnique(adminDTO.getRegistrationNumber())) {

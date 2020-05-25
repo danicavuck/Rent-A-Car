@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -21,6 +23,7 @@ public class UserService {
         this.identityCheck = identityCheck;
     }
 
+    @Transactional
     public ResponseEntity<?> registerNewUser(UserDTO userDTO){
         if(identityCheck.isUsernameUnique(userDTO.getUsername())){
             if(identityCheck.isRegistrationNumberUnique(userDTO.getRegistrationNumber())){
