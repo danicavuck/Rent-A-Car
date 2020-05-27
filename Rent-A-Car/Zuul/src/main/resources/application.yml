@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: zuul
+
+zuul:
+  routes:
+    auth-service:
+      path: /auth-service/**
+      url: http://localhost:8081/auth-service/
+    admin-service:
+      path: /admin-service/**
+      url: http://localhost:8082/admin-service/
