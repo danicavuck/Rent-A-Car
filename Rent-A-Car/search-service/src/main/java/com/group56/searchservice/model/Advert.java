@@ -28,11 +28,14 @@ public class Advert {
     private BigDecimal protectionPrice;
     private BigDecimal price;
     private String publisher;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
+
     @OneToMany(mappedBy = "advert")
     private List<Mark> marks = new ArrayList<>();
+
     @OneToMany(mappedBy = "advert")
     private List<Comment> comments = new ArrayList<>();
 }

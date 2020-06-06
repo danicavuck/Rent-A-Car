@@ -25,14 +25,18 @@ public class Advert {
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advert_id")
     private User publisher;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")
     private Car car;
+
     @OneToMany(mappedBy = "advert")
     private List<Mark> marks = new ArrayList<>();
+
     @OneToMany(mappedBy = "advert")
     private List<Comment> comments = new ArrayList<>();
 
