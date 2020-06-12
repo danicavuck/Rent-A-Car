@@ -1,25 +1,21 @@
-package com.group56.postingservice.model;
+package com.group56.rentingservice.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Builder
-@ToString
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Mark {
+@Builder
+@ToString
+public class Car {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int mark;
-    @ManyToOne
-    private User user;
-    @ManyToOne
+    @OneToOne(mappedBy = "car")
     private Advert advert;
-    @OneToOne
-    private Comment comment;
 }

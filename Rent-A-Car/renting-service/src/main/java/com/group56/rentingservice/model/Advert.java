@@ -1,7 +1,7 @@
-package com.group56.postingservice.model;
+package com.group56.rentingservice.model;
 
 import lombok.*;
-
+import com.group56.rentingservice.model.User;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -22,18 +22,11 @@ public class Advert {
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
-    private boolean isProtectionAvailable;
-    private BigDecimal protectionPrice;
-    private BigDecimal price;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User publisher;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Car car;
-    @OneToMany(mappedBy = "advert")
-    private List<Mark> marks = new ArrayList<>();
-    @OneToMany(mappedBy = "advert")
-    private List<Comment> comments = new ArrayList<>();
 
+    @OneToOne
+    private User publisher;
+    @OneToOne
+    private Car car;
     @ManyToMany
     private List<RentRequest> rentRequests = new ArrayList<>();
 }

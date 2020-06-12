@@ -15,7 +15,8 @@ import javax.servlet.http.HttpSession;
 @CrossOrigin
 @RequestMapping("/posting-service/advert")
 public class AdvertController {
-    AdvertService advertService;
+
+    private AdvertService advertService;
 
     @Autowired
     public AdvertController(AdvertService aService){ this.advertService = aService; }

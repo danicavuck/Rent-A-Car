@@ -1,25 +1,32 @@
-package com.group56.postingservice.model;
+package com.group56.rentingservice.model;
 
+import com.group56.rentingservice.util.RentRequestStatus;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @ToString
+@Entity
 public class RentRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private boolean active;
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @Column
+    private boolean bundle;
+    @Column
+    private Long userId;
+
     @ManyToMany
     private List<Advert> advertList = new ArrayList<>();
+
+    private RentRequestStatus rentRequestStatus;
 }

@@ -31,7 +31,6 @@ public class Car {
     @ManyToOne
     private CarModel carModel;
 
-
     @OneToOne(mappedBy = "car")
     private Advert advert;
 }
