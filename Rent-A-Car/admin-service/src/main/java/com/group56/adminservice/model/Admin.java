@@ -18,10 +18,10 @@ public class Admin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String email;
     private String adminName;
     private String firstName;
     private String lastName;
     private String password;
     private String address;
-    private String registrationNumber;
 }

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -28,7 +30,7 @@ public class UserService {
                 userRepository.save(user);
                 return new ResponseEntity<>("User is blocked!", HttpStatus.OK);
             }
-            return new ResponseEntity<>("User deleted!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Couldn't find user with provided username", HttpStatus.NOT_FOUND);
     }
@@ -56,8 +58,30 @@ public class UserService {
                 userRepository.save(user);
                 return new ResponseEntity<>("User is successfully deleted!", HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>("User deleted!", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Couldn't find user with provided username", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> getAllUsers() {
+        List users = userRepository.findAll();
+        return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
+    }
+
+    private List<UserDTO> makeDTOFromUsers(List<User> users) {
+        List usersDTO = new ArrayList<>();
+        UserDTO userDTO = UserDTO.builder().build();
+        users.forEach(user -> {
+            userDTO.setUsername(user.getUsername());
+            userDTO.setFirstName(user.getFirstName());
+            userDTO.setLastName(user.getLastName());
+            userDTO.setAddress(user.getAddress());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setNumberOfAdvertsCancelled(user.getNumberOfAdvertsCancelled());
+
+            usersDTO.add(userDTO);
+        });
+
+        return usersDTO;
     }
 }

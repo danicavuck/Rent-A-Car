@@ -18,12 +18,17 @@ public class BodyTypeController {
         this.bodyTypeService = bodyTypeService;
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping
+    public ResponseEntity<?> getBodyTypes() {
+        return bodyTypeService.getAllBodyTypes();
+    }
+
+    @PostMapping
     public ResponseEntity<?> addNewBodyType(@RequestBody BodyTypeDTO bodyTypeDTO) {
         return bodyTypeService.addNewBodyType(bodyTypeDTO);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping
     public ResponseEntity<?> updateBodyType(@RequestBody BodyTypeDTO bodyTypeDTO) {
         return bodyTypeService.updateBodyType(bodyTypeDTO);
     }

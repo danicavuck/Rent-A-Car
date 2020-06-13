@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CarModelService {
@@ -55,5 +56,10 @@ public class CarModelService {
             return new ResponseEntity<>("Model successfully removed", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("Model doesn't exist", HttpStatus.FORBIDDEN);
+    }
+
+    public ResponseEntity<?> getCarModels() {
+        List<CarModel> carModels = carModelRepository.findAll();
+        return new ResponseEntity<>(carModels, HttpStatus.OK);
     }
 }

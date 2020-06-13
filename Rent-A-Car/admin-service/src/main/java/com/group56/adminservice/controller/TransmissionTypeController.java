@@ -18,6 +18,11 @@ public class TransmissionTypeController {
         this.transmissionTypeService = transmissionTypeService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllTransmissionTypes(){
+        return transmissionTypeService.getAllTransmissionTypes();
+    }
+
     @PostMapping
     public ResponseEntity<?> addNewTransmissionType(@RequestBody TransmissionTypeDTO transmissionTypeDTO) {
         return transmissionTypeService.addNewTransmissionType(transmissionTypeDTO);

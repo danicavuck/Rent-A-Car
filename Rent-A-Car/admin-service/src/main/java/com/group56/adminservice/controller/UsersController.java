@@ -18,6 +18,11 @@ public class UsersController {
         this.userService = userService;
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllUsers() {
+        return userService.getAllUsers();
+    }
+
     @PostMapping("/block")
     public ResponseEntity<?> blockUser(@RequestBody UserDTO userDTO) {
         return userService.blockUser(userDTO);

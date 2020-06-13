@@ -1,5 +1,6 @@
 package com.group56.searchservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
+@JsonIgnoreProperties({"advert"})
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

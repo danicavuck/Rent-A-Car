@@ -21,8 +21,5 @@ public class Comment {
     private User publisher;
     @ManyToOne
     private Advert advert;
-    @OneToOne
-    @JoinColumn(name = "mark_id")
-    private Mark mark;
     private CommentStatus commentStatus;
 }
