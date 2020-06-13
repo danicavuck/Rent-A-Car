@@ -14,7 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class RentRequestService {
                 }
             for(Advert a : adverts){
                 ArrayList<Advert> adverts1 = new ArrayList<>();
-                adverts.add(a);
+                adverts1.add(a);
                 RentRequest rr = RentRequest.builder().advertList(adverts1).active(true).bundle(false).
                     rentRequestStatus(RentRequestStatus.PENDING).userId(user.getId()).build();
                 rentRequestRepository.save(rr);
@@ -73,6 +75,39 @@ public class RentRequestService {
         return true;
     }
 
+    @Transactional
+    //@Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<?> acceptRentRequest(Long rrId, HttpSession session){
+        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+        if(user != null){
+            RentRequest rr = rentRequestRepository.getOne(rrId);
+            if(rr == null){
+                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            }
+            rr.setActive(false);
+            rr.setAccepted(true);
+            rr.setRentRequestStatus(RentRequestStatus.PAID);
+
+        }
+     return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
+
+    @Transactional
+    //@Lock(LockModeType.PESSIMISTIC_WRITE)
+    public ResponseEntity<?> declineRentRequest(Long rrId, HttpSession session){
+        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+        if(user != null){
+            RentRequest rr = rentRequestRepository.getOne(rrId);
+            if(rr == null){
+                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+            }
+            rr.setActive(false);
+            rr.setAccepted(false);
+            rr.setRentRequestStatus(RentRequestStatus.CANCELED);
+
+        }
+        return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
+    }
 
 
 

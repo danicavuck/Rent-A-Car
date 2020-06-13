@@ -24,6 +24,8 @@ public class RentRequest {
     private boolean bundle;
     @Column
     private Long userId;
+    @Column
+    private boolean accepted;
 
     @ManyToMany
     private List<Advert> advertList = new ArrayList<>();
