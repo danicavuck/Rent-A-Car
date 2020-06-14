@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class TransmissionTypeService {
@@ -38,5 +39,10 @@ public class TransmissionTypeService {
             return new ResponseEntity<>("Transmission Type successfully removed!", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("Transmission Type not found", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> getAllTransmissionTypes() {
+        List<TransmissionType> transmissionTypes = transmissionTypeRepository.findAll();
+        return new ResponseEntity<>(transmissionTypes, HttpStatus.OK);
     }
 }

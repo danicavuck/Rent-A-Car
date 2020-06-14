@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class FuelTypeService {
@@ -38,5 +39,10 @@ public class FuelTypeService {
             return new ResponseEntity<>("Fuel Type successfully removed", HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>("Fuel Type doesn't exist", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> getAllFuelTypes() {
+        List<FuelType> fuelTypes = fuelTypeRepository.findAll();
+        return new ResponseEntity<>(fuelTypes, HttpStatus.OK);
     }
 }

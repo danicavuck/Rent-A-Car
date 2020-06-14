@@ -25,12 +25,16 @@ public class Advert {
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private User publisher;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Car car;
+
     @OneToMany(mappedBy = "advert")
     private List<Mark> marks = new ArrayList<>();
+
     @OneToMany(mappedBy = "advert")
     private List<Comment> comments = new ArrayList<>();
 

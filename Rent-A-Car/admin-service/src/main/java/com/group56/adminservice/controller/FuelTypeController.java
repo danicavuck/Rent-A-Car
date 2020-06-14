@@ -18,7 +18,12 @@ public class FuelTypeController {
         this.fuelTypeService = fuelTypeService;
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping
+    public ResponseEntity<?> getAllFuelTypes() {
+        return fuelTypeService.getAllFuelTypes();
+    }
+
+    @PostMapping
     public ResponseEntity<?> addNewFuelType(@RequestBody FuelTypeDTO fuelTypeDTO) {
         return fuelTypeService.addNewFuelType(fuelTypeDTO);
     }

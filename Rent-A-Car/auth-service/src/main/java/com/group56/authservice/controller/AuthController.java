@@ -9,6 +9,8 @@ import com.group56.authservice.service.AdminService;
 import com.group56.authservice.service.AgentService;
 import com.group56.authservice.service.UserService;
 import com.group56.authservice.utility.IdentityCheck;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +20,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
-@CrossOrigin
 @RequestMapping("/auth-service")
 public class AuthController {
     private UserService userService;
     private AdminService adminService;
     private AgentService agentService;
     private IdentityCheck identityCheck;
+    private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     public AuthController(UserService userService, AdminService adminService, AgentService agentService, IdentityCheck identityCheck) {
@@ -36,14 +40,17 @@ public class AuthController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<?> loginUser(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, HttpSession session) {
         Role role = identityCheck.getRoleForUsername(loginDTO.getUsername());
-        switch (role){
-            case USER: return userService.logInUser(loginDTO);
-            case ADMIN: return adminService.logInAdmin(loginDTO);
-            case AGENT: return agentService.loginAgent(loginDTO);
-            default: return new ResponseEntity<>("Invalid credentials!", HttpStatus.UNAUTHORIZED);
+        if(role != null) {
+            switch (role){
+                case USER: return userService.logInUser(loginDTO, session);
+                case ADMIN: return adminService.logInAdmin(loginDTO, session);
+                case AGENT: return agentService.loginAgent(loginDTO, session);
+                default: return new ResponseEntity<>("Invalid credentials!", HttpStatus.UNAUTHORIZED);
+            }
         }
+        return new ResponseEntity<>("Invalid credentials", HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping(value = "/register/user")
@@ -59,5 +66,17 @@ public class AuthController {
     @PostMapping(value = "/register/agent")
     public ResponseEntity<?> registerNewAgent(@RequestBody AgentDTO agentDTO) {
         return agentService.registerAgent(agentDTO);
+    }
+
+    @PostMapping(value = "/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        try {
+            session.invalidate();
+            logger.info("Session is invalidated");
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Couldn't invalidate session");
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

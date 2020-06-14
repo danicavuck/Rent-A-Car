@@ -18,12 +18,17 @@ public class CarBrandController {
         this.carBrandService = carBrandService;
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping
+    public ResponseEntity<?> getCarBrands() {
+        return carBrandService.getCarBrands();
+    }
+
+    @PostMapping
     public ResponseEntity<?> addNewBrand(@RequestBody BrandDTO brandDTO) {
         return carBrandService.addNewBrand(brandDTO);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping
     public ResponseEntity<?> updateBrand(@RequestBody BrandDTO brandDTO) {
         return carBrandService.modifyBrandName(brandDTO);
     }

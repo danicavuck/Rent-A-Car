@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="text-center">
+            <div class="mat-display-1">Sign Up as User</div>
+            <div class="forma">
+                <form name="form" #f="ngForm" novalidate (ngSubmit)="onSubmit()">
+                    <mat-form-field class="full-width">
+                        <mat-label>Username</mat-label>
+                        <input class="input" type="text" id="username" name="username" [(ngModel)]="model.username" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>First Name</mat-label>
+                        <input class="input" type="text" id="firstName" name="firstName" [(ngModel)]="model.firstName" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Last Name</mat-label>
+                        <input class="input" type="text" id="lastName" name="lastName" [(ngModel)]="model.lastName" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Address</mat-label>
+                        <input class="input" type="text" id="address" name="address" [(ngModel)]="model.address" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Email</mat-label>
+                        <input class="input" type="email" id="email" name="email" [(ngModel)]="model.email" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Password</mat-label>
+                        <input class="input" type="password" id="password" name="password" [(ngModel)]="model.password" matInput required>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Re-enter password</mat-label>
+                        <input class="input" type="password" id="password2" name="password2" [(ngModel)]="password2" matInput required>
+                    </mat-form-field>
+                    <button mat-flat-button color="primary" class="sign-up" mat-stroked-button type="submit">
+                        <i class="fa fa-user-plus"></i>
+                        <span> Sign up as User</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class BodyTypeService {
@@ -52,5 +53,10 @@ public class BodyTypeService {
             return new ResponseEntity<>("New Body Type name is not valid", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>("Body Type doesn't exist", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> getAllBodyTypes() {
+        List<BodyType> bodyTypes = bodyTypeRepository.findAll();
+        return new ResponseEntity<>(bodyTypes, HttpStatus.OK);
     }
 }

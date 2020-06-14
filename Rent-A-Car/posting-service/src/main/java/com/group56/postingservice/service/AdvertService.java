@@ -4,6 +4,7 @@ import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
+import com.group56.postingservice.util.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,13 @@ public class AdvertService {
     private CarModelRepository carModelRepository;
     private BodyTypeRepository bodyTypeRepository;
     private RentRequestRepository rentRequestRepository;
+    private MessagePublisher messagePublisher;
 
     @Autowired
     public AdvertService(UserRepository uRepo,AdvertRepository aRepo, CarRepository carRepo,
                          FuelTypeRepository fRepo, TransmissionTypeRepository tRepo,CarBrandRepository cbRepo,
-                         CarModelRepository cmRepo, BodyTypeRepository btRepo,RentRequestRepository rrRepo){
+                         CarModelRepository cmRepo, BodyTypeRepository btRepo,RentRequestRepository rrRepo,
+                         MessagePublisher broker){
         this.userRepository = uRepo;
         this.advertRepository = aRepo;
         this.carRepository = carRepo;
@@ -38,6 +41,7 @@ public class AdvertService {
         this.carModelRepository = cmRepo;
         this.bodyTypeRepository = btRepo;
         this.rentRequestRepository = rrRepo;
+        this.messagePublisher = broker;
     }
 
     public ResponseEntity<?> addAdvert(AdvertDTO advertDTO, HttpSession session){
@@ -47,6 +51,9 @@ public class AdvertService {
                 Advert advert = makeAdvertFromDTO(advertDTO);
                 advert.setPublisher(user);
                 advertRepository.save(advert);
+
+                String msg = "ADVERT_ADDED";
+                messagePublisher.sendAMessageToQueue(msg);
                 return new ResponseEntity<>("Advert successfully added!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
@@ -106,7 +113,6 @@ public class AdvertService {
 
         car.setAdvert(advert);
         carRepository.save(car);
-
 
         return advert;
     }

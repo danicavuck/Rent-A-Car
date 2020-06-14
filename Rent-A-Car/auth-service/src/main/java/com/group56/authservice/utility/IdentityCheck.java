@@ -34,7 +34,11 @@ public class IdentityCheck {
         return !adminRepository.existsByAdminName(username) && !agentRepository.existsByAgentName(username) && !userRepository.existsByUsername(username);
     }
 
+    public boolean isEmailAddressUnique(String email) {
+        return !adminRepository.existsByEmail(email) && !agentRepository.existsByEmail(email) && !userRepository.existsByEmail(email);
+    }
+
     public boolean isRegistrationNumberUnique(String registration) {
-        return !adminRepository.existsByRegistrationNumber(registration) && !agentRepository.existsByRegistrationNumber(registration) && !userRepository.existsByRegistrationNumber(registration);
+        return !agentRepository.existsByRegistrationNumber(registration);
     }
 }

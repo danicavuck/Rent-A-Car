@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CarBrandService {
@@ -55,5 +56,10 @@ public class CarBrandService {
             return new ResponseEntity<>("New Brand name is not valid", HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity<>("Old brand name is not found", HttpStatus.FORBIDDEN);
+    }
+
+    public ResponseEntity<?> getCarBrands() {
+        List<CarBrand> carBrands = carBrandRepository.findAll();
+        return new ResponseEntity<>(carBrands, HttpStatus.OK);
     }
 }

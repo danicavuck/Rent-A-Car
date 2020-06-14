@@ -9,5 +9,4 @@ import java.util.ArrayList;
 @Repository
 public interface AdvertRepository extends JpaRepository<Advert, Long> {
     Advert findAdvertById(Long id);
-    ArrayList findAll();
 }

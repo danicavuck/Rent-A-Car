@@ -1,0 +1,17 @@
+.select-class {
+    margin-top: 5%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.mat-form {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.back-to-login {
+    width: 50;
+    margin: 50px auto;
+}

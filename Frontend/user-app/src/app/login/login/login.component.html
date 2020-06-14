@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <title>Login</title>
+</head>
+
+<body>
+  <div class="container col-xs-12 col-md-5 col-md-offset-3">
+    <div class="jumbotron">
+      <div class="text-center">
+        <div class="mat-display-1">Login</div>
+      </div>
+      <div>
+        <form name="form" #f="ngForm" class="my-form" novalidate (ngSubmit)="onSubmit()" >
+          <div class="forma">
+            <mat-form-field class="full-width">
+              <mat-label>Username</mat-label>
+              <input class="input" type="text" id="username" name="username" [(ngModel)]="model.username" matInput required>
+            </mat-form-field>
+          </div>
+          <div class="forma">
+            <mat-form-field class="full-width">
+              <mat-label>Password</mat-label>
+              <input class="input" type="password" id="password" name="password" [(ngModel)]="model.password" matInput
+                required minlength="6">
+            </mat-form-field>
+          </div>
+
+  
+          <button type="submit" mat-raised-button color="primary" class="pull-left" id="prijava" style="margin-right: 2rem;">
+            <i class="fa fa-sign-in"></i>
+            <span> Log in</span>
+          </button>
+  
+          <button mat-flat-button color="accent" mat-stroked-button class="pull-right" routerLink="/registration">
+            <i class="fa fa-user-plus"></i>
+            <span> Sign up</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

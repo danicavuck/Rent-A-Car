@@ -25,7 +25,7 @@ public class SearchService {
 
     public ResponseEntity<?> findRelevantAdverts(AdvertQueryDTO advertDTO) {
         if(isQueryValid(advertDTO)) {
-            ArrayList<Advert> advertList = advertRepository.findAll();
+            List<Advert> advertList = advertRepository.findAll();
             List relevantAdverts = advertList.stream()
                     .filter(advert -> (advert.getCarLocation().equals(advertDTO.getCarLocation())))
                     .filter(advert -> advert.getAvailableForRentFrom().isBefore(advertDTO.getRentStart()) && advert.getAvailableForRentUntil().isAfter(advertDTO.getRentEnd()))

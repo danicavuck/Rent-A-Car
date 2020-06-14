@@ -18,12 +18,17 @@ public class CarModelController {
         this.carModelService = carModelService;
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping
+    public ResponseEntity<?> getCarModels() {
+        return carModelService.getCarModels();
+    }
+
+    @PostMapping
     public ResponseEntity<?> addNewModel(@RequestBody CarModelDTO carModelDTO){
         return carModelService.addNewCarModel(carModelDTO);
     }
 
-    @PostMapping(value = "/update")
+    @PutMapping
     public ResponseEntity<?> updateModel(@RequestBody CarModelDTO carModelDTO) {
         return carModelService.updateCarModel(carModelDTO);
     }

@@ -1,5 +1,6 @@
 package com.group56.searchservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
+@JsonIgnoreProperties({"advert"})
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,21 +22,22 @@ public class Car {
     private boolean isAvailableForRenting;
     private Long limitInKilometers;
     private int numberOfSeatsForChildren;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_brand")
     private CarBrand carBrand;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "model")
     private CarModel carModel;
+
     @ManyToOne
-    @JoinColumn(name = "body_type")
     private BodyType bodyType;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fuel_type")
     private FuelType fuelType;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "transmission_type")
     private TransmissionType transmissionType;
+
     @OneToOne(mappedBy = "car")
     private Advert advert;
 }
