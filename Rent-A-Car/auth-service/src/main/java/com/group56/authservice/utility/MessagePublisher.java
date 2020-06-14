@@ -1,4 +1,4 @@
-package com.group56.postingservice.util;
+package com.group56.authservice.utility;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ public class MessagePublisher {
 
     public void sendAMessageToQueue(String message) {
         byte[] bytes = message.getBytes();
-        rabbitTemplate.convertAndSend("advert-update", bytes);
+        rabbitTemplate.convertAndSend("auth-update", bytes);
         logger.info("Message has been sent to queue!");
     }
 }

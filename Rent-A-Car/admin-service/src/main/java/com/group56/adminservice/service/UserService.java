@@ -1,8 +1,12 @@
 package com.group56.adminservice.service;
 
 import com.group56.adminservice.DTO.UserDTO;
+import com.group56.adminservice.client.SoapClient;
 import com.group56.adminservice.model.User;
 import com.group56.adminservice.repository.UserRepository;
+import com.group56.soap.GetUsersRequest;
+import com.group56.soap.GetUsersResponse;
+import com.group56.soap.UserXML;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +19,12 @@ import java.util.List;
 @Service
 public class UserService {
     private UserRepository userRepository;
+    private SoapClient soapClient;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, SoapClient soapClient) {
         this.userRepository = userRepository;
+        this.soapClient = soapClient;
     }
 
     @Transactional
@@ -64,14 +70,19 @@ public class UserService {
     }
 
     public ResponseEntity<?> getAllUsers() {
-        List users = userRepository.findAll();
-        return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
+        //List users = userRepository.findAll();
+        //return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
+        GetUsersRequest request = new GetUsersRequest();
+        request.setUsername("Petar");
+        GetUsersResponse response = soapClient.getUsers(request);
+        List<UserXML> usersXML = response.getUser();
+        return new ResponseEntity<>(usersXML, HttpStatus.OK);
     }
 
     private List<UserDTO> makeDTOFromUsers(List<User> users) {
         List usersDTO = new ArrayList<>();
-        UserDTO userDTO = UserDTO.builder().build();
         users.forEach(user -> {
+            UserDTO userDTO = UserDTO.builder().build();
             userDTO.setUsername(user.getUsername());
             userDTO.setFirstName(user.getFirstName());
             userDTO.setLastName(user.getLastName());

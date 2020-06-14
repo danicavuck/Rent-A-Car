@@ -7,6 +7,7 @@ import com.group56.authservice.model.Authorization;
 import com.group56.authservice.model.User;
 import com.group56.authservice.repository.UserRepository;
 import com.group56.authservice.utility.IdentityCheck;
+import com.group56.authservice.utility.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,30 +15,36 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
     private UserRepository userRepository;
     private IdentityCheck identityCheck;
+    private MessagePublisher messagePublisher;
 
     @Autowired
-    public UserService(UserRepository userRepository, IdentityCheck identityCheck) {
+    public UserService(UserRepository userRepository, IdentityCheck identityCheck, MessagePublisher publisher) {
         this.userRepository = userRepository;
         this.identityCheck = identityCheck;
+        this.messagePublisher = publisher;
     }
 
     @Transactional
     public ResponseEntity<?> registerNewUser(UserDTO userDTO){
-        if(identityCheck.isUsernameUnique(userDTO.getUsername())){
-            if(identityCheck.isEmailAddressUnique(userDTO.getEmail())) {
-                User user = createUserFromDTO(userDTO);
-                userRepository.save(user);
-
-                return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
-            }
-            return new ResponseEntity<>("Email address is already in use", HttpStatus.FORBIDDEN);
-        }
-        return new ResponseEntity<>("Username is not unique", HttpStatus.FORBIDDEN);
+//        if(identityCheck.isUsernameUnique(userDTO.getUsername())){
+//            if(identityCheck.isEmailAddressUnique(userDTO.getEmail())) {
+//                User user = createUserFromDTO(userDTO);
+//                userRepository.save(user);
+//                messagePublisher.sendAMessageToQueue("USER_ADDED");
+//                return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
+//            }
+//            return new ResponseEntity<>("Email address is already in use", HttpStatus.FORBIDDEN);
+//        }
+//        return new ResponseEntity<>("Username is not unique", HttpStatus.FORBIDDEN);
+        messagePublisher.sendAMessageToQueue("USER_ADDED");
+        return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
     }
 
     public ResponseEntity<?> logInUser(LoginDTO loginDTO, HttpSession session) {
@@ -55,6 +62,27 @@ public class UserService {
                 .firstName(userDTO.getFirstName()).lastName(userDTO.getLastName())
                 .address(userDTO.getAddress())
                 .email(userDTO.getEmail()).build();
+    }
+
+    public List<User> getUsers(String username) {
+        List<User> users = new ArrayList();
+        User user1 = User.builder().email("user@gmail.com")
+                .username("Skinny Pete").firstName("Petar")
+                .lastName("Kovacevic").address("Karadjordjeva 14")
+                .isActive(true).isBlocked(false).build();
+        User user2 = User.builder().email("zoran@gmail.com")
+                .username("Zoki").firstName("Zoran")
+                .lastName("Simic").address("Dositejeva 15")
+                .isActive(true).isBlocked(false).build();
+
+        User user3 = User.builder().email("laki@gmail.com")
+                .username("Zola").firstName("Lazar")
+                .lastName("Grozdanovic").address("Omladinska")
+                .isActive(true).isBlocked(false).build();
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        return users;
     }
 
 }

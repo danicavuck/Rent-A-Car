@@ -26,5 +26,5 @@ public class User {
     private String address;
     private boolean isActive = true;
     private boolean isBlocked = false;
-    private int numberOfAdvertsCancelled;
+    private int numberOfAdvertsCancelled = 0;
 }

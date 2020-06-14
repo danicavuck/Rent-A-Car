@@ -1,4 +1,4 @@
-package com.group56.searchservice.listener;
+package com.group56.adminservice.listener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +11,7 @@ public class MessageListener {
     private Logger logger = LoggerFactory.getLogger(MessageListener.class);
 
     public void listenForMessages(byte[] bytes){
-        logger.info("Message from queue1: " + new String(bytes, StandardCharsets.UTF_8));
-    }
-
-    public void listenForDeleteMessage(byte[] bytes) {
-        logger.info("Message from queue2: " + new String(bytes, StandardCharsets.UTF_8));
+        logger.info("Event triggered from Auth Service: " + new String(bytes, StandardCharsets.UTF_8));
     }
 
 }

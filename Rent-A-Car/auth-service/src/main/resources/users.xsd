@@ -1,0 +1,34 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://group56.com/soap-package"
+            targetNamespace="http://group56.com/soap-package"
+            elementFormDefault="qualified">
+
+    <xs:element name="getUsersRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getUsersResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="user" maxOccurs="unbounded" type="tns:userXML"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="userXML">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="username" type="xs:string"/>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+            <xs:element name="address" type="xs:string"/>
+            <xs:element name="isActive" type="xs:boolean"/>
+            <xs:element name="isBlocked" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

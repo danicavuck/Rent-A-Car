@@ -1,7 +1,6 @@
 package com.group56.searchservice;
 
 import com.group56.searchservice.listener.MessageListener;
-import com.rabbitmq.client.AMQP;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -13,6 +12,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -26,9 +28,10 @@ public class SearchServiceApplication {
 	TopicExchange topicExchange() { return new TopicExchange("advert-exchange"); }
 
 	@Bean
-	Binding binding(Queue queue, TopicExchange topicExchange) {
+	Binding binding(Queue queue, Queue anotherQueue, TopicExchange topicExchange) {
 		return BindingBuilder.bind(queue).to(topicExchange).with(MESSAGE_QUEUE);
 	}
+
 
 	@Bean
 	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory, MessageListenerAdapter listenerAdapter) {

@@ -21,12 +21,12 @@ public class AdvertController {
     public AdvertController(AdvertService aService){ this.advertService = aService; }
 
 
-    @PostMapping(value = "/add")
+    @PostMapping
     public ResponseEntity<?> addAdvert(@RequestBody AdvertDTO advertDTO, HttpSession session){
         return advertService.addAdvert(advertDTO, session);
     }
 
-    @PutMapping(value = "/update")
+    @PutMapping
     public ResponseEntity<?> updateAdvert(@RequestBody AdvertUpdateDTO advertUpdateDTO, HttpSession session){
         return advertService.updateAdvert(advertUpdateDTO, session);
     }
