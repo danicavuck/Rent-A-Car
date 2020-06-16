@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 // Components
 import { LoginComponent } from './login/login/login.component';
@@ -24,6 +26,7 @@ import { AgentRegistrationComponent } from './registration/modules/agent-registr
 import { UserHomepageComponent } from './UserSection/user-homepage/user-homepage.component';
 import { AdminHomepageComponent } from './AdminSection/admin-homepage/admin-homepage.component';
 import { AgentHomepageComponent } from './AgentSection/agent-homepage/agent-homepage.component';
+import { from } from 'rxjs';
 
 
 const appRouts: Routes = [
@@ -65,6 +68,8 @@ const appRouts: Routes = [
     MatButtonModule,
     MatInputModule,
     MatSelectModule,
+    MatTableModule,
+    MatTooltipModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [],

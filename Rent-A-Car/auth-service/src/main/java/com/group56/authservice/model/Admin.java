@@ -24,4 +24,5 @@ public class Admin {
     private String lastName;
     private String password;
     private String address;
+    private boolean isSharedWithAdmin;
 }

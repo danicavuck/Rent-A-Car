@@ -20,4 +20,5 @@ public class Agent {
     private String password;
     private String address;
     private String registrationNumber;
+    private boolean isSharedWithAdmin;
 }

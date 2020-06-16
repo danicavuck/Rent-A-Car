@@ -1,7 +1,6 @@
 package com.group56.adminservice.client;
 
-import com.group56.soap.GetUsersRequest;
-import com.group56.soap.GetUsersResponse;
+import com.group56.soap.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.stereotype.Service;
@@ -17,5 +16,15 @@ public class SoapClient {
     public GetUsersResponse getUsers(GetUsersRequest request) {
         template = new WebServiceTemplate(marshaller);
         return (GetUsersResponse) template.marshalSendAndReceive("http://localhost:8080/auth-service/soapWS", request);
+    }
+
+    public GetAdminsResponse getAdmins(GetAdminsRequest request) {
+        template = new WebServiceTemplate(marshaller);
+        return (GetAdminsResponse) template.marshalSendAndReceive("http://localhost:8080/auth-service/soapWS", request);
+    }
+
+    public GetAgentsResponse getAgents(GetAgentsRequest request) {
+        template = new WebServiceTemplate(marshaller);
+        return (GetAgentsResponse) template.marshalSendAndReceive("http://localhost:8080/auth-service/soapWS", request);
     }
 }

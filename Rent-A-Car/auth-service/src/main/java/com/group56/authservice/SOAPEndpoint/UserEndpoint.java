@@ -31,14 +31,14 @@ public class UserEndpoint {
     public GetUsersResponse getUsersRequest(@RequestPayload GetUsersRequest getUsersRequest){
         logger.info("Creating response");
         GetUsersResponse response = new GetUsersResponse();
-        List<User> users = userService.getUsers(getUsersRequest.getUsername());
-        List<UserXML> userXML = convertModelToXMLData(users);
+        List<User> users = userService.getUsersThatAreNotSharedWithAdminService(getUsersRequest.getUsername());
+        List<UserXML> userXML = convertUsersToXML(users);
         response.setUser(userXML);
 
         return response;
     }
 
-    private List<UserXML> convertModelToXMLData(List<User> users) {
+    private List<UserXML> convertUsersToXML(List<User> users) {
         List<UserXML> list = new ArrayList<>();
         users.forEach(user -> {
             UserXML userXML = new UserXML();
@@ -55,4 +55,5 @@ public class UserEndpoint {
 
         return list;
     }
+
 }

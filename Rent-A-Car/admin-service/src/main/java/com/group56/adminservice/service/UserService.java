@@ -69,14 +69,21 @@ public class UserService {
         return new ResponseEntity<>("Couldn't find user with provided username", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllUsers() {
-        //List users = userRepository.findAll();
-        //return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
+    public ResponseEntity<?> getAllActiveUsers() {
+        List<User> users = userRepository.findAll();
+        List activeUsers = new ArrayList();
+        users.forEach(user -> {
+            if(user.isActive())
+                activeUsers.add(user);
+        });
+        return new ResponseEntity<>(makeDTOFromUsers(activeUsers), HttpStatus.OK);
+    }
+
+    public List<UserXML> getUsersXMLFromSOAPRequest() {
         GetUsersRequest request = new GetUsersRequest();
-        request.setUsername("Petar");
+        request.setUsername("");
         GetUsersResponse response = soapClient.getUsers(request);
-        List<UserXML> usersXML = response.getUser();
-        return new ResponseEntity<>(usersXML, HttpStatus.OK);
+        return response.getUser();
     }
 
     private List<UserDTO> makeDTOFromUsers(List<User> users) {
@@ -94,5 +101,11 @@ public class UserService {
         });
 
         return usersDTO;
+    }
+
+    public void saveUsersToDatabase(List<User> users) {
+        users.forEach(user -> {
+            userRepository.save(user);
+        });
     }
 }

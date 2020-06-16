@@ -33,18 +33,17 @@ public class UserService {
 
     @Transactional
     public ResponseEntity<?> registerNewUser(UserDTO userDTO){
-//        if(identityCheck.isUsernameUnique(userDTO.getUsername())){
-//            if(identityCheck.isEmailAddressUnique(userDTO.getEmail())) {
-//                User user = createUserFromDTO(userDTO);
-//                userRepository.save(user);
-//                messagePublisher.sendAMessageToQueue("USER_ADDED");
-//                return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
-//            }
-//            return new ResponseEntity<>("Email address is already in use", HttpStatus.FORBIDDEN);
-//        }
-//        return new ResponseEntity<>("Username is not unique", HttpStatus.FORBIDDEN);
-        messagePublisher.sendAMessageToQueue("USER_ADDED");
-        return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
+        if(identityCheck.isUsernameUnique(userDTO.getUsername())){
+            if(identityCheck.isEmailAddressUnique(userDTO.getEmail())) {
+                User user = createUserFromDTO(userDTO);
+                userRepository.save(user);
+
+                messagePublisher.sendAMessageToQueue("USER_ADDED");
+                return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>("Email address is already in use", HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>("Username is not unique", HttpStatus.FORBIDDEN);
     }
 
     public ResponseEntity<?> logInUser(LoginDTO loginDTO, HttpSession session) {
@@ -60,6 +59,7 @@ public class UserService {
     private User createUserFromDTO(UserDTO userDTO) {
         return User.builder().username(userDTO.getUsername()).password(userDTO.getPassword())
                 .firstName(userDTO.getFirstName()).lastName(userDTO.getLastName())
+                .isActive(true).isBlocked(false).isSharedWithAdmin(false).isBlocked(false)
                 .address(userDTO.getAddress())
                 .email(userDTO.getEmail()).build();
     }
@@ -85,4 +85,18 @@ public class UserService {
         return users;
     }
 
+    public List<User> getUsersThatAreNotSharedWithAdminService(String username) {
+        List<User> allUsers = userRepository.findAll();
+        List<User> notShared = new ArrayList<>();
+
+        allUsers.forEach(user -> {
+            if(!user.isSharedWithAdmin()) {
+                notShared.add(user);
+                user.setSharedWithAdmin(true);
+                userRepository.save(user);
+            }
+
+        });
+        return notShared;
+    }
 }

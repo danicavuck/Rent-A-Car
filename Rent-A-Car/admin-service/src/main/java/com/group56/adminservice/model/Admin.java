@@ -22,6 +22,5 @@ public class Admin {
     private String adminName;
     private String firstName;
     private String lastName;
-    private String password;
     private String address;
 }
