@@ -17,7 +17,7 @@ export class UserHomepageComponent implements OnInit {
   onLogout() {
     const apiEndpoint = 'http://localhost:8080/auth-service/logout';
     this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
-      console.log('Successfully logged out');
+      localStorage.removeItem('username');
       this.router.navigateByUrl('/login');
     }, err => {
       console.log('Unable to log out');

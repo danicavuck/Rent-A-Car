@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Home page</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="text-center">
+            <form class="search-form">
+                <mat-form-field id="city">
+                    <mat-label>City</mat-label>
+                    <mat-select [(ngModel)]="query.city" name="cities">
+                        <mat-option *ngFor="let city of cities" [value]="city.value">
+                          {{city.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                
+                <div class="form-group" id="date">
+                    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" readonly="true"
+                        style="background: #fff;" [(ngModel)]="rentSpan.rentSpan" name="rentSpan" [selectMode]="'range'" [min]="min" matTooltip="Choose time of renting">
+                    <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                </div>
+
+                <button mat-stroked-button color="primary" id="button" (click)="onSearch()"><i class="fa fa-search"></i><span> Search</span></button>
+                <div class="rout">
+                    <button mat-stroked-button color="accent" style="margin-right: 5px;" [routerLink]="['/login']"><i class="fa fa-sign-in"></i><span> Login</span></button>
+                    <button mat-stroked-button color="accent" [routerLink]="['/registration']"><i class="fa fa-user"></i><span> Register</span></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

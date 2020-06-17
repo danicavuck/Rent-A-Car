@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin
 @RequestMapping("/admin-service/transmission-type")
 public class TransmissionTypeController {
     private TransmissionTypeService transmissionTypeService;

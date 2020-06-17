@@ -3,6 +3,7 @@ package com.group56.reviewservice.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Builder
@@ -17,6 +18,8 @@ public class User {
     private Long id;
     private String username;
     @OneToMany(mappedBy = "user")
-    private Mark marks;
+    private List<Mark> marks;
+    private boolean isActive = true;
+    private boolean isBlocked = false;
 
 }

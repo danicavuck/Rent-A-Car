@@ -12,15 +12,16 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class AdvertDTO {
+    private String username;
     private String carLocation;
     private LocalDateTime dateStart;
     private LocalDateTime dateEnd;
     //-------------car---
-    private Long id_carBrand;
-    private Long id_carModel;
-    private Long id_fuelType;
-    private Long id_transmissionType;
-    private Long id_bodyType;
+    private String brand;
+    private String model;
+    private String fuel;
+    private String transmission;
+    private String bodyType;
     private Long mileage;
     private boolean isRentLimited;
     private Long limitInKilometers;

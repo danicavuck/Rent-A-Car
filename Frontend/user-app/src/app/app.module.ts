@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 // Components
 import { LoginComponent } from './login/login/login.component';
@@ -26,7 +27,8 @@ import { AgentRegistrationComponent } from './registration/modules/agent-registr
 import { UserHomepageComponent } from './UserSection/user-homepage/user-homepage.component';
 import { AdminHomepageComponent } from './AdminSection/admin-homepage/admin-homepage.component';
 import { AgentHomepageComponent } from './AgentSection/agent-homepage/agent-homepage.component';
-import { from } from 'rxjs';
+import { HomepageComponent } from './homepage/homepage.component';
+import { AddAdvertComponent } from './UserSection/add-advert/add-advert.component';
 
 
 const appRouts: Routes = [
@@ -35,7 +37,9 @@ const appRouts: Routes = [
   { path: 'user', component: UserHomepageComponent },
   { path: 'admin', component: AdminHomepageComponent },
   { path: 'agent', component: AgentHomepageComponent },
-  { path: '', redirectTo : '/login', pathMatch : 'full' },
+  { path: 'advert', component: AddAdvertComponent },
+  { path: 'home', component: HomepageComponent },
+  { path: '', redirectTo : '/home', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent }
 ];
 
@@ -52,7 +56,9 @@ const appRouts: Routes = [
     AgentRegistrationComponent,
     UserHomepageComponent,
     AdminHomepageComponent,
-    AgentHomepageComponent
+    AgentHomepageComponent,
+    HomepageComponent,
+    AddAdvertComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +76,7 @@ const appRouts: Routes = [
     MatSelectModule,
     MatTableModule,
     MatTooltipModule,
+    MatCheckboxModule,
     RouterModule.forRoot(appRouts)
   ],
   providers: [],

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Add advert</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="text-center">
+            <div class="mat-display-1" style="margin-top: 30px;">Add new advert</div>
+            
+            <form>
+                <mat-form-field class="full-width">
+                    <mat-label>City</mat-label>
+                    <mat-select [(ngModel)]="data.carLocation" name="cities">
+                        <mat-option *ngFor="let city of cities" [value]="city.value">
+                          {{city.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Brand</mat-label>
+                    <mat-select [(ngModel)]="data.brand" name="brand">
+                        <mat-option *ngFor="let brand of brands" [value]="brand.brandName">
+                          {{brand.brandName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Model</mat-label>
+                    <mat-select [(ngModel)]="data.model" name="model">
+                        <mat-option *ngFor="let model of models" [value]="model.modelName">
+                          {{model.modelName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Fuel Type</mat-label>
+                    <mat-select [(ngModel)]="data.fuel" name="brand">
+                        <mat-option *ngFor="let fuel of fuels" [value]="fuel.fuelType">
+                          {{fuel.fuelType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Transmission</mat-label>
+                    <mat-select [(ngModel)]="data.transmission" name="transmission">
+                        <mat-option *ngFor="let transmission of transmissions" [value]="transmission.transmissionType">
+                          {{transmission.transmissionType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <mat-label>Body Type</mat-label>
+                    <mat-select [(ngModel)]="data.bodyType" name="bodyType">
+                        <mat-option *ngFor="let bodyType of bodyTypes" [value]="bodyType.bodyType">
+                          {{bodyType.bodyType}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <div>
+                    <mat-form-field class="full-width">
+                      <mat-label>Mileage</mat-label>
+                      <input class="input" type="number" id="mileage" name="mileage" [(ngModel)]="data.mileage" matInput required>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-checkbox name="isRentLimited" style="display: inline; margin-right: 10%;" [(ngModel)]="data.isRentLimited">Is rent limited?</mat-checkbox>
+                    <mat-form-field style="width: 70%;">
+                      <mat-label>Rent limit in Kilometers (optional) </mat-label>
+                      <input class="input" type="number" id="limitInKilometers" name="limitInKilometers" [(ngModel)]="data.limitInKilometers" matInput>
+                    </mat-form-field>
+                </div>
+                
+                <div>
+                    <mat-form-field class="full-width">
+                      <mat-label>Number of seats for children</mat-label>
+                      <input class="input" type="number" id="numberOfSeatsForChildren" name="numberOfSeatsForChildren" [(ngModel)]="data.numberOfSeatsForChildren" matInput>
+                    </mat-form-field>
+                </div>
+
+                <div id="date">
+                    <label for="rentSpan">Choose lifespan of advert</label>
+                    <input [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" readonly="true"
+                        style="background: #fff;" [(ngModel)]="rentSpan.rentSpan" name="rentSpan" [selectMode]="'range'" matTooltip="Choose advert lifespan" class="full-width" style="margin: 10px 0;">
+                    <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                </div>
+
+                <input type="file" style="display: none;" (change)="onFileSelected($event)" #fileInput multiple>
+                <button type="button" mat-stroked-button color="accent" (click)="fileInput.click()" class="full-widrh" style="width: 100%;margin: 10px 0;">Add Images</button>
+                <br>
+                <button mat-stroked-button color="primary" id="button" (click)="onSubmit()" style="width: 100%;margin: 30px 0;"><i class="fa fa-plus"></i><span> Post Advert</span></button>
+            </form>
+
+            <hr style="margin-top: 50%;">
+            <button mat-stroked-button color="accent" [routerLink]="['/user']" class="pull-left" style="margin-bottom: 20px;"><i class="fa fa-sign-out"></i><span> Sign out</span></button>
+        </div>
+    </div>
+</body>
+</html>

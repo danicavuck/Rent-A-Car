@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
       this.http.post(apiEndpoint, this.model, {
         responseType: 'text', withCredentials: true
       }).subscribe(data => {
+        localStorage.setItem('username', this.model.username);
           switch(data) {
             case 'ADMIN': this.router.navigateByUrl('/admin');
                           break;

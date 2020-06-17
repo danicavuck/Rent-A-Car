@@ -44,8 +44,9 @@ public class AdvertService {
         this.messagePublisher = broker;
     }
 
-    public ResponseEntity<?> addAdvert(AdvertDTO advertDTO, HttpSession session){
-        User user = userRepository.findUserById((Long) session.getAttribute("id"));
+    public ResponseEntity<?> addAdvert(AdvertDTO advertDTO){
+        //User user = userRepository.findUserByUsername(advertDTO.getUsername());
+        User user = User.builder().username("stub_user").build();
         if(user != null) {
             if(user.getNumberOfAdvertsPosted() < 3 && !user.isBlocked()){
                 Advert advert = makeAdvertFromDTO(advertDTO);
@@ -88,23 +89,34 @@ public class AdvertService {
 
 
     public Advert makeAdvertFromDTO(AdvertDTO advertDTO){
-        Advert advert = new Advert();
-        Car car = new Car();
+        Advert advert = Advert.builder().build();
+        BodyType bodyType = BodyType.builder()
+                .bodyType(advertDTO.getBodyType())
+                .build();
+        TransmissionType transmission = TransmissionType.builder()
+                .transmissionType(advertDTO.getTransmission())
+                .build();
+        FuelType fuelType = FuelType.builder()
+                .fuelType(advertDTO.getFuel())
+                .build();
+        CarBrand carBrand = CarBrand.builder()
+                .brandName(advertDTO.getBrand())
+                .build();
+        CarModel model = CarModel.builder()
+                .modelName(advertDTO.getModel())
+                .build();
+        Car car = Car.builder()
+                .bodyType(bodyType)
+                .transmissionType(transmission)
+                .fuelType(fuelType)
+                .carBrand(carBrand)
+                .carModel(model)
+                .limitInKilometers(advertDTO.getLimitInKilometers())
+                .mileage(advertDTO.getMileage())
+                .numberOfSeatsForChildren(advertDTO.getNumberOfSeatsForChildren())
+                .isRentLimited(advertDTO.isRentLimited())
+                .build();
 
-        BodyType bodyType = bodyTypeRepository.findBodyTypeById(advertDTO.getId_bodyType());
-        TransmissionType transmissionType = transmissionTypeRepository.findTransmissionTypeById(advertDTO.getId_transmissionType());
-        FuelType fuelType = fuelTypeRepository.findFuelTypeById(advertDTO.getId_fuelType());
-        CarBrand carBrand = carBrandRepository.findCarBrandById(advertDTO.getId_carBrand());
-        CarModel carModel = carModelRepository.findCarModelById(advertDTO.getId_carModel());
-        car.setBodyType(bodyType);
-        car.setTransmissionType(transmissionType);
-        car.setFuelType(fuelType);
-        car.setCarBrand(carBrand);
-        car.setCarModel(carModel);
-        car.setLimitInKilometers(advertDTO.getLimitInKilometers());
-        car.setMileage(advertDTO.getMileage());
-        car.setNumberOfSeatsForChildren(advertDTO.getNumberOfSeatsForChildren());
-        car.setRentLimited(advertDTO.isRentLimited());
 
         advert.setCar(car);
         advert.setCarLocation(advertDTO.getCarLocation());

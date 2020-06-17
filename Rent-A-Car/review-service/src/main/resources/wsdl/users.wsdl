@@ -1,0 +1,143 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:sch="http://group56.com/soap-package" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://group56.com/soap-package" targetNamespace="http://group56.com/soap-package">
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://group56.com/soap-package">
+            <xs:element name="getUsersRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getUsersResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="user" type="tns:userXML"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="userXML">
+                <xs:sequence>
+                    <xs:element name="email" type="xs:string"/>
+                    <xs:element name="username" type="xs:string"/>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="lastName" type="xs:string"/>
+                    <xs:element name="address" type="xs:string"/>
+                    <xs:element name="isActive" type="xs:boolean"/>
+                    <xs:element name="isBlocked" type="xs:boolean"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="getAdminsRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAdminsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="adminsXML" type="tns:adminXML"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="adminXML">
+                <xs:sequence>
+                    <xs:element name="email" type="xs:string"/>
+                    <xs:element name="adminName" type="xs:string"/>
+                    <xs:element name="firstName" type="xs:string"/>
+                    <xs:element name="lastName" type="xs:string"/>
+                    <xs:element name="address" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="getAgentsRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="username" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAgentsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" name="agentsXML" type="tns:agentXML"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="agentXML">
+                <xs:sequence>
+                    <xs:element name="email" type="xs:string"/>
+                    <xs:element name="agentName" type="xs:string"/>
+                    <xs:element name="address" type="xs:string"/>
+                    <xs:element name="registrationNumber" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getAgentsRequest">
+        <wsdl:part element="tns:getAgentsRequest" name="getAgentsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAdminsResponse">
+        <wsdl:part element="tns:getAdminsResponse" name="getAdminsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAdminsRequest">
+        <wsdl:part element="tns:getAdminsRequest" name="getAdminsRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUsersResponse">
+        <wsdl:part element="tns:getUsersResponse" name="getUsersResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getAgentsResponse">
+        <wsdl:part element="tns:getAgentsResponse" name="getAgentsResponse"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUsersRequest">
+        <wsdl:part element="tns:getUsersRequest" name="getUsersRequest"> </wsdl:part>
+    </wsdl:message>
+    <wsdl:portType name="UserServicePort">
+        <wsdl:operation name="getAgents">
+            <wsdl:input message="tns:getAgentsRequest" name="getAgentsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getAgentsResponse" name="getAgentsResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAdmins">
+            <wsdl:input message="tns:getAdminsRequest" name="getAdminsRequest"> </wsdl:input>
+            <wsdl:output message="tns:getAdminsResponse" name="getAdminsResponse"> </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUsers">
+            <wsdl:input message="tns:getUsersRequest" name="getUsersRequest"> </wsdl:input>
+            <wsdl:output message="tns:getUsersResponse" name="getUsersResponse"> </wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UserServicePortSoap11" type="tns:UserServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getAgents">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getAgentsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAgentsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getAdmins">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getAdminsRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getAdminsResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getUsers">
+            <soap:operation soapAction=""/>
+            <wsdl:input name="getUsersRequest">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="getUsersResponse">
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UserServicePortService">
+        <wsdl:port binding="tns:UserServicePortSoap11" name="UserServicePortSoap11">
+            <soap:address location="http://localhost:8081/auth-service/soapWS"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

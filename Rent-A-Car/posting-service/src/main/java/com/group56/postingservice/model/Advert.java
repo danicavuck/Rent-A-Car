@@ -28,7 +28,7 @@ public class Advert {
     private BigDecimal protectionPrice;
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User publisher;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

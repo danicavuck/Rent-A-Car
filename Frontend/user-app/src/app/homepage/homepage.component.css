@@ -1,0 +1,28 @@
+.search-form {
+    display: block;
+    position: relative;
+}
+
+#city {
+    margin-left: -30%;
+    width: 20%;
+    margin-right: 5%;
+    height: 50px;
+}
+
+#date {
+    display: inline;
+    margin-right: 20%;
+    border-radius: 10%;
+}
+
+#button {
+    width: 15%;
+    margin-left: -15%;
+}
+
+.rout {
+    display: inline;
+    margin-left: 10%;
+    margin-right: -10%;
+}

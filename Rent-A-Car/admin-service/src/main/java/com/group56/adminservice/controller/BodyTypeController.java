@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin
 @RequestMapping("/admin-service/body-type")
 public class BodyTypeController {
     private BodyTypeService bodyTypeService;
