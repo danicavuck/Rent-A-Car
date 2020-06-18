@@ -1,5 +1,6 @@
 package com.group56.adminservice.DTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Builder
 @ToString
+@JsonIgnoreProperties({"id"})
 public class UserDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

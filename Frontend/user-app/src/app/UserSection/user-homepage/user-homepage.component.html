@@ -9,7 +9,25 @@
 <body>
     <div class="jumbotron">
         <div class="text-center">
-            <div class="mat-display-1">Welcome User</div>
+            <div class="mat-display-1">Leave a review for advert</div>
+
+            <div class="adverts">
+                <div class="advert" *ngFor="let number of numberOfAdverts">
+                    <div class="image-container">
+                        <img class="image" src="https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg" alt="Audi A6" height="150" width="200">
+                    </div>
+                    <div class="text-container">
+                        <p>Good and affordable car</p>
+                        <p>Price: 200$</p>
+                        <p>Available from: 21/02/2020</p>
+                        <p>Available until: 15/07/2020</p>
+                    </div>
+                    <div class="button-container">
+                        <button (click)="openDialog()" mat-stroked-button color="primary"><i class="fa fa-pencil"></i><span> Leave a review</span></button>
+                    </div>
+                </div>
+            </div>
+
             <button (click)="onLogout()" mat-raised-button color="primary" class="pull-left" id="logout" style="margin-right: 2rem;">
                 <i class="fa fa-sign-out"></i>
                 <span> Logout</span>

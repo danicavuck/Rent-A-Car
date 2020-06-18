@@ -20,21 +20,21 @@ public class Car {
     private Long limitInKilometers;
     private int numberOfSeatsForChildren;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private BodyType bodyType;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private FuelType fuelType;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private TransmissionType transmissionType;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private CarBrand carBrand;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private CarModel carModel;
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL)
     private Advert advert;
 }

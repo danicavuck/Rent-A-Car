@@ -18,7 +18,7 @@ public class MessagePublisher {
 
     public void sendAMessageToQueue(String message) {
         byte[] bytes = message.getBytes();
-        rabbitTemplate.convertAndSend("auth-update", bytes);
+        rabbitTemplate.convertAndSend("auth-exchange", "auth-update", bytes);
         logger.info("Message has been sent to queue!");
     }
 }

@@ -7,6 +7,7 @@ import com.group56.authservice.model.Agent;
 import com.group56.authservice.model.Authorization;
 import com.group56.authservice.repository.AgentRepository;
 import com.group56.authservice.utility.IdentityCheck;
+import com.group56.authservice.utility.MessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,16 +15,20 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class AgentService {
     private AgentRepository agentRepository;
     private IdentityCheck identityCheck;
+    private MessagePublisher messagePublisher;
 
     @Autowired
-    public AgentService(AgentRepository agentRepository, IdentityCheck identityCheck) {
+    public AgentService(AgentRepository agentRepository, IdentityCheck identityCheck, MessagePublisher publisher) {
         this.agentRepository = agentRepository;
         this.identityCheck = identityCheck;
+        this.messagePublisher = publisher;
     }
 
     @Transactional
@@ -34,6 +39,7 @@ public class AgentService {
                     Agent agent = createAgentFromDTO(agentDTO);
                     agentRepository.save(agent);
 
+                    messagePublisher.sendAMessageToQueue("AGENT_ADDED");
                     return new ResponseEntity<>("Account successfully created", HttpStatus.CREATED);
                 }
                 return new ResponseEntity<>("Registration number is not unique!", HttpStatus.FORBIDDEN);
@@ -58,6 +64,22 @@ public class AgentService {
                 .registrationNumber(agentDTO.getRegistrationNumber())
                 .password(agentDTO.getPassword())
                 .address(agentDTO.getAddress())
+                .isSharedWithAdmin(false)
                 .email(agentDTO.getEmail()).build();
+    }
+
+    public List<Agent> getAgentsThatAreNotSharedWithAdminService(String username) {
+        List<Agent> allAgents = agentRepository.findAll();
+        List<Agent> relevantAgents = new ArrayList<>();
+
+        allAgents.forEach(agent -> {
+            if(!agent.isSharedWithAdmin()) {
+                relevantAgents.add(agent);
+                agent.setSharedWithAdmin(true);
+                agentRepository.save(agent);
+            }
+        });
+
+        return relevantAgents;
     }
 }

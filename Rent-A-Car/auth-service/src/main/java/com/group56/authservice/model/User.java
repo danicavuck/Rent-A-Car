@@ -22,6 +22,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String address;
-    private boolean isActive = true;
-    private boolean isBlocked = false;
+    private boolean isActive;
+    private boolean isBlocked;
+    private boolean isSharedWithAdmin;
 }

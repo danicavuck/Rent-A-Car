@@ -31,4 +31,55 @@
         </xs:sequence>
     </xs:complexType>
 
+    <xs:element name="getAdminsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAdminsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="adminsXML" maxOccurs="unbounded" type="tns:adminXML"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="adminXML">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="adminName" type="xs:string"/>
+            <xs:element name="firstName" type="xs:string"/>
+            <xs:element name="lastName" type="xs:string"/>
+            <xs:element name="address" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:element name="getAgentsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="username" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAgentsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="agentsXML" maxOccurs="unbounded" type="tns:agentXML"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="agentXML">
+        <xs:sequence>
+            <xs:element name="email" type="xs:string"/>
+            <xs:element name="agentName" type="xs:string"/>
+            <xs:element name="address" type="xs:string"/>
+            <xs:element name="registrationNumber" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
 </xs:schema>

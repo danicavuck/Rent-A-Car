@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,6 +20,7 @@ public class Advert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private UUID uuid;
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
@@ -26,7 +28,7 @@ public class Advert {
     private BigDecimal protectionPrice;
     private BigDecimal price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User publisher;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

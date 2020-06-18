@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Review for {{data.username}}</h2>
+
+<mat-dialog-content>
+    <mat-form-field class="full-width">
+        <mat-label>Comment</mat-label>
+        <textarea name="comment" id="" cols="10" rows="5" [(ngModel)]="model.text" matInput required></textarea>
+    </mat-form-field>
+
+    <ngb-rating [(rate)]="currentRate">
+        <ng-template let-fill="fill" let-index="index">
+          <span class="star" [class.filled]="fill === 100">&#9733;</span>
+        </ng-template>
+    </ngb-rating>
+    <hr>
+    <pre>Mark: <b>{{currentRate}} / 10</b></pre>
+
+</mat-dialog-content>
+
+<mat-dialog-actions class="actions">
+    <button mat-button mat-dialog-close mat-dialog-close="true" (click)="onSubmit()">Ok</button>
+    <button mat-button mat-dialog-close mat-dialog-close="false">Close</button>
+</mat-dialog-actions>

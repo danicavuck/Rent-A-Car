@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Rent-A-Car.iml" filepath="$PROJECT_DIR$/Rent-A-Car.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Zuul/Zuul.iml" filepath="$PROJECT_DIR$/Zuul/Zuul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin-service/admin-service.iml" filepath="$PROJECT_DIR$/admin-service/admin-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/auth-service/auth-service.iml" filepath="$PROJECT_DIR$/auth-service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/image-service/image-service.iml" filepath="$PROJECT_DIR$/image-service/image-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/messaging-service/messaging-service.iml" filepath="$PROJECT_DIR$/messaging-service/messaging-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/notification-service/notification-service.iml" filepath="$PROJECT_DIR$/notification-service/notification-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/posting-service/posting-service.iml" filepath="$PROJECT_DIR$/posting-service/posting-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/renting-service/renting-service.iml" filepath="$PROJECT_DIR$/renting-service/renting-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/review-service/review-service.iml" filepath="$PROJECT_DIR$/review-service/review-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-service/search-service.iml" filepath="$PROJECT_DIR$/search-service/search-service.iml" />
+    </modules>
+  </component>
+</project>

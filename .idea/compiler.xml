@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="renting-service" />
+        <module name="posting-service" />
+        <module name="messaging-service" />
+        <module name="Zuul" />
+        <module name="eureka" />
+        <module name="review-service" />
+        <module name="Rent-A-Car" />
+        <module name="notification-service" />
+        <module name="auth-service" />
+        <module name="admin-service" />
+        <module name="image-service" />
+      </profile>
+      <profile name="Annotation profile for Unknown" enabled="true">
+        <sourceOutputDir name="../image-service/target/generated-sources/annotations" />
+        <sourceTestOutputDir name="../image-service/target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="search-service" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="admin-service" target="1.8" />
+      <module name="auth-service" target="1.5" />
+      <module name="eureka" target="1.5" />
+      <module name="image-service" target="1.5" />
+      <module name="messaging-service" target="1.5" />
+      <module name="notification-service" target="1.5" />
+      <module name="posting-service" target="1.5" />
+      <module name="Rent-A-Car" target="1.5" />
+      <module name="renting-service" target="1.5" />
+      <module name="review-service" target="1.5" />
+      <module name="search-service" target="1.5" />
+      <module name="Zuul" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
