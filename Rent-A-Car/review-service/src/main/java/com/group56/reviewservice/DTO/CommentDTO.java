@@ -20,5 +20,7 @@ public class CommentDTO {
     private Long id;
     private String text;
     private String username;
-    private String UUID;
+    private String uuid;
+    private int mark;
+    private String commentUUID;
 }

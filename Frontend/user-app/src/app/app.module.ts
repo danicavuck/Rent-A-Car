@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Components
 import { LoginComponent } from './login/login/login.component';
@@ -29,6 +30,8 @@ import { AdminHomepageComponent } from './AdminSection/admin-homepage/admin-home
 import { AgentHomepageComponent } from './AgentSection/agent-homepage/agent-homepage.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { AddAdvertComponent } from './UserSection/add-advert/add-advert.component';
+import { ReviewComponent } from './review/review.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 const appRouts: Routes = [
@@ -58,7 +61,11 @@ const appRouts: Routes = [
     AdminHomepageComponent,
     AgentHomepageComponent,
     HomepageComponent,
-    AddAdvertComponent
+    AddAdvertComponent,
+    ReviewComponent
+  ],
+  entryComponents: [
+    ReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +84,9 @@ const appRouts: Routes = [
     MatTableModule,
     MatTooltipModule,
     MatCheckboxModule,
-    RouterModule.forRoot(appRouts)
+    MatDialogModule,
+    RouterModule.forRoot(appRouts),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

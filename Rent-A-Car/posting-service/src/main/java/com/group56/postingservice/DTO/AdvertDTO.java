@@ -3,6 +3,7 @@ package com.group56.postingservice.DTO;
 import lombok.*;
 
 import javax.persistence.Entity;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class AdvertDTO {
+    private BigDecimal price;
     private String username;
     private String carLocation;
     private LocalDateTime dateStart;

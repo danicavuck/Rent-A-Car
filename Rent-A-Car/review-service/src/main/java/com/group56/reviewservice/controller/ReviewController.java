@@ -24,8 +24,18 @@ public class ReviewController {
         return reviewService.postANewComment(commentDTO);
     }
 
+    @PostMapping("/approve")
+    public ResponseEntity<?> approveComment(@RequestBody CommentDTO commentDTO) {
+        return reviewService.approveComment(commentDTO);
+    }
+
+    @PostMapping("/decline")
+    public ResponseEntity<?> declineComment(@RequestBody CommentDTO commentDTO) {
+        return reviewService.declineComment(commentDTO);
+    }
+
     @GetMapping("/pending")
-    public ResponseEntity<?> getAllPendingCommments() {
+    public ResponseEntity<?> getAllPendingComments() {
         return reviewService.getAllPendingComments();
     }
 

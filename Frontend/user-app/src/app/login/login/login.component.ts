@@ -34,10 +34,11 @@ export class LoginComponent implements OnInit {
         responseType: 'text', withCredentials: true
       }).subscribe(data => {
         localStorage.setItem('username', this.model.username);
+        localStorage.setItem('loggedIn', 'true');
           switch(data) {
             case 'ADMIN': this.router.navigateByUrl('/admin');
                           break;
-            case 'USER':  this.router.navigateByUrl('/user');
+            case 'USER':  this.router.navigateByUrl('/home');
                           break;
             case 'AGENT': this.router.navigateByUrl('/agent');
                           break;

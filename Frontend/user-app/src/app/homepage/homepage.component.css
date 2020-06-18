@@ -1,4 +1,6 @@
 .search-form {
+    margin-left: 15%;
+    width: 100%;
     display: block;
     position: relative;
 }
@@ -26,3 +28,41 @@
     margin-left: 10%;
     margin-right: -10%;
 }
+
+.adverts {
+    margin: 5% 0;
+}
+
+.advert {
+    width: 100%;
+    /* background-color: blanchedalmond; */
+    position: relative;
+    border: 1px solid rgb(75, 64, 64);
+    box-shadow: 5px 5px #888888;
+    margin-bottom: 5%;
+}
+
+.image-container {
+    position: relative;
+    margin-left: -75%;
+    margin-top: 1%;
+}
+
+.image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-container {
+    position: relative;
+    margin-left: 10%;
+    margin-top: -15%;
+}
+
+.button-container {
+    position: relative;
+    margin-left: 80%;
+    margin-bottom: 1%;
+}
+

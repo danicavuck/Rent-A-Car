@@ -9,8 +9,7 @@
 <body>
     <div class="jumbotron">
         <div class="text-center">
-            <div class="mat-display-1">Welcome Admin</div>
-            
+            <h2>Active/Deactive Users</h2>
             <table mat-table [dataSource]="model" class="mat-elevation-z8" matSort>
                 <ng-container matColumnDef="username">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
@@ -43,6 +42,8 @@
                 <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
             </table>
+            
+            <h2 class="commentSection">Approve/Decline Comments</h2>
 
             <hr/>
             <button (click)="onLogout()" mat-raised-button color="primary" class="pull-left" id="logout" style="margin-right: 2rem;">

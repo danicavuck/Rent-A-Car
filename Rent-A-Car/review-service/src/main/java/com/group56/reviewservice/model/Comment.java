@@ -1,5 +1,6 @@
 package com.group56.reviewservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.group56.reviewservice.enumertation.CommentStatus;
 import lombok.*;
 
@@ -19,6 +20,7 @@ public class Comment {
     private Long id;
     private UUID uuid;
     private String text;
+    private int mark;
     @OneToOne
     private User user;
     @ManyToOne

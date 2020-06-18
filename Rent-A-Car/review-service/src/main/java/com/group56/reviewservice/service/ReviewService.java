@@ -37,13 +37,14 @@ public class ReviewService {
     }
 
     private Comment formModelOutOfDTO(CommentDTO commentDTO) {
-        Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(commentDTO.getUUID()));
+        Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(commentDTO.getUuid()));
         User user = userRepository.findUserByUsername(commentDTO.getUsername());
         Comment comment = Comment.builder()
                 .uuid(UUID.randomUUID())
                 .text(commentDTO.getText())
                 .advert(advert)
                 .user(user)
+                .mark(commentDTO.getMark())
                 .commentStatus(CommentStatus.PENDING)
                 .build();
 
@@ -72,5 +73,27 @@ public class ReviewService {
         });
 
         return new ResponseEntity<>(relevantComments, HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> approveComment(CommentDTO commentDTO) {
+        UUID uuid = UUID.fromString(commentDTO.getUuid());
+        Comment comment = commentRepository.findCommentByUuid(uuid);
+        if(comment != null) {
+            comment.setCommentStatus(CommentStatus.APPROVED);
+            commentRepository.save(comment);
+            return new ResponseEntity<>("Comment is approved", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Comment is not found", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> declineComment(CommentDTO commentDTO) {
+        UUID uuid = UUID.fromString(commentDTO.getUuid());
+        Comment comment = commentRepository.findCommentByUuid(uuid);
+        if(comment != null) {
+            comment.setCommentStatus(CommentStatus.DECLINED);
+            commentRepository.save(comment);
+            return new ResponseEntity<>("Comment is declined", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Comment is not found", HttpStatus.NOT_FOUND);
     }
 }

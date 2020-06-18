@@ -9,10 +9,14 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
 
+  loggedIn: boolean = true;
+
   min = Date();
   rentSpan: RentSpan = {
     rentSpan: [new Date()]
   };
+
+  numberOfAdverts = [1, 2, 3, 4, 5];
 
   cities : City[] = [
     {value: 'Novi Sad', viewValue: 'Novi Sad'},
@@ -30,7 +34,8 @@ export class HomepageComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) { }
 
   ngOnInit(): void {
-    //console.log(this.query);
+    let status = localStorage.getItem('loggedIn');
+    status === 'true' ? this.loggedIn = true : this.loggedIn = false;
   }
 
   onSearch() {
@@ -43,6 +48,17 @@ export class HomepageComponent implements OnInit {
       alert('Invalid query');
       console.log(this.query);
     }
+  }
+
+  onLogout() {
+    const apiEndpoint = 'http://localhost:8080/auth-service/logout';
+
+    this.http.post(apiEndpoint, '', {responseType: 'json',withCredentials: true}).subscribe(() => {
+      this.loggedIn = false;
+      localStorage.setItem('loggedIn', 'false');
+    }, err => {
+      console.log('Unable to log out', err);
+    });
   }
 
   validateInput() {

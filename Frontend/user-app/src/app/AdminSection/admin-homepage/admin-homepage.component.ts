@@ -8,6 +8,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin-homepage.component.css']
 })
 export class AdminHomepageComponent implements OnInit {
+
+  comments: Comment[];
+
   public model: Array<User>;
   private user: User = {
     username: '',
@@ -40,6 +43,7 @@ export class AdminHomepageComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/auth-service/logout';
     this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
       localStorage.removeItem('username');
+      localStorage.setItem('loggedIn', 'false');
       this.router.navigateByUrl('/login');
     }, err => {
       console.log('Unable to log out');
@@ -64,4 +68,16 @@ export interface User {
   email: string;
   address: string;
   numberOfAdvertsCancelled: number;
+};
+
+export interface Comment {
+  uuid: string;
+  text: string;
+  mark: number;
+  user: User;
+  advert: Advert;
+};
+
+export interface Advert {
+  uuid: string;
 };

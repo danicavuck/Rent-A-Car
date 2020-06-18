@@ -25,12 +25,32 @@
                     <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
                 </div>
 
-                <button mat-stroked-button color="primary" id="button" (click)="onSearch()"><i class="fa fa-search"></i><span> Search</span></button>
+                <button mat-flat-button color="primary" id="button" (click)="onSearch()"><i class="fa fa-search"></i><span> Search</span></button>
                 <div class="rout">
-                    <button mat-stroked-button color="accent" style="margin-right: 5px;" [routerLink]="['/login']"><i class="fa fa-sign-in"></i><span> Login</span></button>
-                    <button mat-stroked-button color="accent" [routerLink]="['/registration']"><i class="fa fa-user"></i><span> Register</span></button>
+                    <button *ngIf="!loggedIn" mat-stroked-button color="accent" style="margin-right: 5px;" [routerLink]="['/login']"><i class="fa fa-sign-in"></i><span> Login</span></button>
+                    <button *ngIf="!loggedIn" mat-stroked-button color="accent" [routerLink]="['/registration']"><i class="fa fa-user"></i><span> Register</span></button>
+                    <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="['/user']"><i class="fa fa-user"></i><span> My profile</span></button>
                 </div>
             </form>
+            <!-- Adverts -->
+            <div class="adverts">
+                <div class="advert" *ngFor="let number of numberOfAdverts">
+                    <div class="image-container">
+                        <img class="image" src="https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg" alt="Audi A6" height="150" width="200">
+                    </div>
+                    <div class="text-container">
+                        <p>Good and affordable car</p>
+                        <p>Price: 200$</p>
+                        <p>Available from: 21/02/2020</p>
+                        <p>Available until: 15/07/2020</p>
+                    </div>
+                    <div class="button-container">
+                        <button mat-stroked-button color="primary"><i class="fa fa-info"></i><span> Details</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <button *ngIf="loggedIn" mat-stroked-button color="accent" (click)="onLogout()" [routerLink]="['/home']" class="pull-left" style="margin-bottom: 20px;"><i class="fa fa-sign-out"></i><span> Sign out</span></button>
         </div>
     </div>
 </body>

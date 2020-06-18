@@ -122,6 +122,7 @@ public class AdvertService {
         advert.setCarLocation(advertDTO.getCarLocation());
         advert.setRentFrom(advertDTO.getDateStart());
         advert.setRentUntil(advertDTO.getDateEnd());
+        advert.setPrice(advertDTO.getPrice());
 
         car.setAdvert(advert);
         carRepository.save(car);

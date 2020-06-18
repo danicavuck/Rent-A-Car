@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AddAdvertComponent implements OnInit {
 
-  selctedImages : [] = [];
+  images : [] = [];
 
   cities : City[] = [
     {value: 'Novi Sad', viewValue: 'Novi Sad'},
@@ -35,6 +35,7 @@ export class AddAdvertComponent implements OnInit {
   };
 
   data: Advert = {
+    price: 0,
     username: '',
     carLocation: '',
     dateStart: new Date(),
@@ -68,21 +69,29 @@ export class AddAdvertComponent implements OnInit {
     this.data.dateStart = this.rentSpan.rentSpan[0];
     this.data.dateEnd = this.rentSpan.rentSpan[1];
     this.data.username = localStorage.getItem('username');
-    this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      console.log('Advert posted successfully');
-    }, err => {
-      console.log('Error', err);
-    });
-    //this.saveImages();
+    // this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
+    //   console.log('Advert posted successfully');
+    // }, err => {
+    //   console.log('Error', err);
+    // });
+    // this.saveImages();
+    console.log(this.data);
   }
 
   saveImages() {
+    const images = new FormData();
+    images.append('images', JSON.stringify(this.images));
     const apiEndpoint = 'http://localhost:8080/posting-service/advert/images';
-    //this.http.post();
+    this.http.post(apiEndpoint, images, {responseType: 'text', withCredentials: true}).subscribe(() => {
+      console.log('Images posted');
+    }, err => {
+      console.log('Error occurred: ', err);
+    });
+    
   }
 
   onFileSelected(event) {
-    this.selctedImages = event.target.files;
+    this.images = event.target.files;
   }
 
   async fetchBrand() {
@@ -133,6 +142,7 @@ export class AddAdvertComponent implements OnInit {
 }
 
 export interface Advert {
+  price: number;
   username: string;
   carLocation: string;
   dateStart: Date;
