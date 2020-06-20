@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdvertService {
@@ -46,16 +47,17 @@ public class AdvertService {
 
     public ResponseEntity<?> addAdvert(AdvertDTO advertDTO){
         //User user = userRepository.findUserByUsername(advertDTO.getUsername());
-        User user = User.builder().username("stub_user").build();
+        User user = User.builder().username("stud_user").isBlocked(false).isActive(true).email("user123").build();
         if(user != null) {
             if(user.getNumberOfAdvertsPosted() < 3 && !user.isBlocked()){
                 Advert advert = makeAdvertFromDTO(advertDTO);
+                user.setNumberOfAdvertsPosted(user.getNumberOfAdvertsPosted() + 1);
                 advert.setPublisher(user);
                 advertRepository.save(advert);
 
                 String msg = "ADVERT_ADDED";
                 messagePublisher.sendAMessageToQueue(msg);
-                return new ResponseEntity<>("Advert successfully added!", HttpStatus.OK);
+                return new ResponseEntity<>(advert.getUuid().toString(), HttpStatus.OK);
             }
             return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
         }
@@ -123,6 +125,7 @@ public class AdvertService {
         advert.setRentFrom(advertDTO.getDateStart());
         advert.setRentUntil(advertDTO.getDateEnd());
         advert.setPrice(advertDTO.getPrice());
+        advert.setUuid(UUID.randomUUID());
 
         car.setAdvert(advert);
         carRepository.save(car);

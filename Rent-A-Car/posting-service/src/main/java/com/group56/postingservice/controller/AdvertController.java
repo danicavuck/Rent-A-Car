@@ -41,12 +41,15 @@ public class AdvertController {
         return advertService.updateAdvert(advertUpdateDTO, session);
     }
 
-    @PostMapping("/images")
-    public ResponseEntity<?> saveAdvertImages(Model model, @RequestParam("images") MultipartFile[] images) {
+    @PostMapping("/profile-image/{advertUUID}")
+    public ResponseEntity<?> saveAdvertImages(Model model,
+                                              @RequestParam("images") MultipartFile[] images,
+                                              @PathVariable("advertUUID") String uuid) {
         StringBuilder imageNames = new StringBuilder();
         logger.info("Image saved at location: " + uploadDirectory);
         for(MultipartFile image : images) {
-            Path path = Paths.get(uploadDirectory, image.getOriginalFilename());
+            //Path path = Paths.get(uploadDirectory, image.getOriginalFilename());
+            Path path = Paths.get(uploadDirectory, uuid);
             imageNames.append(image.getOriginalFilename());
             try {
                 Files.write(path, image.getBytes());

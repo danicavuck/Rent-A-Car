@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class AddAdvertComponent implements OnInit {
 
-  images : [] = [];
+  images = null;
 
   cities : City[] = [
     {value: 'Novi Sad', viewValue: 'Novi Sad'},
@@ -69,21 +69,22 @@ export class AddAdvertComponent implements OnInit {
     this.data.dateStart = this.rentSpan.rentSpan[0];
     this.data.dateEnd = this.rentSpan.rentSpan[1];
     this.data.username = localStorage.getItem('username');
-    // this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
-    //   console.log('Advert posted successfully');
-    // }, err => {
-    //   console.log('Error', err);
-    // });
-    // this.saveImages();
-    console.log(this.data);
+    this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      this.saveImages(response);
+    }, err => {
+      console.log('Error', err);
+    });
   }
 
-  saveImages() {
-    const images = new FormData();
-    images.append('images', JSON.stringify(this.images));
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/images';
-    this.http.post(apiEndpoint, images, {responseType: 'text', withCredentials: true}).subscribe(() => {
-      console.log('Images posted');
+  saveImages(uuid: string) {
+    // const images = new FormData();
+    // images.append('images', JSON.stringify(this.images));
+    let body = new FormData();
+    body.append('images', this.images);
+
+    const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + uuid;
+    this.http.post(apiEndpoint, body, {responseType: 'text', withCredentials: true}).subscribe(() => {
+      console.log('Image posted');
     }, err => {
       console.log('Error occurred: ', err);
     });
@@ -91,7 +92,7 @@ export class AddAdvertComponent implements OnInit {
   }
 
   onFileSelected(event) {
-    this.images = event.target.files;
+    this.images = event.target.files[0];
   }
 
   async fetchBrand() {

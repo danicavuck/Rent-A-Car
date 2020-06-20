@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MessagePublisher {
+    public static final String TOPIC_EXCHANGE_NAME = "auth-update-exchange";
     private RabbitTemplate rabbitTemplate;
     private Logger logger = LoggerFactory.getLogger(MessagePublisher.class);
 
@@ -18,7 +19,7 @@ public class MessagePublisher {
 
     public void sendAMessageToQueue(String message) {
         byte[] bytes = message.getBytes();
-        rabbitTemplate.convertAndSend("auth-exchange", "auth-update", bytes);
+        rabbitTemplate.convertAndSend(TOPIC_EXCHANGE_NAME, "auth.update.user", bytes);
         logger.info("Message has been sent to queue!");
     }
 }

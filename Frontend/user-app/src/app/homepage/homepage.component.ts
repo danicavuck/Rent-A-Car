@@ -9,14 +9,14 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
 
-  loggedIn: boolean = true;
+  loggedIn: boolean = false;
 
   min = Date();
   rentSpan: RentSpan = {
     rentSpan: [new Date()]
   };
 
-  numberOfAdverts = [1, 2, 3, 4, 5];
+  numberOfAdverts = [2, 2, 3, 4, 5];
 
   cities : City[] = [
     {value: 'Novi Sad', viewValue: 'Novi Sad'},
@@ -55,7 +55,7 @@ export class HomepageComponent implements OnInit {
 
     this.http.post(apiEndpoint, '', {responseType: 'json',withCredentials: true}).subscribe(() => {
       this.loggedIn = false;
-      localStorage.setItem('loggedIn', 'false');
+      localStorage.clear();
     }, err => {
       console.log('Unable to log out', err);
     });

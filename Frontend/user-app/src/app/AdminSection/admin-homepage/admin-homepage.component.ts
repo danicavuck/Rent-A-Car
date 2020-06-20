@@ -18,15 +18,30 @@ export class AdminHomepageComponent implements OnInit {
     lastName: '',
     address: '',
     email: '',
+    isActive: true,
+    isBlocked: false,
     numberOfAdvertsCancelled: 0
   };
 
   public displayColumns: string[] = ['username', 'firstName', 'lastName', 'email', 'numberOfAdvertsCancelled', 'actions'];
+  public commentColumns: string[] = ['text', 'username', 'mark', 'actions'];
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+    this.getUsers();
+    this.getPendingComments();
+   }
 
   ngOnInit(): void {
-    this.getUsers();
+  }
+
+  async getPendingComments() {
+    const apiEndpoint = 'http://localhost:8080/review-service/comment/pending';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.comments = response as Array<Comment>;
+      console.log(this.comments);
+    }, err => {
+      console.log('Error occurred while fetching comments');
+    });
   }
 
   async getUsers() {
@@ -34,6 +49,7 @@ export class AdminHomepageComponent implements OnInit {
 
     this.http.get(apiEndpoint).subscribe(response => {
       this.model = response as Array<User>;
+      console.log(response);
     }, err => {
       console.log('Unable to fetch users');
     });
@@ -42,20 +58,55 @@ export class AdminHomepageComponent implements OnInit {
   onLogout() {
     const apiEndpoint = 'http://localhost:8080/auth-service/logout';
     this.http.post(apiEndpoint, {responseType: 'json', withCredentials: true}).subscribe(data => {
-      localStorage.removeItem('username');
-      localStorage.setItem('loggedIn', 'false');
+      localStorage.clear();
       this.router.navigateByUrl('/login');
     }, err => {
       console.log('Unable to log out');
     });
   }
 
+  onActivate(chosenUser: User) {
+    const apiEndpoint = 'http://localhost:8080/admin-service/user/active';
+    this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      this.ngOnInit();
+    }, err => {
+      console.log('Unable to active user', err);
+    });
+  }
+
+  onDelete(chosenUser: User) {
+    const apiEndpoint = 'http://localhost:8080/admin-service/user/delete';
+    this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      this.ngOnInit();
+    }, err => {
+      console.log('Unable to delete user', err);
+    });
+  }
+
   onBlock(chosenUser: User) {
     const apiEndpoint = 'http://localhost:8080/admin-service/user/block';
     this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      console.log(response);
+      this.ngOnInit();
     }, err => {
       console.log('Unable to deactive user: ', chosenUser);
+    });
+  }
+
+  onApprove(chosenComment: Comment) {
+    const apiEndpoint = 'http://localhost:8080/review-service/comment/approve';
+    this.http.post(apiEndpoint, chosenComment, {responseType: 'text', withCredentials: true}).subscribe(() => {
+      this.ngOnInit();
+    }, err => {
+      console.log('Could not approve the comment');
+    });
+  }
+
+  onDecline(chosenComment: Comment) {
+    const apiEndpoint = 'http://localhost:8080/review-service/comment/decline';
+    this.http.post(apiEndpoint, chosenComment, {responseType: 'text', withCredentials: true}).subscribe(() => {
+      this.ngOnInit();
+    }, err => {
+      console.log('Could not decline the comment');
     });
   }
 
@@ -67,6 +118,8 @@ export interface User {
   lastName: string;
   email: string;
   address: string;
+  isActive: boolean;
+  isBlocked: boolean;
   numberOfAdvertsCancelled: number;
 };
 
@@ -74,10 +127,5 @@ export interface Comment {
   uuid: string;
   text: string;
   mark: number;
-  user: User;
-  advert: Advert;
-};
-
-export interface Advert {
-  uuid: string;
+  username: string;
 };

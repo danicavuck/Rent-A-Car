@@ -19,7 +19,7 @@ public class UsersController {
 
     @GetMapping
     public ResponseEntity<?> getAllUsers() {
-        return userService.getAllActiveUsers();
+        return userService.getAllUsers();
     }
 
     @PostMapping("/block")
@@ -32,7 +32,7 @@ public class UsersController {
         return userService.activeUser(userDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeUser(@RequestBody UserDTO userDTO) {
         return userService.removeUser(userDTO);
     }

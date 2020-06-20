@@ -16,17 +16,19 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableEurekaClient
 public class ReviewServiceApplication {
-	public static final String MESSAGE_QUEUE = "auth-update";
+	public static final String TOPIC_EXCHANGE_NAME = "auth-update-exchange";
+	public static final String MESSAGE_QUEUE = "auth-update-review-service";
+	public static final String BINDING = "auth.update.#";
 
 	@Bean
 	Queue queue() { return new Queue(MESSAGE_QUEUE, false); }
 
 	@Bean
-	TopicExchange topicExchange() { return new TopicExchange("auth-exchange"); }
+	TopicExchange topicExchange() { return new TopicExchange(TOPIC_EXCHANGE_NAME); }
 
 	@Bean
 	Binding binding(Queue queue, Queue anotherQueue, TopicExchange topicExchange) {
-		return BindingBuilder.bind(queue).to(topicExchange).with(MESSAGE_QUEUE);
+		return BindingBuilder.bind(queue).to(topicExchange).with(BINDING);
 	}
 
 

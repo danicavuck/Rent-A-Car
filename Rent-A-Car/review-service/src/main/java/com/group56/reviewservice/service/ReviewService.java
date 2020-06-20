@@ -38,12 +38,12 @@ public class ReviewService {
 
     private Comment formModelOutOfDTO(CommentDTO commentDTO) {
         Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(commentDTO.getUuid()));
-        User user = userRepository.findUserByUsername(commentDTO.getUsername());
+        //User user = userRepository.findUserByUsername(commentDTO.getUsername());
         Comment comment = Comment.builder()
                 .uuid(UUID.randomUUID())
                 .text(commentDTO.getText())
                 .advert(advert)
-                .user(user)
+                .username(commentDTO.getUsername())
                 .mark(commentDTO.getMark())
                 .commentStatus(CommentStatus.PENDING)
                 .build();
@@ -60,7 +60,24 @@ public class ReviewService {
                 pending.add(comment);
         });
 
-        return new ResponseEntity<>(pending, HttpStatus.OK);
+        return new ResponseEntity<>(formDtosOutOfComments(pending), HttpStatus.OK);
+    }
+
+    private List<CommentDTO> formDtosOutOfComments(List<Comment> pending) {
+        List<CommentDTO> dtos = new ArrayList<>();
+
+        pending.forEach(comment -> {
+            CommentDTO dto = CommentDTO.builder()
+                    .text(comment.getText())
+                    .username(comment.getUsername())
+                    .mark(comment.getMark())
+                    .uuid(comment.getUuid().toString())
+                    .build();
+
+            dtos.add(dto);
+        });
+
+        return dtos;
     }
 
     public ResponseEntity<?> getCommentsForAdvert(UUID uuid) {

@@ -34,8 +34,19 @@
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
                     <mat-cell *matCellDef="let user" style="padding-left: 10%;">
-                        <button mat-mini-fab color="primary" matTooltip="Block user" id="deactivate" (click)="onBlock(user)">
-                            <i class="fa fa-toggle-off" aria-hidden="true"></i>
+                        <div class="block" *ngIf="!user.isBlocked">
+                            <button style="background-color: #FF3333;"  mat-mini-fab color="primary" matTooltip="Block user" id="deactivate" (click)="onBlock(user)">
+                                <i class="fa fa-ban" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="activate" *ngIf="user.isBlocked">
+                            <button style="background-color: #66ff66;" mat-mini-fab color="primary" matTooltip="Activate user" id="activate" (click)="onActivate(user)">
+                                <i class="fa fa-undo" aria-hidden="true"></i>
+                            </button>
+                        </div>
+
+                        <button style="margin-left: 5px;" mat-mini-fab color="primary" matTooltip="Delete user" id="delete" (click)="onDelete(user)">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </button>
                     </mat-cell>
                 </ng-container>
@@ -44,6 +55,36 @@
             </table>
             
             <h2 class="commentSection">Approve/Decline Comments</h2>
+            
+            <table mat-table [dataSource]="comments" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="text">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Comment</mat-header-cell>
+                    <mat-cell *matCellDef="let comment"> {{comment.text}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="mark">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Mark</mat-header-cell>
+                    <mat-cell *matCellDef="let comment"> {{comment.mark}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="username">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Username</mat-header-cell>
+                    <mat-cell *matCellDef="let comment"> {{comment.username}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Actions</mat-header-cell>
+                    <mat-cell *matCellDef="let comment">
+                        <button style="background-color: #66ff66;" mat-mini-fab color="primary" matTooltip="Approve" id="approve" (click)="onApprove(comment)">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                        <button style="background-color: #FF3333; margin-left: 5px;" mat-mini-fab color="primary" matTooltip="Decline comment" id="delete" (click)="onDecline(comment)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="commentColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: commentColumns;"></mat-row>
+            </table>
 
             <hr/>
             <button (click)="onLogout()" mat-raised-button color="primary" class="pull-left" id="logout" style="margin-right: 2rem;">

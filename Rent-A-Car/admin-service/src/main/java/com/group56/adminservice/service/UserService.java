@@ -69,9 +69,9 @@ public class UserService {
         return new ResponseEntity<>("Couldn't find user with provided username", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllActiveUsers() {
+    public ResponseEntity<?> getAllUsers() {
         List<User> users = userRepository.findAll();
-        List activeUsers = new ArrayList();
+        List<User> activeUsers = new ArrayList<>();
         users.forEach(user -> {
             if(user.isActive())
                 activeUsers.add(user);
@@ -95,6 +95,8 @@ public class UserService {
             userDTO.setLastName(user.getLastName());
             userDTO.setAddress(user.getAddress());
             userDTO.setEmail(user.getEmail());
+            userDTO.setActive(user.isActive());
+            userDTO.setBlocked(user.isBlocked());
             userDTO.setNumberOfAdvertsCancelled(user.getNumberOfAdvertsCancelled());
 
             usersDTO.add(userDTO);

@@ -11,11 +11,13 @@ public class MessageListener {
     private Logger logger = LoggerFactory.getLogger(MessageListener.class);
 
     public void listenForMessages(byte[] bytes){
-        logger.info("Message from queue1: " + new String(bytes, StandardCharsets.UTF_8));
-    }
+        logger.info("listenForMessages()");
+        String event = new String(bytes, StandardCharsets.UTF_8);
 
-    public void listenForDeleteMessage(byte[] bytes) {
-        logger.info("Message from queue2: " + new String(bytes, StandardCharsets.UTF_8));
+        switch (event) {
+            case "ADVERT_ADDED" : logger.info("Advert is added");
+            break;
+            default: logger.error("Unknown event occurred in posting service");
+        }
     }
-
 }

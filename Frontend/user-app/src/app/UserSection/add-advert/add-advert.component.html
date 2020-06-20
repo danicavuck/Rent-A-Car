@@ -11,7 +11,7 @@
         <div class="text-center">
             <div class="mat-display-1" style="margin-top: 30px;">Add new advert</div>
             
-            <form enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data">
                 <mat-form-field class="full-width">
                     <mat-label>City</mat-label>
                     <mat-select [(ngModel)]="data.carLocation" name="cities">
@@ -102,11 +102,12 @@
                     <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
                 </div>
 
-                <input type="file" style="display: none;" (change)="onFileSelected($event)" #fileInput multiple enctype="multipart/form-data">
+                <input type="file" style="display: none;" (change)="onFileSelected($event)" #fileInput multiple name="images" enctype="multipart/form-data">
                 <button type="button" mat-stroked-button color="accent" (click)="fileInput.click()" class="full-widrh" style="width: 100%;margin: 10px 0;">Add Images</button>
                 <br>
                 <button mat-stroked-button color="primary" id="button" (click)="onSubmit()" style="width: 100%;margin: 30px 0;"><i class="fa fa-plus"></i><span> Post Advert</span></button>
             </form>
+
 
             <hr style="margin-top: 50%;">
             <button mat-stroked-button color="accent" [routerLink]="['/user']" class="pull-left" style="margin-bottom: 20px;"><i class="fa fa-sign-out"></i><span> Sign out</span></button>

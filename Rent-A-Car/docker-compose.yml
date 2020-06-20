@@ -17,15 +17,15 @@ services:
     #depends_on:
       #- eureka-serviceregistry
 
-  #auth-service:
-    #build: ./auth-service
-    #ports:
-    #- "8081:8081"
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-      #- eureka-serviceregistry
+  auth-service:
+    build: ./auth-service
+    ports:
+    - "8081:8081"
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+    tty: true
+    depends_on:
+      - eureka-serviceregistry
 
   #image-service:
     #build: ./image-service
@@ -67,15 +67,15 @@ services:
     #depends_on:
       #- eureka-serviceregistry
 
-  renting-service:
-    build: ./renting-service
-    ports:
-    - "8086:8086"
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-    tty: true
-    depends_on:
-      - eureka-serviceregistry
+#  renting-service:
+#    build: ./renting-service
+#    ports:
+#    - "8086:8086"
+#    environment:
+#      - REGISTRY_HOST=eureka-serviceregistry
+#    tty: true
+#    depends_on:
+#      - eureka-serviceregistry
       
   #review-service:
     #build: ./review-service

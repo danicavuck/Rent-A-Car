@@ -21,8 +21,7 @@ public class Comment {
     private UUID uuid;
     private String text;
     private int mark;
-    @OneToOne
-    private User user;
+    private String username;
     @ManyToOne
     private Advert advert;
     @Enumerated(EnumType.ORDINAL)

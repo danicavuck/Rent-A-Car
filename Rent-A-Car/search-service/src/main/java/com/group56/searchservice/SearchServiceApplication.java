@@ -19,17 +19,19 @@ import java.util.List;
 @SpringBootApplication
 @EnableEurekaClient
 public class SearchServiceApplication {
+	public static final String TOPIC_EXCHANGE_NAME = "advert-exchange-topic";
 	public static final String MESSAGE_QUEUE = "advert-update";
+	public static final String BINDING = "advert.update.#";
 
 	@Bean
 	Queue queue() { return new Queue(MESSAGE_QUEUE, false); }
 
 	@Bean
-	TopicExchange topicExchange() { return new TopicExchange("advert-exchange"); }
+	TopicExchange topicExchange() { return new TopicExchange(TOPIC_EXCHANGE_NAME); }
 
 	@Bean
 	Binding binding(Queue queue, Queue anotherQueue, TopicExchange topicExchange) {
-		return BindingBuilder.bind(queue).to(topicExchange).with(MESSAGE_QUEUE);
+		return BindingBuilder.bind(queue).to(topicExchange).with(BINDING);
 	}
 
 

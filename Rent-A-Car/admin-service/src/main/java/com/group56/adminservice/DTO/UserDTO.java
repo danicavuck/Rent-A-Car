@@ -26,4 +26,6 @@ public class UserDTO {
     private String email;
     private String address;
     private int numberOfAdvertsCancelled;
+    private boolean isActive;
+    private boolean isBlocked;
 }
