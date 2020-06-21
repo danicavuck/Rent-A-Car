@@ -25,5 +25,21 @@ public class RentRequestController {
         return rentRequestService.addRentRequest(rentRequestDTO, session);
     }
 
+    @GetMapping(value = "/owner")
+    public ResponseEntity<?> getRentRequestsForOwner(HttpSession session){
+        return rentRequestService.getRentRequestsForOwner(session);
+    }
+
+
+    @PutMapping(value = "/accept")
+    public ResponseEntity<?> acceptRentRequest(Long rrId,HttpSession session){
+        return rentRequestService.acceptRentRequest(rrId,session);
+    }
+
+
+    @PutMapping(value = "/decline")
+    public ResponseEntity<?> declineRentRequest(Long rrId,HttpSession session){
+        return rentRequestService.declineRentRequest(rrId,session);
+    }
 
 }
