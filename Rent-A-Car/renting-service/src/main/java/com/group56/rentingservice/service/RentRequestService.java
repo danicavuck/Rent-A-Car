@@ -14,9 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.persistence.LockModeType;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class RentRequestService {
                 }
             for(Advert a : adverts){
                 ArrayList<Advert> adverts1 = new ArrayList<>();
-                adverts.add(a);
+                adverts1.add(a);
                 RentRequest rr = RentRequest.builder().advertList(adverts1).active(true).bundle(false).
                     rentRequestStatus(RentRequestStatus.PENDING).userId(user.getId()).build();
                 rentRequestRepository.save(rr);
@@ -106,6 +108,7 @@ public class RentRequestService {
         User user = userRepository.findUserById((Long)session.getAttribute("id"));
         if(user != null){
             RentRequest rr = rentRequestRepository.getOne(rrId);
+
             if(rr == null && !rr.getPublisherId().equals(user.getId())){
                 return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
             }
@@ -115,15 +118,16 @@ public class RentRequestService {
             rr.setTimeAccepted(LocalDateTime.now());
         }
         return new ResponseEntity<>(null,HttpStatus.UNAUTHORIZED);
-    }
+
+        }
 
     @Transactional
     //@Lock(LockModeType.PESSIMISTIC_WRITE)
     public ResponseEntity<?> declineRentRequest(Long rrId, HttpSession session){
         User user = userRepository.findUserById((Long)session.getAttribute("id"));
-        if(user != null ){
+        if(user != null){
             RentRequest rr = rentRequestRepository.getOne(rrId);
-            if(rr == null && !rr.getPublisherId().equals(user.getId())){
+            if(rr == null){
                 return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
             }
             rr.setActive(false);

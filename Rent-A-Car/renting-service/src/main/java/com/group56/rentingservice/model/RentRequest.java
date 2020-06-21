@@ -30,6 +30,7 @@ public class RentRequest {
     //advert creator
     @Column
     private Long publisherId;
+
     @Column
     private boolean accepted;
 
