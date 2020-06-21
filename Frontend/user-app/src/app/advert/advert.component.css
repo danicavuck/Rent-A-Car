@@ -1,0 +1,47 @@
+.containerForAdverts {
+    margin: 1% 0;
+    /* background-color: aquamarine; */
+}
+
+.image-container {
+    position: relative;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-container {
+    position: relative;
+    margin-top: 2%;
+}
+
+.left-coloumn {
+    margin-left: 30%;
+    margin-top: 3%;
+}
+
+.right-coloumn {
+    margin-left: 60%;
+    margin-top: -10%;
+    margin-bottom: 2%;
+}
+
+.comment {
+    width: 100%;
+    border: 1px solid #333;
+    box-shadow: 5px 5px #888888;
+    margin: 25px 0;
+}
+.text {
+    margin-bottom: 15px;
+}
+
+.marks {
+    margin-top: 5px;
+    margin-left: -80%;
+}

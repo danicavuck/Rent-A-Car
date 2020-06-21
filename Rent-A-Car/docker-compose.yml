@@ -7,15 +7,15 @@ services:
      - "8761:8761"
     tty: true
 
-  #admin-service:
-    #build: ./admin-service
-    #ports:
-    #- "8082:8082"
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-      #- eureka-serviceregistry
+#  admin-service:
+#    build: ./admin-service
+#    ports:
+#    - "8082:8082"
+#    environment:
+#      - REGISTRY_HOST=eureka-serviceregistry
+#    tty: true
+#    depends_on:
+#      - eureka-serviceregistry
 
   auth-service:
     build: ./auth-service
@@ -97,17 +97,17 @@ services:
     #depends_on:
       #- eureka-serviceregistry
 
-  #zuul:
-    #build: ./Zuul
-    #ports:
-    #- "8080:8080"
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-      #- eureka-serviceregistry
+  zuul:
+    build: ./Zuul
+    ports:
+    - "8080:8080"
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+    tty: true
+    depends_on:
+      - eureka-serviceregistry
       #- admin-service
-      #- auth-service
+      - auth-service
       #- image-service
       #- messaging-service
       #- notification-service

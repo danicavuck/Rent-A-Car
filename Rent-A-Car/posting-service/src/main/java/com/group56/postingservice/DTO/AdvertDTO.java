@@ -28,4 +28,5 @@ public class AdvertDTO {
     private boolean isRentLimited;
     private Long limitInKilometers;
     private int numberOfSeatsForChildren;
+    private String uuid;
 }

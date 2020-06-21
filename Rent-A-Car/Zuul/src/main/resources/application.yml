@@ -4,6 +4,17 @@ spring:
   application:
     name: zuul
 
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+ribbon:
+  ReadTimeout: 10000
+
 zuul:
   routes:
     auth-service:

@@ -32,6 +32,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { AddAdvertComponent } from './UserSection/add-advert/add-advert.component';
 import { ReviewComponent } from './review/review.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AdvertComponent } from './advert/advert.component';
 
 
 const appRouts: Routes = [
@@ -41,6 +42,7 @@ const appRouts: Routes = [
   { path: 'admin', component: AdminHomepageComponent },
   { path: 'agent', component: AgentHomepageComponent },
   { path: 'advert', component: AddAdvertComponent },
+  { path: 'details', component: AdvertComponent },
   { path: 'home', component: HomepageComponent },
   { path: '', redirectTo : '/home', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent }
@@ -62,7 +64,8 @@ const appRouts: Routes = [
     AgentHomepageComponent,
     HomepageComponent,
     AddAdvertComponent,
-    ReviewComponent
+    ReviewComponent,
+    AdvertComponent
   ],
   entryComponents: [
     ReviewComponent

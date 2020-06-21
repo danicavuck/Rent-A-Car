@@ -85,7 +85,7 @@ public class ReviewService {
         List<Comment> relevantComments = new ArrayList<>();
 
         comments.forEach(comment -> {
-            if(comment.getAdvert().getUuid().equals(uuid))
+            //if(comment.getAdvert().getUuid().equals(uuid))
                 relevantComments.add(comment);
         });
 
@@ -112,5 +112,33 @@ public class ReviewService {
             return new ResponseEntity<>("Comment is declined", HttpStatus.OK);
         }
         return new ResponseEntity<>("Comment is not found", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> test() {
+        Comment comment1 = Comment.builder()
+                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .text("Really satisfied with advert")
+                .mark(10)
+                .username("Skinny Pete")
+                .commentStatus(CommentStatus.PENDING)
+                .build();
+        Comment comment2 = Comment.builder()
+                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .text("Scam")
+                .mark(1)
+                .username("Troll")
+                .commentStatus(CommentStatus.PENDING)
+                .build();
+        Comment comment3 = Comment.builder()
+                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .text("Could be better")
+                .mark(5)
+                .username("Pessimist")
+                .commentStatus(CommentStatus.PENDING)
+                .build();
+        commentRepository.save(comment1);
+        commentRepository.save(comment2);
+        commentRepository.save(comment3);
+        return new ResponseEntity<>("Comments added", HttpStatus.OK);
     }
 }

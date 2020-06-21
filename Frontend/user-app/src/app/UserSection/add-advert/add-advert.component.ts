@@ -77,8 +77,6 @@ export class AddAdvertComponent implements OnInit {
   }
 
   saveImages(uuid: string) {
-    // const images = new FormData();
-    // images.append('images', JSON.stringify(this.images));
     let body = new FormData();
     body.append('images', this.images);
 

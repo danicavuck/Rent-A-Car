@@ -110,4 +110,53 @@ public class UserService {
             userRepository.save(user);
         });
     }
+
+    public ResponseEntity<?> test() {
+        User user1 = User.builder()
+                .email("user@gmail.com")
+                .username("user1")
+                .firstName("Petar")
+                .lastName("Kovacevic")
+                .address("Karadjordjeva")
+                .isActive(true)
+                .isBlocked(false)
+                .numberOfAdvertsCancelled(0)
+                .build();
+        User user2 = User.builder()
+                .email("user2@gmail.com")
+                .username("user2")
+                .firstName("Danica")
+                .lastName("Vuckovic")
+                .address("Dositejeva")
+                .isActive(true)
+                .isBlocked(false)
+                .numberOfAdvertsCancelled(0)
+                .build();
+        User user3 = User.builder()
+                .email("user3@gmail.com")
+                .username("user3")
+                .firstName("Ana")
+                .lastName("Jovanovic")
+                .address("Cara Dusana")
+                .isActive(true)
+                .isBlocked(false)
+                .numberOfAdvertsCancelled(0)
+                .build();
+        User user4 = User.builder()
+                .email("user4@gmail.com")
+                .username("user4")
+                .firstName("Sima")
+                .lastName("Petrovic")
+                .address("Novo Brdo")
+                .isActive(true)
+                .isBlocked(false)
+                .numberOfAdvertsCancelled(0)
+                .build();
+
+        userRepository.save(user1);
+        userRepository.save(user2);
+        userRepository.save(user3);
+        userRepository.save(user4);
+        return new ResponseEntity<>("Users added", HttpStatus.CREATED);
+    }
 }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-homepage',
@@ -10,6 +13,10 @@ import { Router } from '@angular/router';
 export class HomepageComponent implements OnInit {
 
   loggedIn: boolean = false;
+  adverts: Advert[];
+  imageToShow: any;
+  response: Response;
+  blob: Blob;
 
   min = Date();
   rentSpan: RentSpan = {
@@ -36,7 +43,50 @@ export class HomepageComponent implements OnInit {
   ngOnInit(): void {
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
+    this.fetchAdverts();
   }
+
+  async fetchAdverts() {
+    const apiEndpoint = 'http://localhost:8080/posting-service/advert';
+    this.http.get(apiEndpoint).subscribe(response => {
+        this.adverts = response as Array<Advert>;
+        for(let i = 0; i < this.adverts.length; i++) {
+          //this.fetchImage(this.adverts[i]);
+        }
+        console.log(this.adverts);
+    }, err => {
+      console.log('Unable to fetch adverts: ', err);
+    });
+  }
+
+  formatAdvertDate(givenDate: Date) {
+    let date = new Date(givenDate);
+    return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
+  }
+
+  // fetchImage(advert: Advert) {
+  //   let blob = this.getBlobFromBackend(advert);
+  //   setTimeout(function () {
+  //     this.createImageFromBlob(blob);   
+  //   }, 3000);
+  // }
+
+  // getBlobFromBackend(advert: Advert) {
+  //   const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + advert.uuid;
+  //   return this.http.get(apiEndpoint).pipe(
+  //     map((res: Response) => res.blob())
+  //   );
+  // }
+
+  // async createImageFromBlob(image) {
+  //   let reader = new FileReader();
+  //   reader.addEventListener("load", () => {
+  //      this.imageToShow = reader.result;
+  //   }, false);
+  //   if (image) {
+  //      reader.readAsDataURL(image);
+  //   }
+  // }
 
   onSearch() {
     this.query.rentStartingDate = this.rentSpan.rentSpan[0];
@@ -80,4 +130,23 @@ interface City {
 
 interface RentSpan {
   rentSpan: Date[];
+};
+
+interface Advert {
+  username: string;
+  price: number;
+  carLocation: string;
+  dateStart: Date;
+  dateEnd: Date;
+  brand: string;
+  model: string;
+  fuel: string;
+  transmission: string;
+  bodyType: string;
+  mileage: number;
+  isRentLimited: boolean;
+  limitInKilometers: number;
+  numberOfSeatsForChildren: number;
+  uuid: string;
+  imageURL: string;
 };

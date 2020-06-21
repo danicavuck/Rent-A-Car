@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -133,4 +135,77 @@ public class AdvertService {
         return advert;
     }
 
+    public ResponseEntity<?> testing() {
+        BodyType bodyType = BodyType.builder().isActive(true).bodyType("Sedan").build();
+        TransmissionType transmission = TransmissionType.builder().isActive(true).transmissionType("Automatic").build();
+        FuelType fuelType = FuelType.builder().fuelType("Diesel").isActive(true).build();
+        CarBrand carBrand = CarBrand.builder().isActive(true).brandName("Audi").build();
+        CarModel carModel = CarModel.builder().modelName("A6").active(true).build();
+        User user = User.builder().username("Skinny Pete").build();
+        Car car = Car.builder()
+                .bodyType(bodyType).transmissionType(transmission)
+                .fuelType(fuelType).carBrand(carBrand)
+                .carModel(carModel).limitInKilometers(100000L)
+                .mileage(10000L).numberOfSeatsForChildren(4).isRentLimited(true)
+                .build();
+
+        Advert advert = Advert.builder()
+                .car(car)
+                .carLocation("Kraljevo")
+                .rentFrom(LocalDateTime.now())
+                .rentUntil(LocalDateTime.now().plusMonths(3))
+                .price(BigDecimal.valueOf(200L))
+                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .publisher(user)
+                .build();
+
+        car.setAdvert(advert);
+        advertRepository.save(advert);
+        return new ResponseEntity<>("Advert saved", HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<?> getAdverts() {
+        List<Advert> adverts = advertRepository.findAll();
+        List<AdvertDTO> advertDTOs = mapAdvertsToDto(adverts);
+
+        return new ResponseEntity<>(advertDTOs, HttpStatus.OK);
+    }
+
+    private List<AdvertDTO> mapAdvertsToDto(List<Advert> adverts) {
+        List<AdvertDTO> dtos = new ArrayList<>();
+
+        adverts.forEach(advert -> {
+            AdvertDTO dto = AdvertDTO.builder()
+                    .dateStart(advert.getRentFrom())
+                    .dateEnd(advert.getRentUntil())
+                    .price(advert.getPrice())
+                    .uuid(advert.getUuid().toString())
+                    .bodyType(advert.getCar().getBodyType().getBodyType())
+                    .fuel(advert.getCar().getFuelType().getFuelType())
+                    .model(advert.getCar().getCarModel().getModelName())
+                    .brand(advert.getCar().getCarBrand().getBrandName())
+                    .transmission(advert.getCar().getTransmissionType().getTransmissionType())
+                    .mileage(advert.getCar().getMileage())
+                    .isRentLimited(advert.getCar().isRentLimited())
+                    .limitInKilometers(advert.getCar().getLimitInKilometers())
+                    .numberOfSeatsForChildren(advert.getCar().getNumberOfSeatsForChildren())
+                    .carLocation(advert.getCarLocation())
+                    .username(advert.getPublisher().getUsername())
+                    .build();
+
+            dtos.add(dto);
+        });
+
+        return dtos;
+    }
+
+    public ResponseEntity<?> getSingleAdvert(String uuid) {
+        Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(uuid));
+        List<Advert> adverts = new ArrayList<>();
+        adverts.add(advert);
+        if(advert != null) {
+            return new ResponseEntity<>(mapAdvertsToDto(adverts), HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Advert with provided UUID found", HttpStatus.NOT_FOUND);
+    }
 }

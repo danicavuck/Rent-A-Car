@@ -68,7 +68,7 @@ export class AdminHomepageComponent implements OnInit {
   onActivate(chosenUser: User) {
     const apiEndpoint = 'http://localhost:8080/admin-service/user/active';
     this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.ngOnInit();
+      this.getUsers();
     }, err => {
       console.log('Unable to active user', err);
     });
@@ -77,7 +77,7 @@ export class AdminHomepageComponent implements OnInit {
   onDelete(chosenUser: User) {
     const apiEndpoint = 'http://localhost:8080/admin-service/user/delete';
     this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.ngOnInit();
+      this.getUsers();
     }, err => {
       console.log('Unable to delete user', err);
     });
@@ -86,7 +86,7 @@ export class AdminHomepageComponent implements OnInit {
   onBlock(chosenUser: User) {
     const apiEndpoint = 'http://localhost:8080/admin-service/user/block';
     this.http.post(apiEndpoint, chosenUser, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.ngOnInit();
+      this.getUsers();
     }, err => {
       console.log('Unable to deactive user: ', chosenUser);
     });
@@ -95,7 +95,7 @@ export class AdminHomepageComponent implements OnInit {
   onApprove(chosenComment: Comment) {
     const apiEndpoint = 'http://localhost:8080/review-service/comment/approve';
     this.http.post(apiEndpoint, chosenComment, {responseType: 'text', withCredentials: true}).subscribe(() => {
-      this.ngOnInit();
+      this.getPendingComments();
     }, err => {
       console.log('Could not approve the comment');
     });
@@ -104,7 +104,7 @@ export class AdminHomepageComponent implements OnInit {
   onDecline(chosenComment: Comment) {
     const apiEndpoint = 'http://localhost:8080/review-service/comment/decline';
     this.http.post(apiEndpoint, chosenComment, {responseType: 'text', withCredentials: true}).subscribe(() => {
-      this.ngOnInit();
+      this.getPendingComments();
     }, err => {
       console.log('Could not decline the comment');
     });

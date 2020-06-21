@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advert</title>
+</head>
+<body>
+    <div class="containerForAdverts" *ngFor="let advert of adverts">     
+        <div class="image-container">
+            <img class="image" src="https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg" alt="Audi A6" height="450" width="700">
+            <!-- <img class="image" [src]="imageToShow" alt="Audi A6" height="150" width="200"> -->
+        </div>
+        <div class="text-container">
+            <p style="font-weight: bold;text-align: center;">{{advert.brand}} {{advert.model}}</p>
+            <div class="left-coloumn">
+                <p>Fuel type: {{advert.fuel}}</p>
+                <p>Transmission: {{advert.transmission}}</p>
+                <p>Price: {{advert.price}}$</p>
+                <p>Available from: {{formatAdvertDate(advert.dateStart)}}</p>
+                <p>Available until: {{formatAdvertDate(advert.dateEnd)}}</p>
+            </div>
+            <div class="right-coloumn">
+                <p>Location: {{advert.carLocation}}</p>
+                <p>Body Type: {{advert.bodyType}}</p>
+                <p>Mileage: {{advert.mileage}} KM</p>
+                <p *ngIf="advert.rentLimited">Rent Limited: Yes</p>
+                <p *ngIf="!advert.rentLimited">Rent Limited: No</p>
+                <p *ngIf="advert.rentLimited">Limit: {{advert.limitInKilometers}} KM</p>
+                <p>Seats for children: {{advert.numberOfSeatsForChildren}}</p>
+            </div>
+            <p style="text-align: center;">Posted by <a href="/details">{{advert.username}}</a></p>
+        </div>
+    </div>
+
+    <hr>
+    <div class="jumbotron">
+        <div class="text-center">
+            <h2>Reviews</h2>
+            <div class="comment-container">
+                <div class="comment" *ngFor="let comment of comments">
+                    <p class="text"> {{comment.text}} </p>
+                    <hr>
+                    <p class="marks"> Mark: {{comment.mark}} / 10 <br> By {{comment.username}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

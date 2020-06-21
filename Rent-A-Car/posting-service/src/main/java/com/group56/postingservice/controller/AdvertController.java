@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +28,11 @@ public class AdvertController {
 
     private AdvertService advertService;
 
+    @GetMapping
+    public ResponseEntity<?> getAdverts() {
+        return advertService.getAdverts();
+    }
+
     @Autowired
     public AdvertController(AdvertService aService){ this.advertService = aService; }
 
@@ -39,6 +45,11 @@ public class AdvertController {
     @PutMapping
     public ResponseEntity<?> updateAdvert(@RequestBody AdvertUpdateDTO advertUpdateDTO, HttpSession session){
         return advertService.updateAdvert(advertUpdateDTO, session);
+    }
+
+    @GetMapping("/{advertUUID}")
+    public ResponseEntity<?> getSingleAdvert(@PathVariable("advertUUID") String uuid) {
+        return advertService.getSingleAdvert(uuid);
     }
 
     @PostMapping("/profile-image/{advertUUID}")
@@ -61,6 +72,27 @@ public class AdvertController {
         }
 
         return new ResponseEntity<>("Image successfully saved", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/profile-image/{advertUUID}")
+    public ResponseEntity<?> getProfilePicture(@PathVariable("advertUUID") String uuid) {
+        File rootFile = new File(uploadDirectory);
+        if(rootFile != null) {
+            for (File file : rootFile.listFiles()) {
+                if(file.getName().equals(uuid)) {
+                    return new ResponseEntity<>(file, HttpStatus.OK);
+                }
+            }
+            return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>("Could not find folder", HttpStatus.NOT_FOUND);
+    }
+
+
+
+    @GetMapping("/test")
+    public ResponseEntity<?> testing() {
+        return advertService.testing();
     }
 
 }

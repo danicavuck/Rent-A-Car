@@ -35,18 +35,22 @@
             </form>
             <!-- Adverts -->
             <div class="containerForAdverts">
-                <div class="advert" *ngFor="let number of numberOfAdverts">
+                <div class="advert" *ngFor="let advert of adverts">
                     <div class="image-container">
                         <img class="image" src="https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg" alt="Audi A6" height="150" width="200">
+                        <!-- <img class="image" [src]="imageToShow" alt="Audi A6" height="150" width="200"> -->
                     </div>
                     <div class="text-container">
-                        <p>Good and affordable car</p>
-                        <p>Price: 200$</p>
-                        <p>Available from: 21/02/2020</p>
-                        <p>Available until: 15/07/2020</p>
+                        <p style="font-weight: bold;">{{advert.brand}} {{advert.model}} </p>
+                        <p>Fuel type: {{advert.fuel}}</p>
+                        <p>Transmission: {{advert.transmission}}</p>
+                        <p>Price: {{advert.price}}$</p>
+                        <p>Available from: {{formatAdvertDate(advert.dateStart)}}</p>
+                        <p>Available until: {{formatAdvertDate(advert.dateEnd)}}</p>
+                        <p>Posted by: {{advert.username}} </p>
                     </div>
                     <div class="button-container">
-                        <button mat-stroked-button color="primary"><i class="fa fa-info"></i><span> Details</span></button>
+                        <button mat-stroked-button color="primary" [routerLink]="'/details'"><i class="fa fa-info"></i><span> Details</span></button>
                     </div>
                 </div>
             </div>
