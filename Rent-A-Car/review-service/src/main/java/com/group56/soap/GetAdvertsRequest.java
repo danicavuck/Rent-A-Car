@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="advertUUID" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "username"
+    "advertUUID"
 })
-@XmlRootElement(name = "getAgentsRequest")
-public class GetAgentsRequest {
+@XmlRootElement(name = "getAdvertsRequest")
+public class GetAdvertsRequest {
 
     @XmlElement(required = true)
-    protected String username;
+    protected String advertUUID;
 
     /**
-     * Gets the value of the username property.
+     * Gets the value of the advertUUID property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getUsername() {
-        return username;
+    public String getAdvertUUID() {
+        return advertUUID;
     }
 
     /**
-     * Sets the value of the username property.
+     * Sets the value of the advertUUID property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setUsername(String value) {
-        this.username = value;
+    public void setAdvertUUID(String value) {
+        this.advertUUID = value;
     }
 
 }

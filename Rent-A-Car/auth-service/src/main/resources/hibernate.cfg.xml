@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.dialect">
+            org.hibernate.dialect.MySQLDialect
+        </property>
+
+
+        <property name="hibernate.current_session_context_class">thread</property>
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <property name="hibernate.connection.url">
+            jdbc:mysql://localhost/auth_service
+        </property>
+
+        <property name="hibernate.connection.username">
+            root
+        </property>
+        <property name="hibernate.connection.password">
+            root
+        </property>
+
+        <mapping class="com.group56.authservice.model.Admin"/>
+        <mapping class="com.group56.authservice.model.User"/>
+        <mapping class="com.group56.authservice.model.Authorization"/>
+        <mapping class="com.group56.authservice.model.Agent"/>
+
+    </session-factory>
+</hibernate-configuration>

@@ -18,6 +18,7 @@ public class Advert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private UUID uuid;
+    private boolean isActive;
     @OneToMany(mappedBy = "advert")
     private List<Mark> marks;
 }

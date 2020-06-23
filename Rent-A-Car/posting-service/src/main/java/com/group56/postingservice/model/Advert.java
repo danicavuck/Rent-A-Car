@@ -21,12 +21,15 @@ public class Advert {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private UUID uuid;
+    private String description;
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
+    private boolean isActive;
+    private boolean isSharedWithReviewService;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User publisher;

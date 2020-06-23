@@ -12,9 +12,9 @@
             <div class="mat-display-1">Leave a review for advert</div>
 
             <div class="containerForAdverts">
-                <div class="advert" *ngFor="let number of numberOfAdverts">
+                <div class="advert" *ngFor="let number of numberOfAdverts; index as i">
                     <div class="image-container">
-                        <img class="image" src="https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg" alt="Audi A6" height="150" width="200">
+                        <img class="image" [src]="imageSources[i]" alt="Audi A6" height="150" width="200">
                     </div>
                     <div class="text-container">
                         <p>Good and affordable car</p>

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class AdvertDTO {
+    private String description;
     private BigDecimal price;
     private String username;
     private String carLocation;

@@ -12,6 +12,7 @@ import { ReviewComponent } from 'src/app/review/review.component';
 export class UserHomepageComponent implements OnInit {
 
   numberOfAdverts = [1, 2];
+  imageSources = ['https://www.magazinauto.com/wp-content/uploads/2019/09/IMG_1515.jpg', 'https://lakodokola.com/assets/resources/images/posts/40734/5.jpg'];
 
   constructor(private http: HttpClient, private router: Router, public dialog: MatDialog) { }
 

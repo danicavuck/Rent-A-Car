@@ -8,6 +8,8 @@
 
 package com.group56.soap;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -25,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="adverts" type="{http://group56.com/soap-package}advertXML" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "username"
+    "adverts"
 })
-@XmlRootElement(name = "getAgentsRequest")
-public class GetAgentsRequest {
+@XmlRootElement(name = "getAdvertsResponse")
+public class GetAdvertsResponse {
 
     @XmlElement(required = true)
-    protected String username;
+    protected List<AdvertXML> adverts;
 
     /**
-     * Gets the value of the username property.
+     * Gets the value of the adverts property.
      * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * Sets the value of the username property.
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the adverts property.
      * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getAdverts().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link AdvertXML }
+     * 
+     * 
      */
-    public void setUsername(String value) {
-        this.username = value;
+    public List<AdvertXML> getAdverts() {
+        if (adverts == null) {
+            adverts = new ArrayList<AdvertXML>();
+        }
+        return this.adverts;
     }
 
 }

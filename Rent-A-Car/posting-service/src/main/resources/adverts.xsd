@@ -1,0 +1,29 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://group56.com/soap-package"
+           targetNamespace="http://group56.com/soap-package"
+           elementFormDefault="qualified">
+
+    <xs:element name="getAdvertsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="advertUUID" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAdvertsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="adverts" maxOccurs="unbounded" type="tns:advertXML"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="advertXML">
+        <xs:sequence>
+            <xs:element name="uuid" type="xs:string"/>
+            <xs:element name="isActive" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

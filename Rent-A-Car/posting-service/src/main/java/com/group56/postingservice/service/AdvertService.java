@@ -48,13 +48,14 @@ public class AdvertService {
     }
 
     public ResponseEntity<?> addAdvert(AdvertDTO advertDTO){
-        //User user = userRepository.findUserByUsername(advertDTO.getUsername());
-        User user = User.builder().username("stud_user").isBlocked(false).isActive(true).email("user123").build();
+        User user = userRepository.findUserByUsername(advertDTO.getUsername());
         if(user != null) {
             if(user.getNumberOfAdvertsPosted() < 3 && !user.isBlocked()){
                 Advert advert = makeAdvertFromDTO(advertDTO);
                 user.setNumberOfAdvertsPosted(user.getNumberOfAdvertsPosted() + 1);
                 advert.setPublisher(user);
+                advert.setSharedWithReviewService(false);
+                advert.setActive(true);
                 advertRepository.save(advert);
 
                 String msg = "ADVERT_ADDED";
@@ -128,6 +129,7 @@ public class AdvertService {
         advert.setRentUntil(advertDTO.getDateEnd());
         advert.setPrice(advertDTO.getPrice());
         advert.setUuid(UUID.randomUUID());
+        advert.setDescription(advertDTO.getDescription());
 
         car.setAdvert(advert);
         carRepository.save(car);
@@ -207,5 +209,20 @@ public class AdvertService {
             return new ResponseEntity<>(mapAdvertsToDto(adverts), HttpStatus.OK);
         }
         return new ResponseEntity<>("Advert with provided UUID found", HttpStatus.NOT_FOUND);
+    }
+
+    public List<Advert> getNewlyCreatedAdverts() {
+        List<Advert> adverts = advertRepository.findAll();
+        List<Advert> newAdverts = new ArrayList<>();
+
+        adverts.forEach(advert -> {
+            if(!advert.isSharedWithReviewService()) {
+                advert.setSharedWithReviewService(true);
+                advertRepository.save(advert);
+                newAdverts.add(advert);
+            }
+        });
+
+        return newAdverts;
     }
 }

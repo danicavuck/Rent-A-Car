@@ -12,6 +12,12 @@
             <div class="mat-display-1" style="margin-top: 30px;">Add new advert</div>
             
             <form method="post" enctype="multipart/form-data">
+
+                <mat-form-field class="full-width">
+                    <mat-label>Description</mat-label>
+                    <textarea class="input" matInput required type="text" name="description" id="description" [(ngModel)]="data.description"></textarea>
+                  </mat-form-field>
+
                 <mat-form-field class="full-width">
                     <mat-label>City</mat-label>
                     <mat-select [(ngModel)]="data.carLocation" name="cities">

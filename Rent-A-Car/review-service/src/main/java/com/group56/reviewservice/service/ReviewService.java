@@ -8,6 +8,8 @@ import com.group56.reviewservice.model.User;
 import com.group56.reviewservice.repository.AdvertRepository;
 import com.group56.reviewservice.repository.CommentRepository;
 import com.group56.reviewservice.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class ReviewService {
     private CommentRepository commentRepository;
     private AdvertRepository advertRepository;
     private UserRepository userRepository;
+    private Logger logger = LoggerFactory.getLogger(ReviewService.class);
 
     @Autowired
     public ReviewService(CommentRepository commentRepository, AdvertRepository advertRepository, UserRepository userRepository) {
@@ -38,7 +41,11 @@ public class ReviewService {
 
     private Comment formModelOutOfDTO(CommentDTO commentDTO) {
         Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(commentDTO.getUuid()));
-        //User user = userRepository.findUserByUsername(commentDTO.getUsername());
+        User user = userRepository.findUserByUsername(commentDTO.getUsername());
+        if(user == null) {
+            logger.error("User with username " + commentDTO.getUsername() + " not found");
+        }
+
         Comment comment = Comment.builder()
                 .uuid(UUID.randomUUID())
                 .text(commentDTO.getText())
@@ -116,7 +123,7 @@ public class ReviewService {
 
     public ResponseEntity<?> test() {
         Comment comment1 = Comment.builder()
-                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .uuid(UUID.fromString("15fb7c38-d686-44fc-8c9c-156161e5697f"))
                 .text("Really satisfied with advert")
                 .mark(10)
                 .username("Skinny Pete")
@@ -130,7 +137,7 @@ public class ReviewService {
                 .commentStatus(CommentStatus.PENDING)
                 .build();
         Comment comment3 = Comment.builder()
-                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+                .uuid(UUID.fromString("95fb7c38-d686-44fc-8c9c-156161e5697f"))
                 .text("Could be better")
                 .mark(5)
                 .username("Pessimist")

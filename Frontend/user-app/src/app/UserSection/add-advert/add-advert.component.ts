@@ -35,6 +35,7 @@ export class AddAdvertComponent implements OnInit {
   };
 
   data: Advert = {
+    description: '',
     price: 0,
     username: '',
     carLocation: '',
@@ -141,6 +142,7 @@ export class AddAdvertComponent implements OnInit {
 }
 
 export interface Advert {
+  description: string;
   price: number;
   username: string;
   carLocation: string;

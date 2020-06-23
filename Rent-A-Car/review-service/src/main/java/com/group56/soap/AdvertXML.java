@@ -11,21 +11,21 @@ package com.group56.soap;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for advertXML complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType&gt;
+ * &lt;complexType name="advertXML"&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="username" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="uuid" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="isActive" type="{http://www.w3.org/2001/XMLSchema}boolean"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -35,37 +35,54 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "username"
+@XmlType(name = "advertXML", propOrder = {
+    "uuid",
+    "isActive"
 })
-@XmlRootElement(name = "getAgentsRequest")
-public class GetAgentsRequest {
+public class AdvertXML {
 
     @XmlElement(required = true)
-    protected String username;
+    protected String uuid;
+    protected boolean isActive;
 
     /**
-     * Gets the value of the username property.
+     * Gets the value of the uuid property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getUsername() {
-        return username;
+    public String getUuid() {
+        return uuid;
     }
 
     /**
-     * Sets the value of the username property.
+     * Sets the value of the uuid property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setUsername(String value) {
-        this.username = value;
+    public void setUuid(String value) {
+        this.uuid = value;
+    }
+
+    /**
+     * Gets the value of the isActive property.
+     * 
+     */
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    /**
+     * Sets the value of the isActive property.
+     * 
+     */
+    public void setIsActive(boolean value) {
+        this.isActive = value;
     }
 
 }
