@@ -23,7 +23,7 @@ public class Advert {
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
 
-    @OneToOne
+    @ManyToOne
     private User publisher;
     @OneToOne
     private Car car;
