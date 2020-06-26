@@ -15,10 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Base64;
 
 @Controller
 @RequestMapping("/posting-service/advert")
@@ -52,6 +55,11 @@ public class AdvertController {
         return advertService.getSingleAdvert(uuid);
     }
 
+    @GetMapping("/search-service")
+    public ResponseEntity<?> getAdvertsForSearchService() {
+        return advertService.getAdvertsForSearchService();
+    }
+
     @PostMapping("/profile-image/{advertUUID}")
     public ResponseEntity<?> saveAdvertImages(Model model,
                                               @RequestParam("images") MultipartFile[] images,
@@ -79,8 +87,20 @@ public class AdvertController {
         File rootFile = new File(uploadDirectory);
         if(rootFile != null) {
             for (File file : rootFile.listFiles()) {
-                if(file.getName().equals(uuid)) {
-                    return new ResponseEntity<>(file, HttpStatus.OK);
+                if(file.getName().equals(uuid + ".png")) {
+                    try {
+                        String extension = "png";
+                        FileInputStream iStream = new FileInputStream(file);
+                        byte[] bytes = new byte[(int) file.length()];
+                        iStream.read(bytes);
+                        String encodeBase64 = Base64.getEncoder().encodeToString(bytes);
+                        String finalString = "data:image/" + extension + ";base64," + encodeBase64 ;
+                        iStream.close();
+                        return new ResponseEntity<>(finalString, HttpStatus.OK);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        logger.error("Exception occurred");
+                    }
                 }
             }
             return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);

@@ -14,7 +14,7 @@ export class HomepageComponent implements OnInit {
 
   loggedIn: boolean = false;
   adverts: Advert[];
-  imageToShow: any;
+  imageURL: string;
   response: Response;
   blob: Blob;
 
@@ -44,15 +44,13 @@ export class HomepageComponent implements OnInit {
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
     this.fetchAdverts();
+    this.getImageURL('75fb7c38d68644fc8c9c156161e5697f');
   }
 
   async fetchAdverts() {
     const apiEndpoint = 'http://localhost:8080/posting-service/advert';
     this.http.get(apiEndpoint).subscribe(response => {
         this.adverts = response as Array<Advert>;
-        for(let i = 0; i < this.adverts.length; i++) {
-          //this.fetchImage(this.adverts[i]);
-        }
         console.log(this.adverts);
     }, err => {
       console.log('Unable to fetch adverts: ', err);
@@ -64,29 +62,15 @@ export class HomepageComponent implements OnInit {
     return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
   }
 
-  // fetchImage(advert: Advert) {
-  //   let blob = this.getBlobFromBackend(advert);
-  //   setTimeout(function () {
-  //     this.createImageFromBlob(blob);   
-  //   }, 3000);
-  // }
 
-  // getBlobFromBackend(advert: Advert) {
-  //   const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + advert.uuid;
-  //   return this.http.get(apiEndpoint).pipe(
-  //     map((res: Response) => res.blob())
-  //   );
-  // }
-
-  // async createImageFromBlob(image) {
-  //   let reader = new FileReader();
-  //   reader.addEventListener("load", () => {
-  //      this.imageToShow = reader.result;
-  //   }, false);
-  //   if (image) {
-  //      reader.readAsDataURL(image);
-  //   }
-  // }
+  async getImageURL(advertUuid: string) {
+    const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + advertUuid;
+    this.http.get(apiEndpoint, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      this.imageURL = response;
+    }, err => {
+      console.log('Error fetching image URL', err);
+    });
+  }
 
   onSearch() {
     this.query.rentStartingDate = this.rentSpan.rentSpan[0];

@@ -1,41 +1,42 @@
-package com.group56.postingservice.model;
+package com.group56.postingservice.DTO;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.group56.postingservice.model.Car;
+import com.group56.postingservice.model.Comment;
+import com.group56.postingservice.model.Mark;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-@ToString
-public class Advert {
+@JsonIgnoreProperties({"car"})
+public class AdvertSearchDTO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID uuid;
-    private String description;
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
+    private LocalDateTime availableForRentFrom;
+    private LocalDateTime availableForRentUntil;
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
-    private boolean isActive;
-    private boolean isSharedWithReviewService;
-    private boolean isSharedWithSearchService;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
-    private User publisher;
+    private String publisher;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
     private Car car;
 
     @OneToMany(mappedBy = "advert")
@@ -43,7 +44,4 @@ public class Advert {
 
     @OneToMany(mappedBy = "advert")
     private List<Comment> comments = new ArrayList<>();
-
-    @ManyToMany
-    private List<RentRequest> rentRequests = new ArrayList<>();
 }

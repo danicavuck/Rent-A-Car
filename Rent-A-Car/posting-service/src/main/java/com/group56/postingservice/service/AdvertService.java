@@ -1,6 +1,7 @@
 package com.group56.postingservice.service;
 
 import com.group56.postingservice.DTO.AdvertDTO;
+import com.group56.postingservice.DTO.AdvertSearchDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
@@ -55,6 +56,7 @@ public class AdvertService {
                 user.setNumberOfAdvertsPosted(user.getNumberOfAdvertsPosted() + 1);
                 advert.setPublisher(user);
                 advert.setSharedWithReviewService(false);
+                advert.setSharedWithSearchService(false);
                 advert.setActive(true);
                 advertRepository.save(advert);
 
@@ -224,5 +226,41 @@ public class AdvertService {
         });
 
         return newAdverts;
+    }
+
+    public ResponseEntity<?> getAdvertsForSearchService() {
+        List<Advert> allAdverts = advertRepository.findAll();
+        List<Advert> notShared = new ArrayList<>();
+
+        allAdverts.forEach(advert ->  {
+            if(!advert.isSharedWithSearchService()) {
+                advert.setSharedWithSearchService(true);
+                advertRepository.save(advert);
+                notShared.add(advert);
+            }
+        });
+
+        return new ResponseEntity<>(advertSearchDTO(allAdverts), HttpStatus.OK);
+    }
+
+    private List<AdvertSearchDTO> advertSearchDTO(List<Advert> allAdverts) {
+        List<AdvertSearchDTO> dtos = new ArrayList<>();
+        allAdverts.forEach(data -> {
+            AdvertSearchDTO dto = AdvertSearchDTO.builder()
+                    .carLocation(data.getCarLocation())
+                    .rentFrom(data.getRentFrom())
+                    .rentUntil(data.getRentUntil())
+                    .isProtectionAvailable(data.isProtectionAvailable())
+                    .protectionPrice(data.getProtectionPrice())
+                    .price(data.getPrice())
+                    .publisher(data.getPublisher().getUsername())
+                    .car(data.getCar())
+                    .marks(data.getMarks())
+                    .comments(data.getComments())
+                    .build();
+
+            dtos.add(dto);
+        });
+        return dtos;
     }
 }
