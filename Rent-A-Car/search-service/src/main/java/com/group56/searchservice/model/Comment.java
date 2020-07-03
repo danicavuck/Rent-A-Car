@@ -4,6 +4,7 @@ import com.group56.searchservice.enumeration.CommentStatus;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -12,9 +13,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Comment {
+public class Comment implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")

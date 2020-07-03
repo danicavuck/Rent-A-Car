@@ -46,8 +46,8 @@ public class AdvertController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAdvert(@RequestBody AdvertUpdateDTO advertUpdateDTO, HttpSession session){
-        return advertService.updateAdvert(advertUpdateDTO, session);
+    public ResponseEntity<?> updateAdvert(@RequestBody AdvertUpdateDTO advertUpdateDTO){
+        return advertService.updateAdvert(advertUpdateDTO);
     }
 
     @GetMapping("/{advertUUID}")
@@ -59,55 +59,6 @@ public class AdvertController {
     public ResponseEntity<?> getAdvertsForSearchService() {
         return advertService.getAdvertsForSearchService();
     }
-
-    @PostMapping("/profile-image/{advertUUID}")
-    public ResponseEntity<?> saveAdvertImages(Model model,
-                                              @RequestParam("images") MultipartFile[] images,
-                                              @PathVariable("advertUUID") String uuid) {
-        StringBuilder imageNames = new StringBuilder();
-        logger.info("Image saved at location: " + uploadDirectory);
-        for(MultipartFile image : images) {
-            //Path path = Paths.get(uploadDirectory, image.getOriginalFilename());
-            Path path = Paths.get(uploadDirectory, uuid);
-            imageNames.append(image.getOriginalFilename());
-            try {
-                Files.write(path, image.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-                logger.error("Unable to save image to specified path");
-                return new ResponseEntity<>("Server error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>("Image successfully saved", HttpStatus.CREATED);
-    }
-
-    @GetMapping("/profile-image/{advertUUID}")
-    public ResponseEntity<?> getProfilePicture(@PathVariable("advertUUID") String uuid) {
-        File rootFile = new File(uploadDirectory);
-        if(rootFile != null) {
-            for (File file : rootFile.listFiles()) {
-                if(file.getName().equals(uuid + ".png")) {
-                    try {
-                        String extension = "png";
-                        FileInputStream iStream = new FileInputStream(file);
-                        byte[] bytes = new byte[(int) file.length()];
-                        iStream.read(bytes);
-                        String encodeBase64 = Base64.getEncoder().encodeToString(bytes);
-                        String finalString = "data:image/" + extension + ";base64," + encodeBase64 ;
-                        iStream.close();
-                        return new ResponseEntity<>(finalString, HttpStatus.OK);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        logger.error("Exception occurred");
-                    }
-                }
-            }
-            return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>("Could not find folder", HttpStatus.NOT_FOUND);
-    }
-
 
 
     @GetMapping("/test")

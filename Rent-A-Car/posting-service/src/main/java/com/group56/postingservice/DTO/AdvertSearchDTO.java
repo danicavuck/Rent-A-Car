@@ -20,7 +20,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@JsonIgnoreProperties({"car"})
 public class AdvertSearchDTO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +33,7 @@ public class AdvertSearchDTO implements Serializable {
     private BigDecimal protectionPrice;
     private BigDecimal price;
     private String publisher;
+    private String uuid;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")

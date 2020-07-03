@@ -1,4 +1,4 @@
-package com.group56.searchservice.model;
+package com.group56.searchservice.DTO;
 
 import lombok.*;
 
@@ -6,19 +6,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Entity
-@Builder
-@ToString
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User implements Serializable {
+@Builder
+@ToString
+public class AdvertFilterDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
+    private long id;
+    private String city;
+    private LocalDateTime from;
+    private LocalDateTime until;
 }
-

@@ -1,5 +1,7 @@
 package com.group56.postingservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertSearchDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
@@ -16,7 +18,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AdvertService {
@@ -70,8 +74,9 @@ public class AdvertService {
         return new ResponseEntity<>("User not found!" , HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> updateAdvert(AdvertUpdateDTO advertUpdateDTO, HttpSession session){
-        User user = userRepository.findUserById((Long) session.getAttribute("id"));
+
+    public ResponseEntity<?> updateAdvert(AdvertUpdateDTO advertUpdateDTO){
+        User user = userRepository.findUserByUsername(advertUpdateDTO.getUsername());
         if(user != null) {
                 Advert advert = advertRepository.findAdvertById(advertUpdateDTO.getId());
                 if(advert.getPublisher() == user) {
@@ -240,16 +245,18 @@ public class AdvertService {
             }
         });
 
-        return new ResponseEntity<>(advertSearchDTO(allAdverts), HttpStatus.OK);
+        return new ResponseEntity<>(advertSearchDTO(notShared), HttpStatus.OK);
     }
 
     private List<AdvertSearchDTO> advertSearchDTO(List<Advert> allAdverts) {
         List<AdvertSearchDTO> dtos = new ArrayList<>();
         allAdverts.forEach(data -> {
+            Long randomId = Long.valueOf(ThreadLocalRandom.current().nextInt(1, 100000 + 1));
             AdvertSearchDTO dto = AdvertSearchDTO.builder()
+                    .id(randomId)
                     .carLocation(data.getCarLocation())
-                    .rentFrom(data.getRentFrom())
-                    .rentUntil(data.getRentUntil())
+                    .availableForRentFrom(data.getRentFrom())
+                    .availableForRentUntil(data.getRentUntil())
                     .isProtectionAvailable(data.isProtectionAvailable())
                     .protectionPrice(data.getProtectionPrice())
                     .price(data.getPrice())
@@ -257,6 +264,7 @@ public class AdvertService {
                     .car(data.getCar())
                     .marks(data.getMarks())
                     .comments(data.getComments())
+                    .uuid(data.getUuid().toString())
                     .build();
 
             dtos.add(dto);

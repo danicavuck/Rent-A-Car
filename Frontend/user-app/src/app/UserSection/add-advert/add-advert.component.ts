@@ -81,7 +81,7 @@ export class AddAdvertComponent implements OnInit {
     let body = new FormData();
     body.append('images', this.images);
 
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + uuid;
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + uuid;
     this.http.post(apiEndpoint, body, {responseType: 'text', withCredentials: true}).subscribe(() => {
       console.log('Image posted');
     }, err => {

@@ -1,5 +1,6 @@
 package com.group56.searchservice.controller;
 
+import com.group56.searchservice.DTO.AdvertFilterDTO;
 import com.group56.searchservice.DTO.AdvertQueryDTO;
 import com.group56.searchservice.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@CrossOrigin
 @RequestMapping("/search-service")
 public class SearchController {
     private SearchService searchService;
@@ -23,8 +23,18 @@ public class SearchController {
         return searchService.findRelevantAdverts(advertDTO);
     }
 
-    @GetMapping("/{advertId}")
-    public ResponseEntity<?> findSingleAdvert(@PathVariable Long advertId) {
-        return searchService.findAdvertById(advertId);
+    @GetMapping("/advert")
+    public ResponseEntity<?> getAllAdverts() {
+        return searchService.getActiveAdverts();
+    }
+
+    @GetMapping("/advert/{advertUUID}")
+    public ResponseEntity<?> findSingleAdvert(@PathVariable("advertUUID") String advertUUID) {
+        return searchService.findAdvertByUUID(advertUUID);
+    }
+
+    @PostMapping("/filter")
+    public ResponseEntity<?> filterAdverts(@RequestBody AdvertFilterDTO advertDTO) {
+        return searchService.filterAdverts(advertDTO);
     }
 }

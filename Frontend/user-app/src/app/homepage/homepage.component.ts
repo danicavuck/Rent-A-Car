@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -11,12 +9,10 @@ import { map, catchError } from 'rxjs/operators';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-
   loggedIn: boolean = false;
   adverts: Advert[];
   imageURL: string;
   response: Response;
-  blob: Blob;
 
   min = Date();
   rentSpan: RentSpan = {
@@ -34,8 +30,8 @@ export class HomepageComponent implements OnInit {
 
   query: Query = {
     city: '',
-    rentStartingDate: new Date(),
-    rentEndingDate: new Date()
+    from: new Date(),
+    until: new Date()
   };
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -44,17 +40,23 @@ export class HomepageComponent implements OnInit {
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
     this.fetchAdverts();
-    this.getImageURL('75fb7c38d68644fc8c9c156161e5697f');
   }
 
   async fetchAdverts() {
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert';
+    const apiEndpoint = 'http://localhost:8080/search-service/advert';
     this.http.get(apiEndpoint).subscribe(response => {
         this.adverts = response as Array<Advert>;
         console.log(this.adverts);
+        this.assignImagesToAdverts(this.adverts);
     }, err => {
       console.log('Unable to fetch adverts: ', err);
     });
+  }
+
+  async assignImagesToAdverts(adverts : Array<Advert>) {
+    for(let i=0; i<adverts.length; i++) {
+      this.getImageURL(this.adverts[i]);
+    }
   }
 
   formatAdvertDate(givenDate: Date) {
@@ -62,26 +64,27 @@ export class HomepageComponent implements OnInit {
     return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
   }
 
-
-  async getImageURL(advertUuid: string) {
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + advertUuid;
+  async getImageURL(advert: Advert) {
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + advert.uuid;
     this.http.get(apiEndpoint, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.imageURL = response;
+      advert.imageURL = response as string;
     }, err => {
       console.log('Error fetching image URL', err);
     });
   }
 
   onSearch() {
-    this.query.rentStartingDate = this.rentSpan.rentSpan[0];
-    this.query.rentEndingDate = this.rentSpan.rentSpan[1];
-
-    if(this.validateInput()) {
-      console.log(this.query);
-    } else {
-      alert('Invalid query');
-      console.log(this.query);
-    }
+    this.query.from = this.rentSpan.rentSpan[0];
+    this.query.until = this.rentSpan.rentSpan[1];
+    
+    const apiEndpoint = 'http://localhost:8080/search-service/filter';
+    this.http.post(apiEndpoint, this.query).subscribe(res => {
+      this.adverts = res as Array<Advert>;
+      this.assignImagesToAdverts(this.adverts);
+    }, err => {
+      console.log('Error filtering adverts', err);
+    });
+    
   }
 
   onLogout() {
@@ -96,15 +99,20 @@ export class HomepageComponent implements OnInit {
   }
 
   validateInput() {
-    return this.query.city.length > 0 && this.query.rentEndingDate > this.query.rentStartingDate && this.query.rentStartingDate > new Date();
+    return this.query.city.length > 0 && this.query.until > this.query.from && this.query.from > new Date();
+  }
+
+  routToDetails(advert: Advert) {
+    localStorage.setItem('advertUUID', advert.uuid);
+    this.router.navigateByUrl("/details");
   }
 
 }
 
 export interface Query {
   city: string;
-  rentStartingDate: Date;
-  rentEndingDate: Date;
+  from: Date;
+  until: Date;
 };
 
 interface City {
@@ -116,12 +124,12 @@ interface RentSpan {
   rentSpan: Date[];
 };
 
-interface Advert {
-  username: string;
+export interface Advert {
+  publisher: string;
   price: number;
   carLocation: string;
-  dateStart: Date;
-  dateEnd: Date;
+  availableForRentFrom: Date;
+  availableForRentUntil: Date;
   brand: string;
   model: string;
   fuel: string;

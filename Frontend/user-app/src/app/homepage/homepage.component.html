@@ -37,19 +37,19 @@
             <div class="containerForAdverts">
                 <div class="advert" *ngFor="let advert of adverts">
                     <div class="image-container">
-                        <img class="image" [src]="imageURL" alt="Car photo" height="150" width="200">
+                        <img class="image" [src]="advert.imageURL" alt="Car photo" height="150" width="200">
                     </div>
                     <div class="text-container">
                         <p style="font-weight: bold;">{{advert.brand}} {{advert.model}} </p>
                         <p>Fuel type: {{advert.fuel}}</p>
                         <p>Transmission: {{advert.transmission}}</p>
                         <p>Price: {{advert.price}}$</p>
-                        <p>Available from: {{formatAdvertDate(advert.dateStart)}}</p>
-                        <p>Available until: {{formatAdvertDate(advert.dateEnd)}}</p>
-                        <p>Posted by: {{advert.username}} </p>
+                        <p>Available from: {{formatAdvertDate(advert.availableForRentFrom)}}</p>
+                        <p>Available until: {{formatAdvertDate(advert.availableForRentUntil)}}</p>
+                        <p>Posted by: {{advert.publisher}} </p>
                     </div>
                     <div class="button-container">
-                        <button mat-stroked-button color="primary" [routerLink]="'/details'"><i class="fa fa-info"></i><span> Details</span></button>
+                        <button mat-stroked-button color="primary" (click)="routToDetails(advert)"><i class="fa fa-info"></i><span> Details</span></button>
                     </div>
                 </div>
             </div>

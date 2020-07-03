@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Builder
 @ToString
-@JsonIgnoreProperties({"advert"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "advert"})
 public class Car implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
