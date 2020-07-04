@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
   loggedIn: boolean = false;
+  noAdverts: boolean = false;
   adverts: Advert[];
   imageURL: string;
   response: Response;
@@ -46,7 +47,11 @@ export class HomepageComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/search-service/advert';
     this.http.get(apiEndpoint).subscribe(response => {
         this.adverts = response as Array<Advert>;
-        console.log(this.adverts);
+        if(this.adverts.length === 0) {
+          this.noAdverts = true;
+        } else {
+          this.noAdverts = false;
+        }
         this.assignImagesToAdverts(this.adverts);
     }, err => {
       console.log('Unable to fetch adverts: ', err);
@@ -81,6 +86,11 @@ export class HomepageComponent implements OnInit {
     this.http.post(apiEndpoint, this.query).subscribe(res => {
       this.adverts = res as Array<Advert>;
       this.assignImagesToAdverts(this.adverts);
+      if(this.adverts.length === 0) {
+        this.noAdverts = true;
+      } else {
+        this.noAdverts = false;
+      }
     }, err => {
       console.log('Error filtering adverts', err);
     });

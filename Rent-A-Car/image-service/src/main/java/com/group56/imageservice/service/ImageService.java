@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -52,6 +53,7 @@ public class ImageService {
                         String encodeBase64 = Base64.getEncoder().encodeToString(bytes);
                         String finalString = "data:image/" + extension + ";base64," + encodeBase64 ;
                         iStream.close();
+
                         return new ResponseEntity<>(finalString, HttpStatus.OK);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -61,6 +63,31 @@ public class ImageService {
             }
             return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>("Could not find folder", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> getDefaultUserProfileImage() {
+        File rootFile = new File(uploadDirectory);
+        if(rootFile != null) {
+            for(File file : rootFile.listFiles()) {
+                if(file.getName().equals("default-user-image.png")) {
+                    try {
+                        FileInputStream inputStream = new FileInputStream(file);
+                        byte[] bytes = new byte[(int) file.length()];
+                        inputStream.read(bytes);
+                        String encodeBase64 = Base64.getEncoder().encodeToString(bytes);
+                        String finalString = "data:image/png;base64," + encodeBase64;
+                        inputStream.close();
+
+                        return new ResponseEntity<>(finalString, HttpStatus.OK);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);
+        }
+
         return new ResponseEntity<>("Could not find folder", HttpStatus.NOT_FOUND);
     }
 }

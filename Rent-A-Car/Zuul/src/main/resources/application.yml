@@ -35,3 +35,6 @@ zuul:
     image-service:
       path: /image-service/**
       url: http://localhost:8089/image-service/
+    messaging-service:
+      path: /messaging-service/**
+      url: http://localhost:8083/messaging-service/

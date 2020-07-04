@@ -118,4 +118,18 @@ public class SearchService {
                 .uuid(advert.getUuid())
                 .build();
     }
+
+    public ResponseEntity<?> getAdvertsForSpecificUser(String username) {
+        List<Advert> activeAdverts = advertRepository.findAdvertByIsActive(true);
+        if(activeAdverts == null)
+            return new ResponseEntity<>(null, HttpStatus.OK);
+
+        List<Advert> userAdverts = activeAdverts.stream().filter(advert -> advert.getPublisher().equals(username)).collect(Collectors.toList());
+        List<AdvertPreviewDTO> previewDTOS = new ArrayList<>();
+        for (Advert advert: userAdverts) {
+            previewDTOS.add(transformAdvertToPreviewDto(advert));
+        }
+
+        return new ResponseEntity<>(previewDTOS, HttpStatus.OK);
+    }
 }

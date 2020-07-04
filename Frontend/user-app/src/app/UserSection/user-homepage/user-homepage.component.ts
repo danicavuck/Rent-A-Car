@@ -30,7 +30,10 @@ export class UserHomepageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
+  }
 
+  async openInbox() {
+    this.router.navigateByUrl("/inbox");
   }
 
   onLogout() {

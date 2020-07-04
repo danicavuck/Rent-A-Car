@@ -34,7 +34,10 @@
                 </div>
             </form>
             <!-- Adverts -->
-            <div class="containerForAdverts">
+            <div class="emptyAdverts" *ngIf="noAdverts">
+                <h2 style="margin: 20% 0;">No adverts that satisfy provided criteria</h2>
+            </div>
+            <div class="containerForAdverts" *ngIf="!noAdverts">
                 <div class="advert" *ngFor="let advert of adverts">
                     <div class="image-container">
                         <img class="image" [src]="advert.imageURL" alt="Car photo" height="150" width="200">

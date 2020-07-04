@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Profile</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="text-center">
+            <img [src]="avatarURL" alt="Avatar" height="400" width="400">
+            <div class="user-info">
+                <p> {{user.firstName}} {{user.lastName}} </p>
+                <p> Email: {{user.email}} </p>
+                <p> Username: {{user.username}} </p>
+                <p> Address: {{user.address}} </p>
+                <p> Number of adverts cancelled: {{user.numberOfAdvertsCancelled}} </p>
+                <button (click)="openDialog()" id="messageButton" mat-raised-button color="primary"> <span><i class="fa fa-envelope"></i></span> Send a message</button>
+            </div>
+            <div class="adverts" *ngIf="!noAdverts">
+                <h2>Adverts posted by {{user.username}} </h2>
+                <div class="containerForAdverts">
+                    <div class="advert" *ngFor="let advert of adverts">
+                        <div class="image-container">
+                            <img class="image" [src]="advert.imageURL" alt="Car photo" height="150" width="200">
+                        </div>
+                        <div class="text-container">
+                            <p style="font-weight: bold;">{{advert.brand}} {{advert.model}} </p>
+                            <p>Fuel type: {{advert.fuel}}</p>
+                            <p>Transmission: {{advert.transmission}}</p>
+                            <p>Price: {{advert.price}}$</p>
+                            <p>Available from: {{formatAdvertDate(advert.availableForRentFrom)}}</p>
+                            <p>Available until: {{formatAdvertDate(advert.availableForRentUntil)}}</p>
+                            <p>Posted by: {{advert.publisher}} </p>
+                        </div>
+                        <div class="button-container">
+                            <button mat-stroked-button color="primary" (click)="routToDetails(advert)"><i class="fa fa-info"></i><span> Details</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

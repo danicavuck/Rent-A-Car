@@ -28,6 +28,11 @@ public class SearchController {
         return searchService.getActiveAdverts();
     }
 
+    @GetMapping("/advert/user/{username}")
+    public ResponseEntity<?> getAdvertsForSpecificUser(@PathVariable("username") String username) {
+        return searchService.getAdvertsForSpecificUser(username);
+    }
+
     @GetMapping("/advert/{advertUUID}")
     public ResponseEntity<?> findSingleAdvert(@PathVariable("advertUUID") String advertUUID) {
         return searchService.findAdvertByUUID(advertUUID);

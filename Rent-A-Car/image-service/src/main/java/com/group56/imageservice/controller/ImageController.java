@@ -30,4 +30,9 @@ public class ImageController {
     public ResponseEntity<?> getAProfilePhoto(@PathVariable("advertUUID") String uuid) {
         return imageService.getAProfilePhoto(uuid);
     }
+
+    @GetMapping("/profile-image/user")
+    public ResponseEntity<?> getDefaultUserProfileImage() {
+        return imageService.getDefaultUserProfileImage();
+    }
 }

@@ -28,7 +28,7 @@
                 <p *ngIf="advert.isRentLimited">Limit: {{advert.limitInKilometers}} KM</p>
                 <p>Seats for children: {{advert.numberOfSeatsForChildren}}</p>
             </div>
-            <p style="text-align: center;">Posted by <a href="/details">{{advert.publisher}}</a></p>
+            <p style="text-align: center;">Posted by <button id="link" (click)="onDetails(advert.publisher)"> {{advert.publisher}} </button></p>
         </div>
     </div>
 

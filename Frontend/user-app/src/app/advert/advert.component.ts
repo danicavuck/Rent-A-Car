@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advert',
@@ -12,7 +13,7 @@ export class AdvertComponent implements OnInit {
   comments: Comment[];
   adverts : Advert[];
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private router: Router) { 
     this.uuid = localStorage.getItem('advertUUID');
     this.fetchAdvert(this.uuid);
     this.fetchComments(this.uuid);
@@ -53,6 +54,11 @@ export class AdvertComponent implements OnInit {
   formatAdvertDate(givenDate: Date) {
     let date = new Date(givenDate);
     return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
+  }
+
+  async onDetails(username : string) {
+    localStorage.setItem('userDetails', username);
+    this.router.navigateByUrl("/user/profile");
   }
 
 }
