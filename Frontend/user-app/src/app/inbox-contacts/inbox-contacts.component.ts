@@ -27,5 +27,9 @@ export class InboxContactsComponent implements OnInit {
       console.log('Error fetching contacts');
     });
   }
+
+  async onChatSelected(username : string) {
+    localStorage.setItem('chatWith', username);
+  }
   
 }

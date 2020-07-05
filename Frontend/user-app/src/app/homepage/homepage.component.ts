@@ -66,7 +66,7 @@ export class HomepageComponent implements OnInit {
 
   formatAdvertDate(givenDate: Date) {
     let date = new Date(givenDate);
-    return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
+    return (date.getUTCDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
   }
 
   async getImageURL(advert: Advert) {

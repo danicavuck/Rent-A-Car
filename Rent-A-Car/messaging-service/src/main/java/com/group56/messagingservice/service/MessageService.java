@@ -71,13 +71,16 @@ public class MessageService {
     public ResponseEntity<?> getListOfUsersForSpecificUser(String username) {
         List<String> listOfUsers = new ArrayList<>();
         List<Message> allMessages = messageRepository.findAll();
+        List<String> fetchedUsernames = new ArrayList<>();
 
         for(Message message : allMessages) {
-            if(message.getSenderUsername().equals(username)) {
+            if(message.getSenderUsername().equals(username) && !fetchedUsernames.contains(message.getReceiverUsername())) {
                 listOfUsers.add(message.getReceiverUsername());
+                fetchedUsernames.add(message.getReceiverUsername());
             }
-            if (message.getReceiverUsername().equals(username)) {
+            if (message.getReceiverUsername().equals(username) && !fetchedUsernames.contains(message.getSenderUsername())) {
                 listOfUsers.add(message.getSenderUsername());
+                fetchedUsernames.add(message.getSenderUsername());
             }
         }
 
