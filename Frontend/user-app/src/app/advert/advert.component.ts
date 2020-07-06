@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-advert',
@@ -7,13 +8,16 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./advert.component.css']
 })
 export class AdvertComponent implements OnInit {
-
-  adverts: Advert[];
+  uuid: string;
+  imageURL: string;
   comments: Comment[];
+  adverts : Advert[];
 
-  constructor(private http: HttpClient) { 
-    this.fetchAdvert('75fb7c38-d686-44fc-8c9c-156161e5697f');
-    this.fetchComments('75fb7c38-d686-44fc-8c9c-156161e5697f');
+  constructor(private http: HttpClient, private router: Router) { 
+    this.uuid = localStorage.getItem('advertUUID');
+    this.fetchAdvert(this.uuid);
+    this.fetchComments(this.uuid);
+    this.fetchImage(this.uuid);
   }
 
   ngOnInit(): void {
@@ -29,12 +33,21 @@ export class AdvertComponent implements OnInit {
   }
 
   async fetchAdvert(uuid) {
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/' + uuid;
+    const apiEndpoint = 'http://localhost:8080/search-service/advert/' + uuid;
     this.http.get(apiEndpoint).subscribe(response => {
         this.adverts = response as Array<Advert>;
-        console.log(this.adverts);
     }, err => {
-      console.log('Unable to fetch adverts: ', err);
+      console.log('Unable to fetch adverts for id ', uuid);
+    });
+  }
+
+  async fetchImage(uuid : string) {
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + uuid;
+    this.http.get(apiEndpoint, {responseType: 'text'}).subscribe(response => {
+      this.imageURL = response as string;
+    }, err => {
+      console.log(`Could not fetch image with id: ${uuid}`);
+      console.log(err);
     });
   }
 
@@ -43,28 +56,37 @@ export class AdvertComponent implements OnInit {
     return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
   }
 
+  async onDetails(username : string) {
+    localStorage.setItem('userDetails', username);
+    this.router.navigateByUrl("/user/profile");
+  }
+
 }
-interface Advert {
+
+
+interface Comment{
   username: string;
+  text: string;
+  mark: number;
+};
+
+export interface Advert {
+  publisher: string;
   price: number;
   carLocation: string;
-  dateStart: Date;
-  dateEnd: Date;
+  availableForRentFrom: Date;
+  availableForRentUntil: Date;
   brand: string;
   model: string;
   fuel: string;
   transmission: string;
   bodyType: string;
   mileage: number;
-  isRentLimited: boolean;
+  rentLimited: boolean;
   limitInKilometers: number;
   numberOfSeatsForChildren: number;
   uuid: string;
   imageURL: string;
-};
-
-interface Comment{
-  username: string;
-  text: string;
-  mark: number;
+  protectionAvailable: boolean;
+  protectionPrice: number;
 };

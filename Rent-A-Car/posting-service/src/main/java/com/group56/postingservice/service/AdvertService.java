@@ -1,24 +1,28 @@
 package com.group56.postingservice.service;
 
 import com.group56.postingservice.DTO.AdvertDTO;
+import com.group56.postingservice.DTO.AdvertSearchDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
 import com.group56.postingservice.util.MessagePublisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AdvertService {
+    private Logger logger = LoggerFactory.getLogger(AdvertService.class);
     private UserRepository userRepository;
     private AdvertRepository advertRepository;
     private CarRepository carRepository;
@@ -55,11 +59,14 @@ public class AdvertService {
                 user.setNumberOfAdvertsPosted(user.getNumberOfAdvertsPosted() + 1);
                 advert.setPublisher(user);
                 advert.setSharedWithReviewService(false);
+                advert.setSharedWithSearchService(false);
                 advert.setActive(true);
                 advertRepository.save(advert);
 
                 String msg = "ADVERT_ADDED";
                 messagePublisher.sendAMessageToQueue(msg);
+                logger.info("------------------------------------------------------------\n\n\n");
+                logger.info(advert.getDescription());
                 return new ResponseEntity<>(advert.getUuid().toString(), HttpStatus.OK);
             }
             return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
@@ -68,8 +75,9 @@ public class AdvertService {
         return new ResponseEntity<>("User not found!" , HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> updateAdvert(AdvertUpdateDTO advertUpdateDTO, HttpSession session){
-        User user = userRepository.findUserById((Long) session.getAttribute("id"));
+
+    public ResponseEntity<?> updateAdvert(AdvertUpdateDTO advertUpdateDTO){
+        User user = userRepository.findUserByUsername(advertUpdateDTO.getUsername());
         if(user != null) {
                 Advert advert = advertRepository.findAdvertById(advertUpdateDTO.getId());
                 if(advert.getPublisher() == user) {
@@ -128,6 +136,8 @@ public class AdvertService {
         advert.setRentFrom(advertDTO.getDateStart());
         advert.setRentUntil(advertDTO.getDateEnd());
         advert.setPrice(advertDTO.getPrice());
+        advert.setProtectionAvailable(advertDTO.isProtectionAvailable());
+        advert.setProtectionPrice(advertDTO.getProtectionPrice());
         advert.setUuid(UUID.randomUUID());
         advert.setDescription(advertDTO.getDescription());
 
@@ -136,6 +146,7 @@ public class AdvertService {
 
         return advert;
     }
+
 
     public ResponseEntity<?> testing() {
         BodyType bodyType = BodyType.builder().isActive(true).bodyType("Sedan").build();
@@ -188,7 +199,7 @@ public class AdvertService {
                     .brand(advert.getCar().getCarBrand().getBrandName())
                     .transmission(advert.getCar().getTransmissionType().getTransmissionType())
                     .mileage(advert.getCar().getMileage())
-                    .isRentLimited(advert.getCar().isRentLimited())
+                    .rentLimited(advert.getCar().isRentLimited())
                     .limitInKilometers(advert.getCar().getLimitInKilometers())
                     .numberOfSeatsForChildren(advert.getCar().getNumberOfSeatsForChildren())
                     .carLocation(advert.getCarLocation())
@@ -224,5 +235,44 @@ public class AdvertService {
         });
 
         return newAdverts;
+    }
+
+    public ResponseEntity<?> getAdvertsForSearchService() {
+        List<Advert> allAdverts = advertRepository.findAll();
+        List<Advert> notShared = new ArrayList<>();
+
+        allAdverts.forEach(advert ->  {
+            if(!advert.isSharedWithSearchService()) {
+                advert.setSharedWithSearchService(true);
+                advertRepository.save(advert);
+                notShared.add(advert);
+            }
+        });
+
+        return new ResponseEntity<>(advertSearchDTO(notShared), HttpStatus.OK);
+    }
+
+    private List<AdvertSearchDTO> advertSearchDTO(List<Advert> allAdverts) {
+        List<AdvertSearchDTO> dtos = new ArrayList<>();
+        allAdverts.forEach(data -> {
+            Long randomId = Long.valueOf(ThreadLocalRandom.current().nextInt(1, 100000 + 1));
+            AdvertSearchDTO dto = AdvertSearchDTO.builder()
+                    .id(randomId)
+                    .carLocation(data.getCarLocation())
+                    .availableForRentFrom(data.getRentFrom())
+                    .availableForRentUntil(data.getRentUntil())
+                    .isProtectionAvailable(data.isProtectionAvailable())
+                    .protectionPrice(data.getProtectionPrice())
+                    .price(data.getPrice())
+                    .publisher(data.getPublisher().getUsername())
+                    .car(data.getCar())
+                    .marks(data.getMarks())
+                    .comments(data.getComments())
+                    .uuid(data.getUuid().toString())
+                    .build();
+
+            dtos.add(dto);
+        });
+        return dtos;
     }
 }

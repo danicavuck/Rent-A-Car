@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
 
 
 @Component({
@@ -11,15 +9,47 @@ import { map, catchError } from 'rxjs/operators';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
-
+  advancedQuery: AdvancedQuery = {
+    carLocation: '',
+    bodyType: '',
+    brand: '',
+    fuelType: '',
+    model: '',
+    transmission: '',
+    priceMin: 0,
+    priceMax: 0,
+    limitInKilometers: 0,
+    mileageMin: 0,
+    mileageMax: 0,
+    numberOfSeatsForChildren: 0,
+    protectionAvailable: true,
+    from: new Date,
+    until: new Date
+  };
   loggedIn: boolean = false;
+  showAdvancedSearch : boolean = false;
+  noAdverts: boolean = false;
   adverts: Advert[];
-  imageToShow: any;
+  imageURL: string;
   response: Response;
-  blob: Blob;
+
+  brands : Brand[] = [];
+
+  models: Model[] = [];
+
+  fuels: FuelType[] = [];
+
+  transmissions: Transmission[] = [];
+
+
+  bodyTypes: BodyType[] = [];
 
   min = Date();
   rentSpan: RentSpan = {
+    rentSpan: [new Date()]
+  };
+
+  advancedRentSpan: RentSpan = {
     rentSpan: [new Date()]
   };
 
@@ -34,8 +64,8 @@ export class HomepageComponent implements OnInit {
 
   query: Query = {
     city: '',
-    rentStartingDate: new Date(),
-    rentEndingDate: new Date()
+    from: new Date(),
+    until: new Date()
   };
 
   constructor(private http: HttpClient, private router: Router) { }
@@ -44,60 +74,65 @@ export class HomepageComponent implements OnInit {
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
     this.fetchAdverts();
+    this.fetchBrand();
+    this.fetchBodyType();
+    this.fetchModels();
+    this.fetchFuelType();
+    this.fetchTransmission();
   }
 
   async fetchAdverts() {
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert';
+    const apiEndpoint = 'http://localhost:8080/search-service/advert';
     this.http.get(apiEndpoint).subscribe(response => {
         this.adverts = response as Array<Advert>;
-        for(let i = 0; i < this.adverts.length; i++) {
-          //this.fetchImage(this.adverts[i]);
+        if(this.adverts.length === 0) {
+          this.noAdverts = true;
+        } else {
+          this.noAdverts = false;
         }
-        console.log(this.adverts);
+        this.assignImagesToAdverts(this.adverts);
     }, err => {
       console.log('Unable to fetch adverts: ', err);
     });
   }
 
-  formatAdvertDate(givenDate: Date) {
-    let date = new Date(givenDate);
-    return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
+  async assignImagesToAdverts(adverts : Array<Advert>) {
+    for(let i=0; i<adverts.length; i++) {
+      this.getImageURL(this.adverts[i]);
+    }
   }
 
-  // fetchImage(advert: Advert) {
-  //   let blob = this.getBlobFromBackend(advert);
-  //   setTimeout(function () {
-  //     this.createImageFromBlob(blob);   
-  //   }, 3000);
-  // }
+  formatAdvertDate(givenDate: Date) {
+    let date = new Date(givenDate);
+    return (date.getUTCDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
+  }
 
-  // getBlobFromBackend(advert: Advert) {
-  //   const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + advert.uuid;
-  //   return this.http.get(apiEndpoint).pipe(
-  //     map((res: Response) => res.blob())
-  //   );
-  // }
-
-  // async createImageFromBlob(image) {
-  //   let reader = new FileReader();
-  //   reader.addEventListener("load", () => {
-  //      this.imageToShow = reader.result;
-  //   }, false);
-  //   if (image) {
-  //      reader.readAsDataURL(image);
-  //   }
-  // }
+  async getImageURL(advert: Advert) {
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + advert.uuid;
+    this.http.get(apiEndpoint, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      advert.imageURL = response as string;
+    }, err => {
+      console.log('Error fetching image URL', err);
+    });
+  }
 
   onSearch() {
-    this.query.rentStartingDate = this.rentSpan.rentSpan[0];
-    this.query.rentEndingDate = this.rentSpan.rentSpan[1];
-
-    if(this.validateInput()) {
-      console.log(this.query);
-    } else {
-      alert('Invalid query');
-      console.log(this.query);
-    }
+    this.query.from = this.rentSpan.rentSpan[0];
+    this.query.until = this.rentSpan.rentSpan[1];
+    
+    const apiEndpoint = 'http://localhost:8080/search-service/filter';
+    this.http.post(apiEndpoint, this.query).subscribe(res => {
+      this.adverts = res as Array<Advert>;
+      this.assignImagesToAdverts(this.adverts);
+      if(this.adverts.length === 0) {
+        this.noAdverts = true;
+      } else {
+        this.noAdverts = false;
+      }
+    }, err => {
+      console.log('Error filtering adverts', err);
+    });
+    
   }
 
   onLogout() {
@@ -111,16 +146,88 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  async fetchBrand() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/brand';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.brands = response as Array<Brand>;
+    }, error => {
+      console.log('Unable to fetch Brands');
+    });
+  }
+
+  async fetchBodyType() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/body-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.bodyTypes = response as Array<BodyType>;
+    }, error => {
+      console.log('Unable to fetch Body Type');
+    });
+  }
+
+  async fetchModels() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/model';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.models = response as Array<Model>;
+    }, error => {
+      console.log('Unable to fetch Model');
+    });
+  }
+
+  async fetchFuelType() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/fuel-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.fuels = response as Array<FuelType>;
+    }, error => {
+      console.log('Unable to fetch Fuel Type');
+    });
+  }
+
+  async fetchTransmission() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/transmission-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.transmissions = response as Array<Transmission>;
+    }, error => {
+      console.log('Unable to fetch Transmission');
+    });
+  }
+
   validateInput() {
-    return this.query.city.length > 0 && this.query.rentEndingDate > this.query.rentStartingDate && this.query.rentStartingDate > new Date();
+    return this.query.city.length > 0 && this.query.until > this.query.from && this.query.from > new Date();
+  }
+
+  routToDetails(advert: Advert) {
+    localStorage.setItem('advertUUID', advert.uuid);
+    this.router.navigateByUrl("/details");
+  }
+
+  async onSwitchSearchState() {
+    this.showAdvancedSearch = !this.showAdvancedSearch;
+  }
+
+  async onAdvancedSearch() {
+    this.advancedQuery.from = this.advancedRentSpan.rentSpan[0];
+    this.advancedQuery.until = this.advancedRentSpan.rentSpan[1];
+
+    const apiEndpoint = 'http://localhost:8080/search-service/advanced/filter';
+    this.http.post(apiEndpoint, this.advancedQuery).subscribe(res => {
+      this.adverts = res as Array<Advert>;
+      this.assignImagesToAdverts(this.adverts);
+      if(this.adverts.length === 0) {
+        this.noAdverts = true;
+      } else {
+        this.noAdverts = false;
+      }
+    }, err => {
+      console.log('Unable to perform advanced filter');
+    });
   }
 
 }
 
 export interface Query {
   city: string;
-  rentStartingDate: Date;
-  rentEndingDate: Date;
+  from: Date;
+  until: Date;
 };
 
 interface City {
@@ -132,12 +239,12 @@ interface RentSpan {
   rentSpan: Date[];
 };
 
-interface Advert {
-  username: string;
+export interface Advert {
+  publisher: string;
   price: number;
   carLocation: string;
-  dateStart: Date;
-  dateEnd: Date;
+  availableForRentFrom: Date;
+  availableForRentUntil: Date;
   brand: string;
   model: string;
   fuel: string;
@@ -150,3 +257,55 @@ interface Advert {
   uuid: string;
   imageURL: string;
 };
+
+interface City {
+  value: string;
+  viewValue: string;
+};
+
+interface FuelType {
+  id: number;
+  active: boolean;
+  fuelType: string;
+};
+
+interface Transmission {
+  id: number;
+  transmissionType: string;
+};
+
+interface Brand {
+  id: number;
+  brandName: string;
+  active: boolean;
+};
+
+interface Model {
+  id: number;
+  modelName: string;
+  active: boolean;
+};
+
+interface BodyType {
+  id: number;
+  bodyType: string;
+  active: boolean;
+};
+
+interface AdvancedQuery {
+  carLocation: string;
+  brand: string;
+  model: string;
+  transmission: string;
+  bodyType: string;
+  fuelType: string;
+  priceMin: number;
+  priceMax: number;
+  mileageMin: number;
+  mileageMax: number;
+  limitInKilometers: number;
+  protectionAvailable: boolean;
+  numberOfSeatsForChildren: number;
+  from: Date;
+  until: Date;
+}

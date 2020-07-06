@@ -19,6 +19,8 @@ public class AdvertDTO {
     private String carLocation;
     private LocalDateTime dateStart;
     private LocalDateTime dateEnd;
+    private boolean protectionAvailable;
+    private BigDecimal protectionPrice;
     //-------------car---
     private String brand;
     private String model;
@@ -26,7 +28,7 @@ public class AdvertDTO {
     private String transmission;
     private String bodyType;
     private Long mileage;
-    private boolean isRentLimited;
+    private boolean rentLimited;
     private Long limitInKilometers;
     private int numberOfSeatsForChildren;
     private String uuid;

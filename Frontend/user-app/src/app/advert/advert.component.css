@@ -45,3 +45,16 @@
     margin-top: 5px;
     margin-left: -80%;
 }
+
+#link {
+    border-bottom: 2px lightblue solid; 
+    border-top: none; 
+    border-left: none; 
+    border-right: none; 
+    background-color: #f8f8f8;
+}
+
+#link:hover {
+    color: black;
+    background-color: lightblue;
+}

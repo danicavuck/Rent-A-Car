@@ -8,8 +8,7 @@
 <body>
     <div class="containerForAdverts" *ngFor="let advert of adverts">     
         <div class="image-container">
-            <img class="image" src="https://www.audi.rs/media/Video_PreviewImage_Component/48125-408421-previewImage/dh-1180-714db4/150ffd69/1585823861/1400x788-montevideo-modul4-fallback.jpg" alt="Audi A6" height="450" width="700">
-            <!-- <img class="image" [src]="imageToShow" alt="Audi A6" height="150" width="200"> -->
+            <img class="image" [src]="imageURL" alt="Car photo" height="450" width="700">
         </div>
         <div class="text-container">
             <p style="font-weight: bold;text-align: center;">{{advert.brand}} {{advert.model}}</p>
@@ -17,8 +16,8 @@
                 <p>Fuel type: {{advert.fuel}}</p>
                 <p>Transmission: {{advert.transmission}}</p>
                 <p>Price: {{advert.price}}$</p>
-                <p>Available from: {{formatAdvertDate(advert.dateStart)}}</p>
-                <p>Available until: {{formatAdvertDate(advert.dateEnd)}}</p>
+                <p>Available from: {{formatAdvertDate(advert.availableForRentFrom)}}</p>
+                <p>Available until: {{formatAdvertDate(advert.availableForRentUntil)}}</p>
             </div>
             <div class="right-coloumn">
                 <p>Location: {{advert.carLocation}}</p>
@@ -27,9 +26,11 @@
                 <p *ngIf="advert.rentLimited">Rent Limited: Yes</p>
                 <p *ngIf="!advert.rentLimited">Rent Limited: No</p>
                 <p *ngIf="advert.rentLimited">Limit: {{advert.limitInKilometers}} KM</p>
+                <p *ngIf="advert.protectionAvailable"> Collision Damage Waiver: Yes</p>
+                <p *ngIf="advert.protectionAvailable"> Protection price: {{advert.protectionPrice}}</p>
                 <p>Seats for children: {{advert.numberOfSeatsForChildren}}</p>
             </div>
-            <p style="text-align: center;">Posted by <a href="/details">{{advert.username}}</a></p>
+            <p style="text-align: center;">Posted by <button id="link" (click)="onDetails(advert.publisher)"> {{advert.publisher}} </button></p>
         </div>
     </div>
 
