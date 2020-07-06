@@ -1,5 +1,6 @@
 package com.group56.searchservice.controller;
 
+import com.group56.searchservice.DTO.AdvancedQueryDTO;
 import com.group56.searchservice.DTO.AdvertFilterDTO;
 import com.group56.searchservice.DTO.AdvertQueryDTO;
 import com.group56.searchservice.service.SearchService;
@@ -41,5 +42,10 @@ public class SearchController {
     @PostMapping("/filter")
     public ResponseEntity<?> filterAdverts(@RequestBody AdvertFilterDTO advertDTO) {
         return searchService.filterAdverts(advertDTO);
+    }
+
+    @PostMapping("/advanced/filter")
+    public ResponseEntity<?> advancedFilter(@RequestBody AdvancedQueryDTO advertDTO) {
+        return searchService.advancedFilter(advertDTO);
     }
 }

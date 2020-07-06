@@ -23,9 +23,11 @@
                 <p>Location: {{advert.carLocation}}</p>
                 <p>Body Type: {{advert.bodyType}}</p>
                 <p>Mileage: {{advert.mileage}} KM</p>
-                <p *ngIf="advert.isRentLimited">Rent Limited: Yes</p>
-                <p *ngIf="!advert.isRentLimited">Rent Limited: No</p>
-                <p *ngIf="advert.isRentLimited">Limit: {{advert.limitInKilometers}} KM</p>
+                <p *ngIf="advert.rentLimited">Rent Limited: Yes</p>
+                <p *ngIf="!advert.rentLimited">Rent Limited: No</p>
+                <p *ngIf="advert.rentLimited">Limit: {{advert.limitInKilometers}} KM</p>
+                <p *ngIf="advert.protectionAvailable"> Collision Damage Waiver: Yes</p>
+                <p *ngIf="advert.protectionAvailable"> Protection price: {{advert.protectionPrice}}</p>
                 <p>Seats for children: {{advert.numberOfSeatsForChildren}}</p>
             </div>
             <p style="text-align: center;">Posted by <button id="link" (click)="onDetails(advert.publisher)"> {{advert.publisher}} </button></p>

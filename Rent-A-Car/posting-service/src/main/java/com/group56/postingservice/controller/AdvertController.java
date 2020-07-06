@@ -28,17 +28,15 @@ import java.util.Base64;
 public class AdvertController {
     private Logger logger = LoggerFactory.getLogger(AdvertController.class);
     public static final String uploadDirectory = System.getProperty("user.dir") + "/images";
-
     private AdvertService advertService;
+
+    @Autowired
+    public AdvertController(AdvertService aService){ this.advertService = aService; }
 
     @GetMapping
     public ResponseEntity<?> getAdverts() {
         return advertService.getAdverts();
     }
-
-    @Autowired
-    public AdvertController(AdvertService aService){ this.advertService = aService; }
-
 
     @PostMapping
     public ResponseEntity<?> addAdvert(@RequestBody AdvertDTO advertDTO){

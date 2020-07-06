@@ -82,9 +82,11 @@ export interface Advert {
   transmission: string;
   bodyType: string;
   mileage: number;
-  isRentLimited: boolean;
+  rentLimited: boolean;
   limitInKilometers: number;
   numberOfSeatsForChildren: number;
   uuid: string;
   imageURL: string;
+  protectionAvailable: boolean;
+  protectionPrice: number;
 };

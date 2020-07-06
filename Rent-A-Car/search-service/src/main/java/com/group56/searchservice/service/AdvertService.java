@@ -1,9 +1,6 @@
 package com.group56.searchservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group56.searchservice.model.Advert;
-import com.group56.searchservice.model.BodyType;
 import com.group56.searchservice.model.Car;
 import com.group56.searchservice.repository.*;
 import org.slf4j.Logger;
@@ -12,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class AdvertService {
@@ -61,6 +55,8 @@ public class AdvertService {
         carRepository.save(car);
 
         advert.setActive(true);
+        logger.info("------------------------------------------------------------\n\n\n");
+        logger.info(advert.toString());
         advertRepository.save(advert);
     }
 

@@ -9,7 +9,7 @@
 <body>
     <div class="jumbotron">
         <div class="text-center">
-            <form class="search-form">
+            <form class="search-form" *ngIf="!showAdvancedSearch">
                 <mat-form-field id="city">
                     <mat-label>City</mat-label>
                     <mat-select [(ngModel)]="query.city" name="cities">
@@ -33,6 +33,101 @@
                     <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="['/user']"><i class="fa fa-user"></i><span> My profile</span></button>
                 </div>
             </form>
+            <div class="advanced-section">
+                <div class="advanced-form-section" *ngIf="showAdvancedSearch">
+                    <mat-form-field class="full-width">
+                        <mat-label>City</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.carLocation" name="cities">
+                            <mat-option *ngFor="let city of cities" [value]="city.value">
+                              {{city.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div class="owl" id="advancedDate">
+                        <input class="full-width" [owlDateTime]="dt1" [owlDateTimeTrigger]="dt1" readonly="true"
+                            style="background: #fff;" [(ngModel)]="advancedRentSpan.rentSpan" name="rentSpan" [selectMode]="'range'" [min]="min" matTooltip="Choose time of renting">
+                        <owl-date-time #dt1 [pickerType]="'calendar'"></owl-date-time>
+                    </div>
+    
+                    <mat-form-field class="full-width">
+                        <mat-label>Brand</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.brand" name="brand">
+                            <mat-option *ngFor="let brand of brands" [value]="brand.brandName">
+                              {{brand.brandName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <mat-form-field class="full-width">
+                        <mat-label>Model</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.model" name="model">
+                            <mat-option *ngFor="let model of models" [value]="model.modelName">
+                              {{model.modelName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <mat-form-field class="full-width">
+                        <mat-label>Fuel Type</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.fuelType" name="brand">
+                            <mat-option *ngFor="let fuel of fuels" [value]="fuel.fuelType">
+                              {{fuel.fuelType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <mat-form-field class="full-width">
+                        <mat-label>Transmission</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.transmission" name="transmission">
+                            <mat-option *ngFor="let transmission of transmissions" [value]="transmission.transmissionType">
+                              {{transmission.transmissionType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+    
+                    <mat-form-field class="full-width">
+                        <mat-label>Body Type</mat-label>
+                        <mat-select [(ngModel)]="advancedQuery.bodyType" name="bodyType">
+                            <mat-option *ngFor="let bodyType of bodyTypes" [value]="bodyType.bodyType">
+                              {{bodyType.bodyType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Minimum price</mat-label>
+                        <input class="input" type="text" id="minPrice" name="min" [(ngModel)]="advancedQuery.priceMin" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Maximum price</mat-label>
+                        <input class="input" type="text" id="maxPrice" name="max" [(ngModel)]="advancedQuery.priceMax" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Minimum mileage</mat-label>
+                        <input class="input" type="text" id="minMileage" name="max" [(ngModel)]="advancedQuery.mileageMin" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Maximum mileage</mat-label>
+                        <input class="input" type="text" id="maxMileage" name="max" [(ngModel)]="advancedQuery.mileageMax" matInput>
+                    </mat-form-field>
+                    <mat-form-field class="full-width">
+                        <mat-label>Maximum rent limit in Kilometers</mat-label>
+                        <input class="input" type="text" id="limitInKilometers" name="max" [(ngModel)]="advancedQuery.limitInKilometers" matInput>
+                    </mat-form-field>
+
+                    <mat-checkbox name="protectionAvailable" style="display: inline; margin-right: 5%;" [(ngModel)]="advancedQuery.protectionAvailable">Is Collision Damage Available?</mat-checkbox>
+
+                    <mat-form-field class="full-width">
+                        <mat-label>Maximum number of seats for children</mat-label>
+                        <input class="input" type="text" id="numberOfSeatsForChildren" name="max" [(ngModel)]="advancedQuery.numberOfSeatsForChildren" matInput>
+                    </mat-form-field>
+
+
+                    <button (click)="onAdvancedSearch()" mat-flat-button color="primary" id="advanced-search"><span> <i class="fa fa-search"></i> Search</span></button>
+                </div>
+                <button *ngIf="!showAdvancedSearch" (click)="onSwitchSearchState()" class="advanced-button" color="primary" mat-stroked-button><span> <i class="fa fa-arrow-down"></i> Show Advanced Search</span></button>
+                <button *ngIf="showAdvancedSearch" (click)="onSwitchSearchState()" class="advanced-button" color="primary" mat-stroked-button><span> <i class="fa fa-arrow-up"></i> Hide Advanced Search</span></button>
+            </div>
             <!-- Adverts -->
             <div class="emptyAdverts" *ngIf="noAdverts">
                 <h2 style="margin: 20% 0;">No adverts that satisfy provided criteria</h2>

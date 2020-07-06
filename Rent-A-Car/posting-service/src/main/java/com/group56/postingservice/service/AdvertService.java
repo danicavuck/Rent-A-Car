@@ -1,29 +1,28 @@
 package com.group56.postingservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertSearchDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
 import com.group56.postingservice.util.MessagePublisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AdvertService {
+    private Logger logger = LoggerFactory.getLogger(AdvertService.class);
     private UserRepository userRepository;
     private AdvertRepository advertRepository;
     private CarRepository carRepository;
@@ -66,6 +65,8 @@ public class AdvertService {
 
                 String msg = "ADVERT_ADDED";
                 messagePublisher.sendAMessageToQueue(msg);
+                logger.info("------------------------------------------------------------\n\n\n");
+                logger.info(advert.getDescription());
                 return new ResponseEntity<>(advert.getUuid().toString(), HttpStatus.OK);
             }
             return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
@@ -135,6 +136,8 @@ public class AdvertService {
         advert.setRentFrom(advertDTO.getDateStart());
         advert.setRentUntil(advertDTO.getDateEnd());
         advert.setPrice(advertDTO.getPrice());
+        advert.setProtectionAvailable(advertDTO.isProtectionAvailable());
+        advert.setProtectionPrice(advertDTO.getProtectionPrice());
         advert.setUuid(UUID.randomUUID());
         advert.setDescription(advertDTO.getDescription());
 
@@ -143,6 +146,7 @@ public class AdvertService {
 
         return advert;
     }
+
 
     public ResponseEntity<?> testing() {
         BodyType bodyType = BodyType.builder().isActive(true).bodyType("Sedan").build();
@@ -195,7 +199,7 @@ public class AdvertService {
                     .brand(advert.getCar().getCarBrand().getBrandName())
                     .transmission(advert.getCar().getTransmissionType().getTransmissionType())
                     .mileage(advert.getCar().getMileage())
-                    .isRentLimited(advert.getCar().isRentLimited())
+                    .rentLimited(advert.getCar().isRentLimited())
                     .limitInKilometers(advert.getCar().getLimitInKilometers())
                     .numberOfSeatsForChildren(advert.getCar().getNumberOfSeatsForChildren())
                     .carLocation(advert.getCarLocation())

@@ -9,14 +9,47 @@ import { Router } from '@angular/router';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  advancedQuery: AdvancedQuery = {
+    carLocation: '',
+    bodyType: '',
+    brand: '',
+    fuelType: '',
+    model: '',
+    transmission: '',
+    priceMin: 0,
+    priceMax: 0,
+    limitInKilometers: 0,
+    mileageMin: 0,
+    mileageMax: 0,
+    numberOfSeatsForChildren: 0,
+    protectionAvailable: true,
+    from: new Date,
+    until: new Date
+  };
   loggedIn: boolean = false;
+  showAdvancedSearch : boolean = false;
   noAdverts: boolean = false;
   adverts: Advert[];
   imageURL: string;
   response: Response;
 
+  brands : Brand[] = [];
+
+  models: Model[] = [];
+
+  fuels: FuelType[] = [];
+
+  transmissions: Transmission[] = [];
+
+
+  bodyTypes: BodyType[] = [];
+
   min = Date();
   rentSpan: RentSpan = {
+    rentSpan: [new Date()]
+  };
+
+  advancedRentSpan: RentSpan = {
     rentSpan: [new Date()]
   };
 
@@ -41,6 +74,11 @@ export class HomepageComponent implements OnInit {
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
     this.fetchAdverts();
+    this.fetchBrand();
+    this.fetchBodyType();
+    this.fetchModels();
+    this.fetchFuelType();
+    this.fetchTransmission();
   }
 
   async fetchAdverts() {
@@ -108,6 +146,51 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  async fetchBrand() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/brand';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.brands = response as Array<Brand>;
+    }, error => {
+      console.log('Unable to fetch Brands');
+    });
+  }
+
+  async fetchBodyType() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/body-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.bodyTypes = response as Array<BodyType>;
+    }, error => {
+      console.log('Unable to fetch Body Type');
+    });
+  }
+
+  async fetchModels() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/model';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.models = response as Array<Model>;
+    }, error => {
+      console.log('Unable to fetch Model');
+    });
+  }
+
+  async fetchFuelType() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/fuel-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.fuels = response as Array<FuelType>;
+    }, error => {
+      console.log('Unable to fetch Fuel Type');
+    });
+  }
+
+  async fetchTransmission() {
+    const apiEndpoint = 'http://localhost:8080/admin-service/transmission-type';
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.transmissions = response as Array<Transmission>;
+    }, error => {
+      console.log('Unable to fetch Transmission');
+    });
+  }
+
   validateInput() {
     return this.query.city.length > 0 && this.query.until > this.query.from && this.query.from > new Date();
   }
@@ -115,6 +198,28 @@ export class HomepageComponent implements OnInit {
   routToDetails(advert: Advert) {
     localStorage.setItem('advertUUID', advert.uuid);
     this.router.navigateByUrl("/details");
+  }
+
+  async onSwitchSearchState() {
+    this.showAdvancedSearch = !this.showAdvancedSearch;
+  }
+
+  async onAdvancedSearch() {
+    this.advancedQuery.from = this.advancedRentSpan.rentSpan[0];
+    this.advancedQuery.until = this.advancedRentSpan.rentSpan[1];
+
+    const apiEndpoint = 'http://localhost:8080/search-service/advanced/filter';
+    this.http.post(apiEndpoint, this.advancedQuery).subscribe(res => {
+      this.adverts = res as Array<Advert>;
+      this.assignImagesToAdverts(this.adverts);
+      if(this.adverts.length === 0) {
+        this.noAdverts = true;
+      } else {
+        this.noAdverts = false;
+      }
+    }, err => {
+      console.log('Unable to perform advanced filter');
+    });
   }
 
 }
@@ -152,3 +257,55 @@ export interface Advert {
   uuid: string;
   imageURL: string;
 };
+
+interface City {
+  value: string;
+  viewValue: string;
+};
+
+interface FuelType {
+  id: number;
+  active: boolean;
+  fuelType: string;
+};
+
+interface Transmission {
+  id: number;
+  transmissionType: string;
+};
+
+interface Brand {
+  id: number;
+  brandName: string;
+  active: boolean;
+};
+
+interface Model {
+  id: number;
+  modelName: string;
+  active: boolean;
+};
+
+interface BodyType {
+  id: number;
+  bodyType: string;
+  active: boolean;
+};
+
+interface AdvancedQuery {
+  carLocation: string;
+  brand: string;
+  model: string;
+  transmission: string;
+  bodyType: string;
+  fuelType: string;
+  priceMin: number;
+  priceMax: number;
+  mileageMin: number;
+  mileageMax: number;
+  limitInKilometers: number;
+  protectionAvailable: boolean;
+  numberOfSeatsForChildren: number;
+  from: Date;
+  until: Date;
+}
