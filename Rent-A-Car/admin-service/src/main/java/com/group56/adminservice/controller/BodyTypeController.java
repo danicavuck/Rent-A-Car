@@ -18,8 +18,8 @@ public class BodyTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getBodyTypes() {
-        return bodyTypeService.getAllBodyTypes();
+    public ResponseEntity<?> getActiveBodyTypes() {
+        return bodyTypeService.getActiveBodyTypes();
     }
 
     @PostMapping
@@ -32,7 +32,7 @@ public class BodyTypeController {
         return bodyTypeService.updateBodyType(bodyTypeDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeBodyType(@RequestBody BodyTypeDTO bodyTypeDTO) {
         return bodyTypeService.removeBodyType(bodyTypeDTO);
     }

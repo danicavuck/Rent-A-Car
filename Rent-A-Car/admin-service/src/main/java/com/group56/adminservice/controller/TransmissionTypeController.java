@@ -18,8 +18,8 @@ public class TransmissionTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllTransmissionTypes(){
-        return transmissionTypeService.getAllTransmissionTypes();
+    public ResponseEntity<?> getActiveTransmissionTypes(){
+        return transmissionTypeService.getActiveTransmissionTypes();
     }
 
     @PostMapping
@@ -27,7 +27,7 @@ public class TransmissionTypeController {
         return transmissionTypeService.addNewTransmissionType(transmissionTypeDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeTransmissionType(@RequestBody TransmissionTypeDTO transmissionTypeDTO) {
         return transmissionTypeService.removeTransmissionType(transmissionTypeDTO);
     }

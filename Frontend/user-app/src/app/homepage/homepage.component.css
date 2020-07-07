@@ -43,6 +43,15 @@
     margin-bottom: 1%;
 }
 
+.filtering {
+    margin: 2% 0;
+}
+
+.filtering-criteria {
+    margin-right: 30px;
+    width: 50%;
+}
+
 
 .rout {
     display: inline;

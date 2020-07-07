@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarModelService {
@@ -22,7 +23,7 @@ public class CarModelService {
 
     @Transactional
     public ResponseEntity<?> addNewCarModel(CarModelDTO carModelDTO) {
-        if(carModelRepository.existsByModelName(carModelDTO.getModelName())) {
+        if(!carModelRepository.existsByModelName(carModelDTO.getModelName())) {
             if(!carModelDTO.getModelName().equals("")) {
                 CarModel carModel = CarModel.builder().modelName(carModelDTO.getModelName()).active(true).build();
                 carModelRepository.save(carModel);
@@ -35,7 +36,7 @@ public class CarModelService {
 
     @Transactional
     public ResponseEntity<?> updateCarModel(CarModelDTO carModelDTO) {
-        if(!carModelRepository.existsByModelName(carModelDTO.getModelName())) {
+        if(carModelRepository.existsByModelName(carModelDTO.getModelName())) {
             if(!carModelRepository.existsByModelName(carModelDTO.getNewModelName())) {
                 CarModel carModel = carModelRepository.findByModelName(carModelDTO.getModelName());
                 carModel.setModelName(carModelDTO.getNewModelName());
@@ -58,8 +59,9 @@ public class CarModelService {
         return new ResponseEntity<>("Model doesn't exist", HttpStatus.FORBIDDEN);
     }
 
-    public ResponseEntity<?> getCarModels() {
+    public ResponseEntity<?> getActiveCarModels() {
         List<CarModel> carModels = carModelRepository.findAll();
+        carModels = carModels.stream().filter(CarModel::isActive).collect(Collectors.toList());
         return new ResponseEntity<>(carModels, HttpStatus.OK);
     }
 }

@@ -9,6 +9,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./homepage.component.css']
 })
 export class HomepageComponent implements OnInit {
+  
+  sortingCriteria : string = '';
+
   advancedQuery: AdvancedQuery = {
     carLocation: '',
     bodyType: '',
@@ -30,6 +33,10 @@ export class HomepageComponent implements OnInit {
   showAdvancedSearch : boolean = false;
   noAdverts: boolean = false;
   adverts: Advert[];
+  dataForSorting : DataForSorting = {
+    adverts : this.adverts,
+    criteria: this.sortingCriteria
+  };
   imageURL: string;
   response: Response;
 
@@ -222,6 +229,25 @@ export class HomepageComponent implements OnInit {
     });
   }
 
+  async onSort() {
+    this.dataForSorting.adverts = this.adverts;
+    this.dataForSorting.criteria = this.sortingCriteria;
+
+    const apiEndpoint = 'http://localhost:8080/search-service/sort';
+    this.http.post(apiEndpoint, this.dataForSorting).subscribe(res => {
+      this.adverts = res as Array<Advert>;
+        if(this.adverts.length === 0) {
+          this.noAdverts = true;
+        } else {
+          this.noAdverts = false;
+        }
+        this.assignImagesToAdverts(this.adverts);
+
+    }, err => {
+      console.log(`Filtering cannot be performed due to error ${err}`);
+    });
+  }
+
 }
 
 export interface Query {
@@ -308,4 +334,9 @@ interface AdvancedQuery {
   numberOfSeatsForChildren: number;
   from: Date;
   until: Date;
+}
+
+interface DataForSorting {
+  adverts : Advert[];
+  criteria : string;
 }

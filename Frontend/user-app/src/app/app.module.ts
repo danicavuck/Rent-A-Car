@@ -38,6 +38,7 @@ import { MessageComponent } from './message/message.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { InboxContactsComponent } from './inbox-contacts/inbox-contacts.component';
 import { InboxMessangerComponent } from './inbox-messanger/inbox-messanger.component';
+import { ManagingEntitiesComponent } from './AdminSection/managing-entities/managing-entities.component';
 
 
 const appRouts: Routes = [
@@ -47,6 +48,7 @@ const appRouts: Routes = [
   { path: 'user/profile', component: ProfileComponent },
   { path: 'inbox', component: InboxComponent },
   { path: 'admin', component: AdminHomepageComponent },
+  { path: 'admin/managing', component: ManagingEntitiesComponent },
   { path: 'agent', component: AgentHomepageComponent },
   { path: 'advert', component: AddAdvertComponent },
   { path: 'details', component: AdvertComponent },
@@ -77,7 +79,8 @@ const appRouts: Routes = [
     MessageComponent,
     InboxComponent,
     InboxContactsComponent,
-    InboxMessangerComponent
+    InboxMessangerComponent,
+    ManagingEntitiesComponent
   ],
   entryComponents: [
     ReviewComponent,

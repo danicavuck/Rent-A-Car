@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BodyTypeService {
@@ -55,8 +56,9 @@ public class BodyTypeService {
         return new ResponseEntity<>("Body Type doesn't exist", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllBodyTypes() {
+    public ResponseEntity<?> getActiveBodyTypes() {
         List<BodyType> bodyTypes = bodyTypeRepository.findAll();
+        bodyTypes = bodyTypes.stream().filter(BodyType::isActive).collect(Collectors.toList());
         return new ResponseEntity<>(bodyTypes, HttpStatus.OK);
     }
 }

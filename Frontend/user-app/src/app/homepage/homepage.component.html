@@ -128,6 +128,32 @@
                 <button *ngIf="!showAdvancedSearch" (click)="onSwitchSearchState()" class="advanced-button" color="primary" mat-stroked-button><span> <i class="fa fa-arrow-down"></i> Show Advanced Search</span></button>
                 <button *ngIf="showAdvancedSearch" (click)="onSwitchSearchState()" class="advanced-button" color="primary" mat-stroked-button><span> <i class="fa fa-arrow-up"></i> Hide Advanced Search</span></button>
             </div>
+            <div class="filtering">
+                <mat-form-field class="filtering-criteria">
+                    <mat-label>Filter By</mat-label>
+                    <mat-select [(ngModel)]="sortingCriteria" name="brand">
+                        <mat-option value="mileageAsc">
+                          Mileage Ascending
+                        </mat-option>
+                        <mat-option value="mileageDesc">
+                            Mileage Descending
+                        </mat-option>
+                        <mat-option value="priceAsc">
+                            Price Ascending
+                        </mat-option>
+                        <mat-option value="priceDesc">
+                            Price Descenging
+                        </mat-option>
+                        <mat-option value="marksAsc">
+                            Marks Ascending
+                        </mat-option>
+                        <mat-option value="marksDesc">
+                            Marks Descending
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <button mat-flat-button color="primary" (click)="onSort()"><span> <i class="fa fa-filter"></i> Filter</span></button>
+            </div>
             <!-- Adverts -->
             <div class="emptyAdverts" *ngIf="noAdverts">
                 <h2 style="margin: 20% 0;">No adverts that satisfy provided criteria</h2>

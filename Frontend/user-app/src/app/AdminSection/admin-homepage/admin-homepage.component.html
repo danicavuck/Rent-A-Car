@@ -8,6 +8,9 @@
 </head>
 <body>
     <div class="jumbotron">
+        <div class="header">
+            <button class="managing" [routerLink]="['/admin/managing']" mat-flat-button color="primary"> <span> <i class="fa fa-tasks"></i> Managing entities</span></button>
+        </div>
         <div class="text-center">
             <h2>Activate/Deactive Users</h2>
             <table mat-table [dataSource]="model" class="mat-elevation-z8" matSort>
@@ -87,7 +90,7 @@
             </table>
 
             <hr/>
-            <button (click)="onLogout()" mat-raised-button color="primary" class="pull-left" id="logout" style="margin-right: 2rem;">
+            <button (click)="onLogout()" mat-raised-button color="accent" class="pull-left" id="logout" style="margin-right: 2rem;">
                 <i class="fa fa-sign-out"></i>
                 <span> Logout</span>
             </button>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Managing Entities</title>
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="text-center">
+            <div class="mat-display-1">Manging entities</div>
+
+            <div class="entity">
+                <mat-form-field class="full-width">
+                    <mat-label>Car Brand</mat-label>
+                    <input class="input" type="text" id="carBrand" name="carBrand" [(ngModel)]="carBrand" matInput>
+                  </mat-form-field>
+                  <div class="add-entity">
+                    <button (click)="onSubmitBrand()" mat-flat-button color="primary"><span><i class="fa fa-plus"></i> Add new Brand</span></button>
+                  </div>
+            </div>
+
+            <div class="entity">
+                <mat-form-field class="full-width">
+                    <mat-label>Car Model</mat-label>
+                    <input class="input" type="text" id="carModel" name="carModel" [(ngModel)]="carModel" matInput>
+                  </mat-form-field>
+                  <div class="add-entity">
+                    <button (click)="onSubmitModel()" mat-flat-button color="primary"><span><i class="fa fa-plus"></i> Add new Model</span></button>
+                  </div>
+            </div>
+
+            <div class="entity">
+                <mat-form-field class="full-width">
+                    <mat-label>Transmission Type</mat-label>
+                    <input class="input" type="text" id="transmissionType" name="transmissionType" [(ngModel)]="transmissionType" matInput>
+                  </mat-form-field>
+                  <div class="add-entity">
+                    <button (click)="onSubmitTransmissionType()" mat-flat-button color="primary"><span><i class="fa fa-plus"></i> Add new Transmission</span></button>
+                  </div>
+            </div>
+
+            <div class="entity">
+                <mat-form-field class="full-width">
+                    <mat-label>Fuel Type</mat-label>
+                    <input class="input" type="text" id="fuelType" name="fuelType" [(ngModel)]="fuelType" matInput>
+                  </mat-form-field>
+                  <div class="add-entity">
+                    <button (click)="onSubmitFuelType()" mat-flat-button color="primary"><span><i class="fa fa-plus"></i> Add new Fuel Type</span></button>
+                  </div>
+            </div>
+
+            <div class="entity">
+                <mat-form-field class="full-width">
+                    <mat-label>Body Type</mat-label>
+                    <input class="input" type="text" id="bodyType" name="bodyType" [(ngModel)]="bodyType" matInput>
+                  </mat-form-field>
+                  <div class="add-entity">
+                    <button (click)="onSubmitBodyType()" mat-flat-button color="primary"><span><i class="fa fa-plus"></i> Add new Body Type</span></button>
+                  </div>
+            </div>
+
+            <hr>
+            <h2>Car Brands</h2>
+            <table mat-table [dataSource]="brands" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="brand">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Brand</mat-header-cell>
+                    <mat-cell *matCellDef="let brand"> {{brand.brandName}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                    <mat-cell *matCellDef="let brand">
+                        <button style="background-color: #FF3333; margin-left: 10px;" mat-mini-fab color="primary" matTooltip="Delete brand" id="delete" (click)="onDeleteBrand(brand)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="brandColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: brandColumns;"></mat-row>
+            </table>
+
+            <hr>
+            <h2>Car Models</h2>
+            <table mat-table [dataSource]="models" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="model">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Model</mat-header-cell>
+                    <mat-cell *matCellDef="let model"> {{model.modelName}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                    <mat-cell *matCellDef="let model">
+                        <button style="background-color: #FF3333; margin-left: 10px;" mat-mini-fab color="primary" matTooltip="Delete model" id="delete" (click)="onDeleteModel(model)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="modelColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: modelColumns;"></mat-row>
+            </table>
+
+            <hr>
+            <h2>Transmission Types</h2>
+            <table mat-table [dataSource]="transmissions" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="transmission">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Transmission</mat-header-cell>
+                    <mat-cell *matCellDef="let transmission"> {{transmission.transmissionType}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                    <mat-cell *matCellDef="let transmission">
+                        <button style="background-color: #FF3333; margin-left: 10px;" mat-mini-fab color="primary" matTooltip="Delete transmission" id="delete" (click)="onDeleteTransmission(transmission)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="transmissionColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: transmissionColumns;"></mat-row>
+            </table>
+
+            <hr>
+            <h2>Fuel Types</h2>
+            <table mat-table [dataSource]="fuels" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="fuel">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Fuel</mat-header-cell>
+                    <mat-cell *matCellDef="let fuel"> {{fuel.fuelType}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                    <mat-cell *matCellDef="let fuel">
+                        <button style="background-color: #FF3333; margin-left: 10px;" mat-mini-fab color="primary" matTooltip="Delete fuel" id="delete" (click)="onDeleteFuel(fuel)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="fuelColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: fuelColumns;"></mat-row>
+            </table>
+
+            <hr>
+            <h2>Body Types</h2>
+            <table mat-table [dataSource]="bodyTypes" class="mat-elevation-z8" matSort>
+                <ng-container matColumnDef="body">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Body</mat-header-cell>
+                    <mat-cell *matCellDef="let body"> {{body.bodyType}} </mat-cell>
+                </ng-container>
+                
+                <ng-container matColumnDef="delete">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Delete</mat-header-cell>
+                    <mat-cell *matCellDef="let body">
+                        <button style="background-color: #FF3333; margin-left: 10px;" mat-mini-fab color="primary" matTooltip="Delete body type" id="delete" (click)="onDeleteBody(body)">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="bodyColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: bodyColumns;"></mat-row>
+            </table>
+
+            <div class="back">
+                <button id="back" mat-flat-button color="primary" [routerLink]="['/admin']"><span><i class="fa fa-arrow-left"></i> Back</span></button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

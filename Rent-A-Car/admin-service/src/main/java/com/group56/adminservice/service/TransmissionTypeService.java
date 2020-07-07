@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TransmissionTypeService {
@@ -41,8 +42,10 @@ public class TransmissionTypeService {
         return new ResponseEntity<>("Transmission Type not found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllTransmissionTypes() {
+    public ResponseEntity<?> getActiveTransmissionTypes() {
         List<TransmissionType> transmissionTypes = transmissionTypeRepository.findAll();
+        transmissionTypes = transmissionTypes.stream().filter(TransmissionType::isActive).collect(Collectors.toList());
+
         return new ResponseEntity<>(transmissionTypes, HttpStatus.OK);
     }
 }

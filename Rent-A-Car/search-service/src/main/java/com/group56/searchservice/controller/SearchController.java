@@ -3,6 +3,7 @@ package com.group56.searchservice.controller;
 import com.group56.searchservice.DTO.AdvancedQueryDTO;
 import com.group56.searchservice.DTO.AdvertFilterDTO;
 import com.group56.searchservice.DTO.AdvertQueryDTO;
+import com.group56.searchservice.DTO.AdvertSortDTO;
 import com.group56.searchservice.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,5 +48,10 @@ public class SearchController {
     @PostMapping("/advanced/filter")
     public ResponseEntity<?> advancedFilter(@RequestBody AdvancedQueryDTO advertDTO) {
         return searchService.advancedFilter(advertDTO);
+    }
+
+    @PostMapping("/sort")
+    public ResponseEntity<?> sortAdverts(@RequestBody AdvertSortDTO advertSortDTO) {
+        return searchService.sortAdverts(advertSortDTO);
     }
 }

@@ -18,8 +18,8 @@ public class CarBrandController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getCarBrands() {
-        return carBrandService.getCarBrands();
+    public ResponseEntity<?> getActiveCarBrands() {
+        return carBrandService.getActiveCarBrans();
     }
 
     @PostMapping
@@ -32,7 +32,7 @@ public class CarBrandController {
         return carBrandService.modifyBrandName(brandDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeBrand(@RequestBody BrandDTO brandDTO) {
         return carBrandService.removeBrand(brandDTO);
     }

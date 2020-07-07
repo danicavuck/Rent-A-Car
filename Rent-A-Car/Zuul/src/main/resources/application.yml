@@ -38,3 +38,6 @@ zuul:
     messaging-service:
       path: /messaging-service/**
       url: http://localhost:8083/messaging-service/
+    notification-service:
+      path: /notification-service/**
+      url: http://localhost:8084/notification-service/

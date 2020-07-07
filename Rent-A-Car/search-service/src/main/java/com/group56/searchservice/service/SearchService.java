@@ -1,9 +1,6 @@
 package com.group56.searchservice.service;
 
-import com.group56.searchservice.DTO.AdvancedQueryDTO;
-import com.group56.searchservice.DTO.AdvertFilterDTO;
-import com.group56.searchservice.DTO.AdvertPreviewDTO;
-import com.group56.searchservice.DTO.AdvertQueryDTO;
+import com.group56.searchservice.DTO.*;
 import com.group56.searchservice.model.Advert;
 import com.group56.searchservice.repository.AdvertRepository;
 import org.slf4j.Logger;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -259,5 +257,62 @@ public class SearchService {
         }
 
         return dtos;
+    }
+
+    public ResponseEntity<?> sortAdverts(AdvertSortDTO advertSortDTO) {
+        List<AdvertPreviewDTO> adverts = advertSortDTO.getAdverts();
+
+        switch (advertSortDTO.getCriteria()) {
+            case "priceAsc" : adverts = sortAdvertsByPriceAscending(adverts);
+                break;
+            case "priceDesc" : adverts = sortAdvertsByPriceDescending(adverts);
+                break;
+            case "mileageAsc" : adverts = sortAdvertsByMileageAscending(adverts);
+                break;
+            case "mileageDesc" : adverts = sortAdvertsByMileageDescending(adverts);
+                break;
+            case "marksAsc" : adverts = sortAdvertsByMarksAscending(adverts);
+                break;
+            case "marksDesc" : adverts = sortAdvertsByMarksDescending(adverts);
+                break;
+            default: return new ResponseEntity<>("Unfamiliar criteria", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(adverts, HttpStatus.OK);
+    }
+
+    private List<AdvertPreviewDTO> sortAdvertsByPriceAscending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getPrice))
+                .collect(Collectors.toList());
+    }
+
+    private List<AdvertPreviewDTO> sortAdvertsByPriceDescending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getPrice).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private List<AdvertPreviewDTO> sortAdvertsByMileageAscending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getMileage))
+                .collect(Collectors.toList());
+    }
+
+    private List<AdvertPreviewDTO> sortAdvertsByMileageDescending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getMileage).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private List<AdvertPreviewDTO> sortAdvertsByMarksAscending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getCarLocation))
+                .collect(Collectors.toList());
+    }
+    private List<AdvertPreviewDTO> sortAdvertsByMarksDescending(List<AdvertPreviewDTO> adverts) {
+        return adverts.stream()
+                .sorted(Comparator.comparing(AdvertPreviewDTO::getCarLocation).reversed())
+                .collect(Collectors.toList());
     }
 }
