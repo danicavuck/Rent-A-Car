@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/posting-service/advert")
@@ -50,6 +51,11 @@ public class AdvertController {
     @GetMapping("/{advertUUID}")
     public ResponseEntity<?> getSingleAdvert(@PathVariable("advertUUID") String uuid) {
         return advertService.getSingleAdvert(uuid);
+    }
+
+    @PostMapping("/advertList")
+    public ResponseEntity<?> getListAdverts(@RequestBody ArrayList<String> uuid) {
+        return advertService.getListAdverts(uuid);
     }
 
     @PostMapping("/profile-image/{advertUUID}")

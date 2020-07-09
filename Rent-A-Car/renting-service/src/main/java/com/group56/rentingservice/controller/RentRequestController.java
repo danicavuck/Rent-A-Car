@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
-@RestController
-@CrossOrigin
+@Controller
 @RequestMapping("/renting-service/rentRequest")
 public class RentRequestController {
 
@@ -21,25 +20,27 @@ public class RentRequestController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO, HttpSession session){
-        return rentRequestService.addRentRequest(rentRequestDTO, session);
+    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
+        System.out.println(rentRequestDTO.getAdvertIds());
+        System.out.println(rentRequestDTO.getUsername());
+        return rentRequestService.addRentRequest(rentRequestDTO);
     }
 
     @GetMapping(value = "/owner")
-    public ResponseEntity<?> getRentRequestsForOwner(HttpSession session){
-        return rentRequestService.getRentRequestsForOwner(session);
+    public ResponseEntity<?> getRentRequestsForOwner(String username){
+        return rentRequestService.getRentRequestsForOwner(username);
     }
 
 
     @PutMapping(value = "/accept")
-    public ResponseEntity<?> acceptRentRequest(Long rrId,HttpSession session){
-        return rentRequestService.acceptRentRequest(rrId,session);
+    public ResponseEntity<?> acceptRentRequest(Long rrId,String username){
+        return rentRequestService.acceptRentRequest(rrId,username);
     }
 
 
     @PutMapping(value = "/decline")
-    public ResponseEntity<?> declineRentRequest(Long rrId,HttpSession session){
-        return rentRequestService.declineRentRequest(rrId,session);
+    public ResponseEntity<?> declineRentRequest(Long rrId,String username){
+        return rentRequestService.declineRentRequest(rrId,username);
     }
 
 }

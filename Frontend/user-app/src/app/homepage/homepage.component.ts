@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import { CartServiceComponent } from '../service/cart-service/cart-service.component';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class HomepageComponent implements OnInit {
   imageToShow: any;
   response: Response;
   blob: Blob;
+  cart: string[];
+
 
   min = Date();
   rentSpan: RentSpan = {
@@ -38,12 +41,55 @@ export class HomepageComponent implements OnInit {
     rentEndingDate: new Date()
   };
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,private cartService : CartServiceComponent) {
+    
+   }
 
   ngOnInit(): void {
+    this.cartService.removeAllAdverts();
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
+    //this.test();
     this.fetchAdverts();
+  }
+
+  async test() {
+    const apiEndpoint = 'http://localhost:8080/posting-service/advert/test';
+    this.http.get(apiEndpoint).subscribe(response => {
+     
+        console.log("pogodio");
+    }, err => {
+      console.log('nie pogodio ', err);
+    });
+  }
+
+  
+  onAddToCart(uuid : string) : void {
+    this.cart = this.cartService.getFromCart();
+    console.log(this.cart);
+      if(this.cart == null)
+      {
+        this.cart = [];
+        this.cart.push(uuid);
+        this.cartService.addAdvertsToCart(this.cart)
+        let n  = this.cartService.getAdvertNumber();
+        n += 1;
+        this.cartService.setAdvertNumber(n);
+
+      }else
+      {
+        let tempAdvert = this.cart.find(id => id == uuid);
+          if(tempAdvert == null)
+          {
+            this.cart.push(uuid);
+            this.cartService.addAdvertsToCart(this.cart);
+            let n  = this.cartService.getAdvertNumber();
+            n += 1;
+            this.cartService.setAdvertNumber(n);
+          }   
+          console.log("This advert already in cart!");
+      }
+
   }
 
   async fetchAdverts() {

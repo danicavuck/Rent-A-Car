@@ -33,6 +33,8 @@ import { AddAdvertComponent } from './UserSection/add-advert/add-advert.componen
 import { ReviewComponent } from './review/review.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdvertComponent } from './advert/advert.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { CartServiceComponent } from './service/cart-service/cart-service.component';
 
 
 const appRouts: Routes = [
@@ -44,6 +46,7 @@ const appRouts: Routes = [
   { path: 'advert', component: AddAdvertComponent },
   { path: 'details', component: AdvertComponent },
   { path: 'home', component: HomepageComponent },
+  { path: 'cart', component:ShoppingCartComponent},
   { path: '', redirectTo : '/home', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent }
 ];
@@ -65,7 +68,9 @@ const appRouts: Routes = [
     HomepageComponent,
     AddAdvertComponent,
     ReviewComponent,
-    AdvertComponent
+    AdvertComponent,
+    ShoppingCartComponent,
+    CartServiceComponent
   ],
   entryComponents: [
     ReviewComponent

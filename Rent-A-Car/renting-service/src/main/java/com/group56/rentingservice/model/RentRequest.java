@@ -26,10 +26,10 @@ public class RentRequest {
 
     //user that made the request
     @Column
-    private Long userId;
+    private String requestUsername;
     //advert creator
     @Column
-    private Long publisherId;
+    private String publisherUsername;
 
     @Column
     private boolean accepted;

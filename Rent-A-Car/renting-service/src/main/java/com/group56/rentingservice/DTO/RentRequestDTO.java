@@ -11,6 +11,7 @@ import java.util.ArrayList;
 @Builder
 @ToString
 public class RentRequestDTO {
-    private ArrayList<Long> advertId;
+    private ArrayList<String> advertIds;
     boolean bundle;
+    private String username;
 }

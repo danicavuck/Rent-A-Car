@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class RentRequestService {
@@ -37,40 +38,46 @@ public class RentRequestService {
     }
 
     //bundle - single
-    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO, HttpSession session){
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
-        if(user != null){
-            ArrayList<Long> owners = new ArrayList<>();
+    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
+        User u = User.builder().username("daxydana").id((long) 1).build();
+        userRepository.save(u);
+        User user = userRepository.findUserByUsername(rentRequestDTO.getUsername());
+        if(user != null) {
+            ArrayList<String> owners = new ArrayList<>();
             ArrayList<Advert> adverts = new ArrayList<>();
 
-            for(Long id : rentRequestDTO.getAdvertId()){
-                adverts.add(advertRepository.findAdvertById(id));
+            for (String id : rentRequestDTO.getAdvertIds()) {
+                System.out.println("doslo1");
+                adverts.add(advertRepository.findAdvertByUuid(UUID.fromString(id)));
+                System.out.println("doslo2");
             }
-            for(Advert a : adverts){
-               owners.add(a.getPublisher().getId());
+            for (Advert a : adverts) {
+                owners.add(a.getPublisher().getUsername());
             }
-            if(verifyAllEqualUsingALoop(owners)) {
+            if (verifyAllEqualUsingALoop(owners)) {
                 if (rentRequestDTO.isBundle()) {
-                    RentRequest rr = RentRequest.builder().advertList(adverts).bundle(true).
-                            rentRequestStatus(RentRequestStatus.PENDING).active(true).userId(user.getId()).build();
+                    RentRequest rr = RentRequest.builder().advertList(adverts).bundle(true).publisherUsername(owners.get(0))
+                            .requestUsername(user.getUsername()).rentRequestStatus(RentRequestStatus.PENDING).active(true).build();
                     rentRequestRepository.save(rr);
                     return new ResponseEntity<>("Rent request added (bundle)!", HttpStatus.CREATED);
-                    }
                 }
-            for(Advert a : adverts){
+            }
+            for (Advert a : adverts) {
                 ArrayList<Advert> adverts1 = new ArrayList<>();
                 adverts1.add(a);
                 RentRequest rr = RentRequest.builder().advertList(adverts1).active(true).bundle(false).
-                    rentRequestStatus(RentRequestStatus.PENDING).userId(user.getId()).build();
+                        publisherUsername(a.getPublisher().getUsername()).requestUsername(user.getUsername()).
+                        rentRequestStatus(RentRequestStatus.PENDING).build();
                 rentRequestRepository.save(rr);
-                return new ResponseEntity<>("Rent requests added!", HttpStatus.CREATED);
-                }
             }
-            return new ResponseEntity<>("User not found!", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("Rent requests added!", HttpStatus.CREATED);
         }
+        return new ResponseEntity<>("User not found!",HttpStatus.UNAUTHORIZED);
+    }
 
-    public boolean verifyAllEqualUsingALoop(List<Long> list) {
-        for (Long s : list) {
+
+    public boolean verifyAllEqualUsingALoop(List<String> list) {
+        for (String s : list) {
             if (!s.equals(list.get(0)))
                 return false;
         }
@@ -88,10 +95,10 @@ public class RentRequestService {
         return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
-    public ResponseEntity<?> getRentRequestsForOwner(HttpSession session){
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+    public ResponseEntity<?> getRentRequestsForOwner(String username){
+        User user = userRepository.findUserByUsername(username);
         if(user != null){
-            ArrayList<RentRequest> requests = rentRequestRepository.findRentRequestByPublisherId(user.getId());
+            ArrayList<RentRequest> requests = rentRequestRepository.findRentRequestByPublisherUsername(user.getUsername());
             if(requests != null){
                 return new ResponseEntity<>(requests,HttpStatus.OK);
             }else{
@@ -104,12 +111,12 @@ public class RentRequestService {
 
     @Transactional
     //@Lock(LockModeType.PESSIMISTIC_WRITE)
-    public ResponseEntity<?> acceptRentRequest(Long rrId, HttpSession session){
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+    public ResponseEntity<?> acceptRentRequest(Long rrId, String username){
+        User user = userRepository.findUserByUsername(username);
         if(user != null){
             RentRequest rr = rentRequestRepository.getOne(rrId);
 
-            if(rr == null && !rr.getPublisherId().equals(user.getId())){
+            if(rr == null ){
                 return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
             }
             rr.setActive(false);
@@ -123,8 +130,8 @@ public class RentRequestService {
 
     @Transactional
     //@Lock(LockModeType.PESSIMISTIC_WRITE)
-    public ResponseEntity<?> declineRentRequest(Long rrId, HttpSession session){
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+    public ResponseEntity<?> declineRentRequest(Long rrId, String username){
+        User user = userRepository.findUserByUsername(username);
         if(user != null){
             RentRequest rr = rentRequestRepository.getOne(rrId);
             if(rr == null){

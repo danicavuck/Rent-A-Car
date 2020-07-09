@@ -211,6 +211,19 @@ public class AdvertService {
         return new ResponseEntity<>("Advert with provided UUID found", HttpStatus.NOT_FOUND);
     }
 
+    public ResponseEntity<?> getListAdverts(ArrayList<String> uuid) {
+        List<Advert> adverts = new ArrayList<>();
+        for(String u : uuid) {
+            Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(u));
+            adverts.add(advert);
+            if (advert == null) {
+                return new ResponseEntity<>("Advert with provided UUID not found", HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity<>(mapAdvertsToDto(adverts), HttpStatus.OK);
+    }
+
+
     public List<Advert> getNewlyCreatedAdverts() {
         List<Advert> adverts = advertRepository.findAll();
         List<Advert> newAdverts = new ArrayList<>();

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { CartServiceComponent } from '../service/cart-service/cart-service.component';
 
 @Component({
   selector: 'app-advert',
@@ -10,8 +11,9 @@ export class AdvertComponent implements OnInit {
 
   adverts: Advert[];
   comments: Comment[];
+  cart: string[];
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient,private cartService : CartServiceComponent) { 
     this.fetchAdvert('75fb7c38-d686-44fc-8c9c-156161e5697f');
     this.fetchComments('75fb7c38-d686-44fc-8c9c-156161e5697f');
   }
@@ -43,6 +45,36 @@ export class AdvertComponent implements OnInit {
     return (date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + ".");
   }
 
+  onAddToCart(uuid : string) : void {
+    this.cart = this.cartService.getFromCart();
+    console.log(this.cart);
+    //this.cart = this.cartService.getAdvertUUIDS();
+      if(this.cart == null)
+      {
+        this.cart = [];
+        this.cart.push(uuid);
+        this.cartService.addAdvertsToCart(this.cart)
+        //this.cartService.setAdvertUUIDS(this.cart);
+        let n  = this.cartService.getAdvertNumber();
+        n += 1;
+        this.cartService.setAdvertNumber(n);
+
+      }else
+      {
+        let tempAdvert = this.cart.find(id => id == uuid);
+          if(tempAdvert == null)
+          {
+            this.cart.push(uuid);
+            this.cartService.addAdvertsToCart(this.cart)
+            //this.cartService.setAdvertUUIDS(this.cart);
+            let n  = this.cartService.getAdvertNumber();
+            n += 1;
+            this.cartService.setAdvertNumber(n);
+          }   
+          console.log("This advert already in cart!");
+      }
+
+  }
 }
 interface Advert {
   username: string;

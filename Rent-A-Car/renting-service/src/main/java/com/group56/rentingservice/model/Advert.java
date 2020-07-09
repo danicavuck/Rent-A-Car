@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -22,6 +23,7 @@ public class Advert {
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
+    private UUID uuid;
 
     @ManyToOne
     private User publisher;

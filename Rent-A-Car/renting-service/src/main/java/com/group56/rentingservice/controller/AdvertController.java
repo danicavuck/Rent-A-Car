@@ -5,13 +5,13 @@ import com.group56.rentingservice.model.Advert;
 import com.group56.rentingservice.service.AdvertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
 
-@RestController
-@CrossOrigin
+@Controller
 @RequestMapping("/renting-service/advert")
 public class AdvertController {
 
@@ -22,14 +22,14 @@ public class AdvertController {
         advertService = aService;
     }
 
-    @GetMapping
-    public ResponseEntity<?> getAdvertsForUser(HttpSession session){
-        return advertService.getAdvertsForUser(session);
-    }
-    @GetMapping(value = "/rentRequests")
-    public ResponseEntity<?> getRentRequestsForAdverts(Advert advert, HttpSession session){
-        return advertService.getRentRequestsForAdvert(advert,session);
-    }
+//    @GetMapping
+//    public ResponseEntity<?> getAdvertsForUser(HttpSession session){
+//        return advertService.getAdvertsForUser(session);
+//    }
+//    @GetMapping(value = "/rentRequests")
+//    public ResponseEntity<?> getRentRequestsForAdverts(Advert advert, HttpSession session){
+//        return advertService.getRentRequestsForAdvert(advert,session);
+//    }
 
 
 }
