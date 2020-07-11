@@ -18,8 +18,8 @@ public class FuelTypeController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllFuelTypes() {
-        return fuelTypeService.getAllFuelTypes();
+    public ResponseEntity<?> getActiveFuelTypes() {
+        return fuelTypeService.getActiveFuelTypes();
     }
 
     @PostMapping
@@ -27,7 +27,7 @@ public class FuelTypeController {
         return fuelTypeService.addNewFuelType(fuelTypeDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeFuelType(@RequestBody FuelTypeDTO fuelTypeDTO) {
         return fuelTypeService.removeFuelType(fuelTypeDTO);
     }

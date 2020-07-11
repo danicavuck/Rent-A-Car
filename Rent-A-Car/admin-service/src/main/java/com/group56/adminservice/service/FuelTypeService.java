@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FuelTypeService {
@@ -41,8 +42,9 @@ public class FuelTypeService {
         return new ResponseEntity<>("Fuel Type doesn't exist", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllFuelTypes() {
+    public ResponseEntity<?> getActiveFuelTypes() {
         List<FuelType> fuelTypes = fuelTypeRepository.findAll();
+        fuelTypes = fuelTypes.stream().filter(FuelType::isActive).collect(Collectors.toList());
         return new ResponseEntity<>(fuelTypes, HttpStatus.OK);
     }
 }

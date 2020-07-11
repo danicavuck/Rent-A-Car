@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -69,14 +70,11 @@ public class UserService {
         return new ResponseEntity<>("Couldn't find user with provided username", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> getAllUsers() {
+    public ResponseEntity<?> getActiveUsers() {
         List<User> users = userRepository.findAll();
-        List<User> activeUsers = new ArrayList<>();
-        users.forEach(user -> {
-            if(user.isActive())
-                activeUsers.add(user);
-        });
-        return new ResponseEntity<>(makeDTOFromUsers(activeUsers), HttpStatus.OK);
+        users = users.stream().filter(User::isActive).collect(Collectors.toList());
+
+        return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
     }
 
     public List<UserXML> getUsersXMLFromSOAPRequest() {

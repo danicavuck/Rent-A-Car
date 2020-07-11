@@ -38,13 +38,22 @@ import { CartServiceComponent } from './service/cart-service/cart-service.compon
 import { RentRequestsComponent } from './UserSection/rent-requests/rent-requests.component';
 import { RentRequestDetailsComponent } from './service/rent-request-details/rent-request-details.component';
 import { DetailsComponent } from './UserSection/rent-requests/details/details.component';
+import { ProfileComponent } from './UserSection/profile/profile.component';
+import { MessageComponent } from './message/message.component';
+import { InboxComponent } from './inbox/inbox.component';
+import { InboxContactsComponent } from './inbox-contacts/inbox-contacts.component';
+import { InboxMessangerComponent } from './inbox-messanger/inbox-messanger.component';
+import { ManagingEntitiesComponent } from './AdminSection/managing-entities/managing-entities.component';
 
 
 const appRouts: Routes = [
   { path: 'login', component : LoginComponent },
   { path: 'registration', component : RegistrationComponent },
   { path: 'user', component: UserHomepageComponent },
+  { path: 'user/profile', component: ProfileComponent },
+  { path: 'inbox', component: InboxComponent },
   { path: 'admin', component: AdminHomepageComponent },
+  { path: 'admin/managing', component: ManagingEntitiesComponent },
   { path: 'agent', component: AgentHomepageComponent },
   { path: 'advert', component: AddAdvertComponent },
   { path: 'details', component: AdvertComponent },
@@ -78,10 +87,18 @@ const appRouts: Routes = [
     CartServiceComponent,
     RentRequestsComponent,
     RentRequestDetailsComponent,
-    DetailsComponent
+    DetailsComponent,
+    ProfileComponent,
+    MessageComponent,
+    InboxComponent,
+    InboxContactsComponent,
+    InboxMessangerComponent,
+    ManagingEntitiesComponent
+
   ],
   entryComponents: [
-    ReviewComponent
+    ReviewComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,
@@ -105,6 +122,11 @@ const appRouts: Routes = [
     NgbModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  exports: [
+    InboxComponent,
+    InboxContactsComponent,
+    InboxMessangerComponent
+  ],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

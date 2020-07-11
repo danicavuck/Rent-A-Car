@@ -14,5 +14,5 @@ public class AdvertUpdateDTO {
     private Long id;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
-
+    private String username;
 }

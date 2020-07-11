@@ -20,8 +20,9 @@ export class UserHomepageComponent implements OnInit {
   }
 
   openDialog() {
+    let username = localStorage.getItem('username');
     let dialogRef = this.dialog.open(ReviewComponent, {
-      data: {username: 'Skinny Pete', uuid: '5ccff5a6-b1b2-11ea-b3de-0242ac130004'},
+      data: {username: username, uuid: '5ccff5a6-b1b2-11ea-b3de-0242ac130004'},
       height: '350px',
       width: '500px',
     });
@@ -29,7 +30,10 @@ export class UserHomepageComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log(result);
     });
+  }
 
+  async openInbox() {
+    this.router.navigateByUrl("/inbox");
   }
 
   onLogout() {

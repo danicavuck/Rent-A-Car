@@ -35,3 +35,12 @@ zuul:
     review-service:
       path: /review-service/**
       url: http://localhost:8087/review-service/
+    image-service:
+      path: /image-service/**
+      url: http://localhost:8089/image-service/
+    messaging-service:
+      path: /messaging-service/**
+      url: http://localhost:8083/messaging-service/
+    notification-service:
+      path: /notification-service/**
+      url: http://localhost:8084/notification-service/

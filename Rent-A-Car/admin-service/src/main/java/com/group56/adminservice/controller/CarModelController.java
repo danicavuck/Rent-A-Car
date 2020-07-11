@@ -18,8 +18,8 @@ public class CarModelController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getCarModels() {
-        return carModelService.getCarModels();
+    public ResponseEntity<?> getActiveModels() {
+        return carModelService.getActiveCarModels();
     }
 
     @PostMapping
@@ -32,7 +32,7 @@ public class CarModelController {
         return carModelService.updateCarModel(carModelDTO);
     }
 
-    @DeleteMapping
+    @PostMapping("/delete")
     public ResponseEntity<?> removeModel(@RequestBody CarModelDTO carModelDTO) {
         return carModelService.removeCarModel(carModelDTO);
     }

@@ -1,0 +1,15 @@
+.content {
+    width: 100%;
+    display: table;
+}
+.contacts {
+    float: left;
+    width: 30%;
+    border-right: 1px solid rgb(85, 73, 73);
+    margin-right: 10%;
+}
+
+.messanger {
+    float: left;
+    width: 60%;
+}

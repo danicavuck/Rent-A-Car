@@ -93,7 +93,9 @@ public class ReviewService {
 
         comments.forEach(comment -> {
             //if(comment.getAdvert().getUuid().equals(uuid))
+            if(comment.getCommentStatus().equals(CommentStatus.APPROVED)) {
                 relevantComments.add(comment);
+            }
         });
 
         return new ResponseEntity<>(relevantComments, HttpStatus.OK);

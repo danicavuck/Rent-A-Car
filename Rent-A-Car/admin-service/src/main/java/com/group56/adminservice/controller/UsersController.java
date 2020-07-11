@@ -18,8 +18,8 @@ public class UsersController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<?> getActiveUsers() {
+        return userService.getActiveUsers();
     }
 
     @PostMapping("/block")

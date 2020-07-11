@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <title>Inbox Messanger</title>
+</head>
+<body>
+    <div class="text-center">
+        <button mat-flat-button class="fetch" (click)="fetchMessages()">Fetch messages for specific chat</button>
+        <hr>
+        <div class="chat">
+            <div class="chat-conversation">
+                <textarea name="conversation" id="conversation" cols="30" rows="10" readonly>
+                    {{renderedContent}}
+                </textarea>
+            </div>
+            <div class="chat-message">
+                <textarea [(ngModel)]="replyMessage" name="message" id="message" cols="30" rows="2" placeholder="Send a new message..."></textarea>
+                <button mat-raised-button id="send" (click)="onSendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 export class AddAdvertComponent implements OnInit {
 
   images = null;
+  protection : boolean = true;
+  limit : boolean = true;
 
   cities : City[] = [
     {value: 'Novi Sad', viewValue: 'Novi Sad'},
@@ -47,9 +49,11 @@ export class AddAdvertComponent implements OnInit {
     transmission: '',
     bodyType: '',
     mileage: 0,
-    isRentLimited: false,
+    rentLimited: true,
     limitInKilometers: 0,
-    numberOfSeatsForChildren: 0
+    numberOfSeatsForChildren: 0,
+    protectionAvailable : true,
+    protectionPrice: 0
   };
 
   constructor(private http: HttpClient, private router: Router) { 
@@ -66,10 +70,12 @@ export class AddAdvertComponent implements OnInit {
 
   onSubmit() {
     const apiEndpoint = 'http://localhost:8080/posting-service/advert';
-
+    
     this.data.dateStart = this.rentSpan.rentSpan[0];
     this.data.dateEnd = this.rentSpan.rentSpan[1];
     this.data.username = localStorage.getItem('username');
+    this.data.protectionAvailable = this.protection;
+    this.data.rentLimited = this.limit;
     this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
       this.saveImages(response);
     }, err => {
@@ -81,7 +87,7 @@ export class AddAdvertComponent implements OnInit {
     let body = new FormData();
     body.append('images', this.images);
 
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/profile-image/' + uuid;
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + uuid;
     this.http.post(apiEndpoint, body, {responseType: 'text', withCredentials: true}).subscribe(() => {
       console.log('Image posted');
     }, err => {
@@ -154,9 +160,11 @@ export interface Advert {
   transmission: string;
   bodyType: string;
   mileage: number;
-  isRentLimited: boolean;
+  rentLimited: boolean;
   limitInKilometers: number;
   numberOfSeatsForChildren: number;
+  protectionAvailable: boolean;
+  protectionPrice : number;
 };
 
 interface City {

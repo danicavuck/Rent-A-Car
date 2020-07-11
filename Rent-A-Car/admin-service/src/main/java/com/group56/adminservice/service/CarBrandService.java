@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CarBrandService {
@@ -58,8 +59,9 @@ public class CarBrandService {
         return new ResponseEntity<>("Old brand name is not found", HttpStatus.FORBIDDEN);
     }
 
-    public ResponseEntity<?> getCarBrands() {
+    public ResponseEntity<?> getActiveCarBrans() {
         List<CarBrand> carBrands = carBrandRepository.findAll();
+        carBrands = carBrands.stream().filter(CarBrand::isActive).collect(Collectors.toList());
         return new ResponseEntity<>(carBrands, HttpStatus.OK);
     }
 }

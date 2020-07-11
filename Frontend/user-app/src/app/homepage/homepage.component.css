@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.owl {
+    margin: 10px 0;
+}
+
 #city {
     margin-left: -30%;
     width: 20%;
@@ -22,6 +26,32 @@
     width: 15%;
     margin-left: -15%;
 }
+
+.advanced-form-section {
+    margin-top: 5%;
+    margin-bottom: 1%;
+}
+
+#advanced-search {
+    width: 50%;
+    margin-bottom: 3%;
+}
+
+.advanced-button {
+    width: 50%;
+    margin-top: 3%;
+    margin-bottom: 1%;
+}
+
+.filtering {
+    margin: 2% 0;
+}
+
+.filtering-criteria {
+    margin-right: 30px;
+    width: 50%;
+}
+
 
 .rout {
     display: inline;
