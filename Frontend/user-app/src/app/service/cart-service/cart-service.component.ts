@@ -13,7 +13,6 @@ export class CartServiceComponent implements OnInit {
   private advert_number : number;
   
   constructor() {
-    this.advert_number = 0;
    }
 
   ngOnInit(): void {

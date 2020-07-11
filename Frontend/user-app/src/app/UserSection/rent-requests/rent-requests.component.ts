@@ -14,7 +14,7 @@ export class RentRequestsComponent implements OnInit {
   public model : Array<RentRequestDetailsDTO>;
 
   constructor(private router:Router,private http: HttpClient, private service : RentRequestDetailsComponent) { 
-    //this.test();
+    this.test();
     this.getRequests();
   }
 

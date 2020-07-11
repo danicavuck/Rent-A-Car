@@ -21,6 +21,8 @@ import java.util.UUID;
 @EnableEurekaClient
 public class RentingServiceApplication {
 
+	
+
 	public static void main(String[] args) {
 
 		SpringApplication.run(RentingServiceApplication.class, args);
