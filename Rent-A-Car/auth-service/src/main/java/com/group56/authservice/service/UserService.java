@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
@@ -99,4 +100,24 @@ public class UserService {
         });
         return notShared;
     }
+
+    public void fetchUsers() {
+        RestTemplate restTemplate = new RestTemplate();
+        String apiEndpoint = "http://localhost:8080/admin-service/user/modified";
+        ResponseEntity<User[]> response = restTemplate.getForEntity(apiEndpoint, User[].class);
+        User[] users = response.getBody();
+
+        for(int i = 0; i<users.length; i++) {
+            modifyAndSaveUser(users[i]);
+        }
+    }
+    private void modifyAndSaveUser(User modifiedUser) {
+        User user = userRepository.findByUsername(modifiedUser.getUsername());
+        if(user != null) {
+            user.setActive(modifiedUser.isActive());
+            user.setBlocked(modifiedUser.isBlocked());
+            userRepository.save(user);
+        }
+    }
+
 }

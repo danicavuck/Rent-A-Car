@@ -26,4 +26,5 @@ public class User {
     private boolean isActive = true;
     private boolean isBlocked = false;
     private int numberOfAdvertsCancelled = 0;
+    private boolean modified = false;
 }

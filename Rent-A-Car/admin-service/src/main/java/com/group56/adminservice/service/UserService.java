@@ -4,6 +4,7 @@ import com.group56.adminservice.DTO.UserDTO;
 import com.group56.adminservice.client.SoapClient;
 import com.group56.adminservice.model.User;
 import com.group56.adminservice.repository.UserRepository;
+import com.group56.adminservice.utility.MessagePublisher;
 import com.group56.soap.GetUsersRequest;
 import com.group56.soap.GetUsersResponse;
 import com.group56.soap.UserXML;
@@ -21,11 +22,13 @@ import java.util.stream.Collectors;
 public class UserService {
     private UserRepository userRepository;
     private SoapClient soapClient;
+    private MessagePublisher messagePublisher;
 
     @Autowired
-    public UserService(UserRepository userRepository, SoapClient soapClient) {
+    public UserService(UserRepository userRepository, SoapClient soapClient, MessagePublisher messagePublisher) {
         this.userRepository = userRepository;
         this.soapClient = soapClient;
+        this.messagePublisher = messagePublisher;
     }
 
     @Transactional
@@ -34,7 +37,10 @@ public class UserService {
         if(user != null) {
             if(user.isActive()){
                 user.setBlocked(true);
+                user.setModified(true);
                 userRepository.save(user);
+                messagePublisher.sendAMessageToQueue("USER_MODIFIED");
+
                 return new ResponseEntity<>("User is blocked!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
@@ -48,6 +54,7 @@ public class UserService {
         if(user != null) {
             if(user.isActive()){
                 user.setBlocked(false);
+                user.setModified(true);
                 userRepository.save(user);
                 return new ResponseEntity<>("User is activated!", HttpStatus.OK);
             }
@@ -62,6 +69,7 @@ public class UserService {
         if(user != null) {
             if(user.isActive()){
                 user.setActive(false);
+                user.setModified(true);
                 userRepository.save(user);
                 return new ResponseEntity<>("User is successfully deleted!", HttpStatus.NO_CONTENT);
             }
@@ -73,6 +81,17 @@ public class UserService {
     public ResponseEntity<?> getActiveUsers() {
         List<User> users = userRepository.findAll();
         users = users.stream().filter(User::isActive).collect(Collectors.toList());
+        return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getModifiedUsers() {
+        List<User> users = userRepository.findAll();
+        users = users.stream().filter(User::isModified).collect(Collectors.toList());
+
+        for(User user : users) {
+            user.setModified(false);
+            userRepository.save(user);
+        }
 
         return new ResponseEntity<>(makeDTOFromUsers(users), HttpStatus.OK);
     }

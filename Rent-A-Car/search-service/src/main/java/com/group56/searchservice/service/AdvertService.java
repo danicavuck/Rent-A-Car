@@ -42,7 +42,6 @@ public class AdvertService {
         for(int i = 0; i< adverts.length; i++) {
             saveAdvert(adverts[i]);
         }
-
     }
 
     private void saveAdvert(Advert advert) {

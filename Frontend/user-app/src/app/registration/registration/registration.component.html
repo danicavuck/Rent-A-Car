@@ -9,8 +9,8 @@
 <body>
     <div class="jumbotron">
         <div class="text-center">
-          <div class="mat-display-1" style="margin-top: 50px;">Choose role for signing up!</div>
-            <div class="select-class">
+          <!-- <div class="mat-display-1" style="margin-top: 50px;">Registration</div> -->
+            <!-- <div class="select-class">
                 <mat-form-field class="mat-form">
                     <mat-label>Register as:</mat-label>
                     <mat-select [ngModel]="getSelected()" (ngModelChange)="setSelected($event)">
@@ -19,10 +19,10 @@
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
-            </div>
-            <app-admin-registration *ngIf="adminPreview"></app-admin-registration>
-            <app-user-registration *ngIf="userPreview"></app-user-registration>
-            <app-agent-registration *ngIf="agentPreview"></app-agent-registration>
+            </div> -->
+            <!-- <app-admin-registration *ngIf="adminPreview"></app-admin-registration>-->
+            <app-user-registration></app-user-registration> 
+            <!-- <app-agent-registration *ngIf="agentPreview"></app-agent-registration> -->
             <button type="button" mat-stroked-button color="accent" class="back-to-login" routerLink="/login">
               <i class="fa fa-sign-in"></i>
               <span> Back to Login Page</span>

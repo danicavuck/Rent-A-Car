@@ -44,6 +44,7 @@ import { InboxComponent } from './inbox/inbox.component';
 import { InboxContactsComponent } from './inbox-contacts/inbox-contacts.component';
 import { InboxMessangerComponent } from './inbox-messanger/inbox-messanger.component';
 import { ManagingEntitiesComponent } from './AdminSection/managing-entities/managing-entities.component';
+import { RegisterAgentComponent } from './AgentSection/register-agent/register-agent.component';
 
 
 const appRouts: Routes = [
@@ -54,6 +55,7 @@ const appRouts: Routes = [
   { path: 'inbox', component: InboxComponent },
   { path: 'admin', component: AdminHomepageComponent },
   { path: 'admin/managing', component: ManagingEntitiesComponent },
+  { path: 'admin/add-agent', component: AgentRegistrationComponent },
   { path: 'agent', component: AgentHomepageComponent },
   { path: 'advert', component: AddAdvertComponent },
   { path: 'details', component: AdvertComponent },
@@ -93,7 +95,8 @@ const appRouts: Routes = [
     InboxComponent,
     InboxContactsComponent,
     InboxMessangerComponent,
-    ManagingEntitiesComponent
+    ManagingEntitiesComponent,
+    RegisterAgentComponent
 
   ],
   entryComponents: [

@@ -36,4 +36,9 @@ public class UsersController {
     public ResponseEntity<?> removeUser(@RequestBody UserDTO userDTO) {
         return userService.removeUser(userDTO);
     }
+
+    @GetMapping("/modified")
+    public ResponseEntity<?> getModifiedUsers() {
+        return userService.getModifiedUsers();
+    }
 }
