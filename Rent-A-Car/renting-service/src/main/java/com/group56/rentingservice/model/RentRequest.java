@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class RentRequest {
     private boolean active;
     @Column
     private boolean bundle;
+    @Column
+    private UUID uuid;
 
     //user that made the request
     @Column

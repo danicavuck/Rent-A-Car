@@ -2,6 +2,7 @@ package com.group56.postingservice.controller;
 
 import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
+import com.group56.postingservice.DTO.RentRequestDTO;
 import com.group56.postingservice.service.AdvertService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,11 @@ public class AdvertController {
     @PutMapping
     public ResponseEntity<?> updateAdvert(@RequestBody AdvertUpdateDTO advertUpdateDTO, HttpSession session){
         return advertService.updateAdvert(advertUpdateDTO, session);
+    }
+
+    @PostMapping("/fromRentRequest")
+    public ResponseEntity<?> getAdvertFromRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
+        return advertService.getAdvertsFromRentRequest(rentRequestDTO);
     }
 
     @GetMapping("/{advertUUID}")

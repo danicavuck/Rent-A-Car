@@ -4,7 +4,6 @@ import com.group56.postingservice.controller.AdvertController;
 import com.group56.postingservice.listener.MessageListener;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.AdvertRepository;
-import com.sun.deploy.security.CertStore;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;

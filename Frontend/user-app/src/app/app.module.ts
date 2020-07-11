@@ -35,6 +35,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdvertComponent } from './advert/advert.component';
 import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
 import { CartServiceComponent } from './service/cart-service/cart-service.component';
+import { RentRequestsComponent } from './UserSection/rent-requests/rent-requests.component';
+import { RentRequestDetailsComponent } from './service/rent-request-details/rent-request-details.component';
+import { DetailsComponent } from './UserSection/rent-requests/details/details.component';
 
 
 const appRouts: Routes = [
@@ -47,6 +50,8 @@ const appRouts: Routes = [
   { path: 'details', component: AdvertComponent },
   { path: 'home', component: HomepageComponent },
   { path: 'cart', component:ShoppingCartComponent},
+  { path: 'rent-requests', component:RentRequestsComponent},
+  { path: 'rent-requests/details', component: DetailsComponent},
   { path: '', redirectTo : '/home', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent }
 ];
@@ -70,7 +75,10 @@ const appRouts: Routes = [
     ReviewComponent,
     AdvertComponent,
     ShoppingCartComponent,
-    CartServiceComponent
+    CartServiceComponent,
+    RentRequestsComponent,
+    RentRequestDetailsComponent,
+    DetailsComponent
   ],
   entryComponents: [
     ReviewComponent

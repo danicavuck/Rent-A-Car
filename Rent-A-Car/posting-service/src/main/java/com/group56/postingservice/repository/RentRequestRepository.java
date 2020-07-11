@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 @Repository
 public interface RentRequestRepository extends JpaRepository<RentRequest,Long> {
     RentRequest findRentRequestById(Long id);
-    ArrayList<RentRequest> findAllByUser(User user);
+
+    RentRequest findRentRequestByUuid(UUID uuid);
 
 }

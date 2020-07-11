@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/renting-service/rentRequest")
@@ -21,26 +22,30 @@ public class RentRequestController {
 
     @PostMapping(value = "/add")
     public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
-        System.out.println(rentRequestDTO.getAdvertIds());
-        System.out.println(rentRequestDTO.getUsername());
         return rentRequestService.addRentRequest(rentRequestDTO);
     }
 
-    @GetMapping(value = "/owner")
-    public ResponseEntity<?> getRentRequestsForOwner(String username){
-        return rentRequestService.getRentRequestsForOwner(username);
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getRentRequestsForOwner(@PathVariable("username") String user){
+        return rentRequestService.getRentRequestsForOwner(user);
     }
 
 
-    @PutMapping(value = "/accept")
-    public ResponseEntity<?> acceptRentRequest(Long rrId,String username){
-        return rentRequestService.acceptRentRequest(rrId,username);
+    @PostMapping(value = "/accept/{username}")
+    public ResponseEntity<?> acceptRentRequest(@PathVariable("username") String username,@RequestBody String rrId){
+        return rentRequestService.acceptRentRequest(username,rrId);
     }
 
 
-    @PutMapping(value = "/decline")
-    public ResponseEntity<?> declineRentRequest(Long rrId,String username){
-        return rentRequestService.declineRentRequest(rrId,username);
+    @PostMapping(value = "/decline/{username}")
+    public ResponseEntity<?> declineRentRequest(@PathVariable("username") String username,@RequestBody String rrId){
+        return rentRequestService.declineRentRequest(username,rrId);
+    }
+
+
+    @GetMapping("/test")
+    public ResponseEntity<?> testing() {
+        return rentRequestService.testing();
     }
 
 }

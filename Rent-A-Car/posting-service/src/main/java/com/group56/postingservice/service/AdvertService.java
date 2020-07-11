@@ -2,6 +2,7 @@ package com.group56.postingservice.service;
 
 import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
+import com.group56.postingservice.DTO.RentRequestDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
 import com.group56.postingservice.util.MessagePublisher;
@@ -46,6 +47,17 @@ public class AdvertService {
         this.rentRequestRepository = rrRepo;
         this.messagePublisher = broker;
     }
+
+    public ResponseEntity<?> getAdvertsFromRentRequest(RentRequestDTO rentRequestDTO) {
+        RentRequest rentRequest = rentRequestRepository.findRentRequestByUuid(UUID.fromString(rentRequestDTO.getUuid()));
+        if(rentRequest != null) {
+            List<Advert> adverts = rentRequest.getAdvertList();
+            List<AdvertDTO> ads = mapAdvertsToDto(adverts);
+            return new ResponseEntity<>(ads,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
 
     public ResponseEntity<?> addAdvert(AdvertDTO advertDTO){
         User user = userRepository.findUserByUsername(advertDTO.getUsername());
