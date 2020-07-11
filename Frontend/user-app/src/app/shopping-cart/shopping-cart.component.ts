@@ -82,9 +82,10 @@ export class ShoppingCartComponent implements OnInit {
   }
   
   async fetchAdverts(advert_uuids) {
-    const apiEndpoint = 'http://localhost:8080/posting-service/advert/advertList';
+    const apiEndpoint = 'http://localhost:8080/search-service/advertList';
       this.http.post(apiEndpoint,advert_uuids).subscribe(response => {
         this.adverts = response as Array<Advert>;
+        this.assignImagesToAdverts(this.adverts);
         for(let i = 0; i < this.adverts.length; i++) {
               this.totalPrice += this.adverts[i].price;
         }
@@ -92,6 +93,21 @@ export class ShoppingCartComponent implements OnInit {
       console.log('Unable to fetch adverts: ', err);
     });
 
+  }
+
+  async assignImagesToAdverts(adverts : Array<Advert>) {
+    for(let i=0; i<adverts.length; i++) {
+      this.getImageURL(this.adverts[i]);
+    }
+  }
+
+  async getImageURL(advert: Advert) {
+    const apiEndpoint = 'http://localhost:8080/image-service/profile-image/' + advert.uuid;
+    this.http.get(apiEndpoint, {responseType: 'text', withCredentials: true}).subscribe(response => {
+      advert.imageURL = response as string;
+    }, err => {
+      console.log('Error fetching image URL', err);
+    });
   }
 
 }

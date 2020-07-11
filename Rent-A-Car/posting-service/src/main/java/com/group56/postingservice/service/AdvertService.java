@@ -294,6 +294,7 @@ public class AdvertService {
                     .marks(data.getMarks())
                     .comments(data.getComments())
                     .uuid(data.getUuid().toString())
+                    .description(data.getDescription())
                     .build();
 
             dtos.add(dto);

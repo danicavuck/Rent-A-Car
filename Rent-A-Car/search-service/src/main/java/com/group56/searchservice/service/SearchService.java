@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,8 +86,8 @@ public class SearchService {
             return adverts;
 
         return adverts.stream()
-                .filter(data -> data.getAvailableForRentFrom().isAfter(advertDTO.getFrom())
-                        && data.getAvailableForRentUntil().isBefore(advertDTO.getUntil()))
+                .filter(data -> data.getAvailableForRentFrom().isBefore(advertDTO.getFrom())
+                        && data.getAvailableForRentUntil().isAfter(advertDTO.getUntil()))
                 .collect(Collectors.toList());
     }
 
@@ -119,6 +120,7 @@ public class SearchService {
                 .uuid(advert.getUuid())
                 .protectionAvailable(advert.isProtectionAvailable())
                 .protectionPrice(advert.getProtectionPrice())
+                .description(advert.getDescription())
                 .build();
     }
 
@@ -143,7 +145,7 @@ public class SearchService {
             filteredList = filterByCarLocation(filteredList, advertDTO.getCarLocation());
         }
 
-        if(advertDTO.getFrom() != null && advertDTO.getUntil() != null) {
+        if(advertDTO.getFrom() != null || advertDTO.getUntil() != null) {
             filteredList = filterByDate(filteredList, advertDTO.getFrom(), advertDTO.getUntil());
         }
 
@@ -190,8 +192,8 @@ public class SearchService {
 
     private List<Advert> filterByDate(List<Advert> filteredList, LocalDateTime from, LocalDateTime until) {
         return filteredList.stream()
-                .filter(advert -> advert.getAvailableForRentFrom().isAfter(from)
-                && advert.getAvailableForRentUntil().isBefore(until))
+                .filter(advert -> advert.getAvailableForRentFrom().isBefore(from)
+                && advert.getAvailableForRentUntil().isAfter(until))
                 .collect(Collectors.toList());
     }
 
@@ -314,5 +316,46 @@ public class SearchService {
         return adverts.stream()
                 .sorted(Comparator.comparing(AdvertPreviewDTO::getCarLocation).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public ResponseEntity<?> getListAdverts(ArrayList<String> uuid) {
+        List<Advert> adverts = new ArrayList<>();
+        for(String u : uuid) {
+            Advert advert = advertRepository.findAdvertByUuid(u);
+            adverts.add(advert);
+            if (advert == null) {
+                return new ResponseEntity<>("Advert with provided UUID not found", HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity<>(mapAdvertsToDto(adverts), HttpStatus.OK);
+
+    }
+
+    private List<AdvertDTO> mapAdvertsToDto(List<Advert> adverts) {
+        List<AdvertDTO> dtos = new ArrayList<>();
+
+        adverts.forEach(advert -> {
+            AdvertDTO dto = AdvertDTO.builder()
+                    .dateStart(advert.getRentFrom())
+                    .dateEnd(advert.getRentUntil())
+                    .price(advert.getPrice())
+                    .uuid(advert.getUuid().toString())
+                    .bodyType(advert.getCar().getBodyType().getBodyType())
+                    .fuel(advert.getCar().getFuelType().getFuelType())
+                    .model(advert.getCar().getCarModel().getModelName())
+                    .brand(advert.getCar().getCarBrand().getBrandName())
+                    .transmission(advert.getCar().getTransmissionType().getTransmissionType())
+                    .mileage(advert.getCar().getMileage())
+                    .rentLimited(advert.getCar().isRentLimited())
+                    .limitInKilometers(advert.getCar().getLimitInKilometers())
+                    .numberOfSeatsForChildren(advert.getCar().getNumberOfSeatsForChildren())
+                    .carLocation(advert.getCarLocation())
+                    .username(advert.getPublisher())
+                    .build();
+
+            dtos.add(dto);
+        });
+
+        return dtos;
     }
 }

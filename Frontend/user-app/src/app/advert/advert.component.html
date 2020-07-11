@@ -14,6 +14,7 @@
         <div class="text-container">
             <p style="font-weight: bold;text-align: center;">{{advert.brand}} {{advert.model}}</p>
             <div class="left-coloumn">
+                <p>Description: {{advert.description}} </p>
                 <p>Fuel type: {{advert.fuel}}</p>
                 <p>Transmission: {{advert.transmission}}</p>
                 <p>Price: {{advert.price}}$</p>
@@ -31,7 +32,7 @@
                 <p *ngIf="advert.protectionAvailable"> Protection price: {{advert.protectionPrice}}</p>
                 <p>Seats for children: {{advert.numberOfSeatsForChildren}}</p>
             </div>
-            <p style="text-align: center;">Posted by <a href="/details">{{advert.username}}</a></p>
+            
             <div class="wrapper">
                 <button  mat-stroked-button color="primary" class="btn btn-primary btn-block"  (click)="onAddToCart(advert.uuid)"><i class="fa fa-cart-plus"></i><span> Add to cart</span></button>
             </div>

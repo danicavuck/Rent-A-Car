@@ -87,7 +87,6 @@ export class HomepageComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.cartService.removeAllAdverts();
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
     //this.test();
@@ -253,6 +252,7 @@ export class HomepageComponent implements OnInit {
   }
 
   routToDetails(advert: Advert) {
+    console.log('Setting advert ID: ', advert);
     localStorage.setItem('advertUUID', advert.uuid);
     this.router.navigateByUrl("/details");
   }

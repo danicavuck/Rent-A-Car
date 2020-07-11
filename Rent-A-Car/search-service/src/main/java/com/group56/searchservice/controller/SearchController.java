@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 @Controller
 @RequestMapping("/search-service")
 public class SearchController {
@@ -49,6 +51,12 @@ public class SearchController {
     public ResponseEntity<?> advancedFilter(@RequestBody AdvancedQueryDTO advertDTO) {
         return searchService.advancedFilter(advertDTO);
     }
+
+    @PostMapping("/advertList")
+    public ResponseEntity<?> getListAdverts(@RequestBody ArrayList<String> uuid) {
+        return searchService.getListAdverts(uuid);
+    }
+
 
     @PostMapping("/sort")
     public ResponseEntity<?> sortAdverts(@RequestBody AdvertSortDTO advertSortDTO) {

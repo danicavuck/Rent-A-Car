@@ -176,8 +176,6 @@
                         <p>Posted by: {{advert.publisher}} </p>
                     </div>
                     <div class="button-container">
-
-                        <button id="btn1"  mat-stroked-button color="primary" [routerLink]="'/details'"><i class="fa fa-info"></i><span> Details</span></button>
                         <button id= "btn2" *ngIf="loggedIn" mat-stroked-button color="primary" (click)="onAddToCart(advert.uuid)"><i class="fa fa-cart-plus"></i><span> Add to cart</span></button>
                         <button mat-stroked-button color="primary" (click)="routToDetails(advert)"><i class="fa fa-info"></i><span> Details</span></button>
 

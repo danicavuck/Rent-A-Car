@@ -10,7 +10,6 @@ import { Component, OnInit, Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class CartServiceComponent implements OnInit {
-  private advert_number : number;
   
   constructor() {
    }
@@ -19,11 +18,11 @@ export class CartServiceComponent implements OnInit {
   }
 
   public getAdvertNumber(){
-    return this.advert_number;
+    return JSON.parse(localStorage.getItem('advertNumber'));
   }
 
   public setAdvertNumber(n : number){
-    this.advert_number = n;
+    localStorage.setItem('advertNumber',JSON.stringify(n));
   }
 
   public addAdvertsToCart(uuids:string[]){

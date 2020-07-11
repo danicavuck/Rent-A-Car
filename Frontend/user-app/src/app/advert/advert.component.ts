@@ -13,19 +13,13 @@ export class AdvertComponent implements OnInit {
   imageURL: string;
   comments: Comment[];
   cart: string[];
-
-  constructor(private http: HttpClient,private cartService : CartServiceComponent) { 
-    this.fetchAdvert('75fb7c38-d686-44fc-8c9c-156161e5697f');
-    this.fetchComments('75fb7c38-d686-44fc-8c9c-156161e5697f');
-    
   adverts : Advert[];
 
-  constructor(private http: HttpClient, private router: Router) { 
+  constructor(private http: HttpClient, private router: Router,private cartService : CartServiceComponent) { 
     this.uuid = localStorage.getItem('advertUUID');
     this.fetchAdvert(this.uuid);
     this.fetchComments(this.uuid);
     this.fetchImage(this.uuid);
-
   }
 
   ngOnInit(): void {
@@ -129,4 +123,5 @@ export interface Advert {
   imageURL: string;
   protectionAvailable: boolean;
   protectionPrice: number;
+  description: string;
 };

@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
       }).subscribe(data => {
         localStorage.setItem('username', this.model.username);
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('advertNumber',JSON.stringify(0));
           switch(data) {
             case 'ADMIN': this.router.navigateByUrl('/admin');
                           break;

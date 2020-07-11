@@ -34,6 +34,7 @@ public class AdvertSearchDTO implements Serializable {
     private BigDecimal price;
     private String publisher;
     private String uuid;
+    private String description;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "car_id")

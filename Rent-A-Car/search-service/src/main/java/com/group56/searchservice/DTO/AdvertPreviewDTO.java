@@ -34,4 +34,5 @@ public class AdvertPreviewDTO {
     private String uuid;
     private boolean protectionAvailable;
     private BigDecimal protectionPrice;
+    private String description;
 }

@@ -90,15 +90,16 @@ public class AdvertController {
     @GetMapping("/profile-image/{advertUUID}")
     public ResponseEntity<?> getProfilePicture(@PathVariable("advertUUID") String uuid) {
         File rootFile = new File(uploadDirectory);
-        if(rootFile != null) {
+        if (rootFile != null) {
             for (File file : rootFile.listFiles()) {
-                if(file.getName().equals(uuid)) {
+                if (file.getName().equals(uuid)) {
                     return new ResponseEntity<>(file, HttpStatus.OK);
                 }
             }
             return new ResponseEntity<>("Profile picture not found", HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>("Could not find folder", HttpStatus.NOT_FOUND);
+    }
 
     @GetMapping("/search-service")
     public ResponseEntity<?> getAdvertsForSearchService() {
