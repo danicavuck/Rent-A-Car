@@ -3,6 +3,7 @@ package com.group56.postingservice.service;
 import com.group56.postingservice.DTO.AdvertDTO;
 import com.group56.postingservice.DTO.AdvertSearchDTO;
 import com.group56.postingservice.DTO.AdvertUpdateDTO;
+import com.group56.postingservice.DTO.RentRequestDTO;
 import com.group56.postingservice.model.*;
 import com.group56.postingservice.repository.*;
 import com.group56.postingservice.util.MessagePublisher;
@@ -50,6 +51,17 @@ public class AdvertService {
         this.rentRequestRepository = rrRepo;
         this.messagePublisher = broker;
     }
+
+    public ResponseEntity<?> getAdvertsFromRentRequest(RentRequestDTO rentRequestDTO) {
+        RentRequest rentRequest = rentRequestRepository.findRentRequestByUuid(UUID.fromString(rentRequestDTO.getUuid()));
+        if(rentRequest != null) {
+            List<Advert> adverts = rentRequest.getAdvertList();
+            List<AdvertDTO> ads = mapAdvertsToDto(adverts);
+            return new ResponseEntity<>(ads,HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+    }
+
 
     public ResponseEntity<?> addAdvert(AdvertDTO advertDTO){
         User user = userRepository.findUserByUsername(advertDTO.getUsername());
@@ -221,6 +233,19 @@ public class AdvertService {
         }
         return new ResponseEntity<>("Advert with provided UUID found", HttpStatus.NOT_FOUND);
     }
+
+    public ResponseEntity<?> getListAdverts(ArrayList<String> uuid) {
+        List<Advert> adverts = new ArrayList<>();
+        for(String u : uuid) {
+            Advert advert = advertRepository.findAdvertByUuid(UUID.fromString(u));
+            adverts.add(advert);
+            if (advert == null) {
+                return new ResponseEntity<>("Advert with provided UUID not found", HttpStatus.NOT_FOUND);
+            }
+        }
+        return new ResponseEntity<>(mapAdvertsToDto(adverts), HttpStatus.OK);
+    }
+
 
     public List<Advert> getNewlyCreatedAdverts() {
         List<Advert> adverts = advertRepository.findAll();

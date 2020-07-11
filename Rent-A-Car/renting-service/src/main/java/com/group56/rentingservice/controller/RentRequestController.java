@@ -8,9 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
-@RestController
-@CrossOrigin
+@Controller
 @RequestMapping("/renting-service/rentRequest")
 public class RentRequestController {
 
@@ -21,25 +21,31 @@ public class RentRequestController {
     }
 
     @PostMapping(value = "/add")
-    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO, HttpSession session){
-        return rentRequestService.addRentRequest(rentRequestDTO, session);
+    public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
+        return rentRequestService.addRentRequest(rentRequestDTO);
     }
 
-    @GetMapping(value = "/owner")
-    public ResponseEntity<?> getRentRequestsForOwner(HttpSession session){
-        return rentRequestService.getRentRequestsForOwner(session);
-    }
-
-
-    @PutMapping(value = "/accept")
-    public ResponseEntity<?> acceptRentRequest(Long rrId,HttpSession session){
-        return rentRequestService.acceptRentRequest(rrId,session);
+    @GetMapping("/{username}")
+    public ResponseEntity<?> getRentRequestsForOwner(@PathVariable("username") String user){
+        return rentRequestService.getRentRequestsForOwner(user);
     }
 
 
-    @PutMapping(value = "/decline")
-    public ResponseEntity<?> declineRentRequest(Long rrId,HttpSession session){
-        return rentRequestService.declineRentRequest(rrId,session);
+    @PostMapping(value = "/accept/{username}")
+    public ResponseEntity<?> acceptRentRequest(@PathVariable("username") String username,@RequestBody String rrId){
+        return rentRequestService.acceptRentRequest(username,rrId);
+    }
+
+
+    @PostMapping(value = "/decline/{username}")
+    public ResponseEntity<?> declineRentRequest(@PathVariable("username") String username,@RequestBody String rrId){
+        return rentRequestService.declineRentRequest(username,rrId);
+    }
+
+
+    @GetMapping("/test")
+    public ResponseEntity<?> testing() {
+        return rentRequestService.testing();
     }
 
 }

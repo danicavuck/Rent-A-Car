@@ -28,27 +28,27 @@ public class AdvertService {
         advertRepository = aRepo;
     }
 
-    public ResponseEntity<?> getAdvertsForUser(HttpSession session) {
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
-        if(user!=null) {
-            ArrayList<Advert> adverts = advertRepository.findAdvertsByPublisher(user);
-            if(adverts == null){
-                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(adverts,HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-    }
-
-    public ResponseEntity<?> getRentRequestsForAdvert(Advert advert, HttpSession session) {
-        User user = userRepository.findUserById((Long)session.getAttribute("id"));
-        if(user!=null) {
-            List<RentRequest> rrqsts = advert.getRentRequests();
-            if(rrqsts == null){
-                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
-            }
-            return new ResponseEntity<>(rrqsts,HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-    }
+//    public ResponseEntity<?> getAdvertsForUser(HttpSession session) {
+//        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+//        if(user!=null) {
+//            ArrayList<Advert> adverts = advertRepository.findAdvertsByPublisher(user);
+//            if(adverts == null){
+//                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(adverts,HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//    }
+//
+//    public ResponseEntity<?> getRentRequestsForAdvert(Advert advert, HttpSession session) {
+//        User user = userRepository.findUserById((Long)session.getAttribute("id"));
+//        if(user!=null) {
+//            List<RentRequest> rrqsts = advert.getRentRequests();
+//            if(rrqsts == null){
+//                return new ResponseEntity<>(null,HttpStatus.NOT_FOUND);
+//            }
+//            return new ResponseEntity<>(rrqsts,HttpStatus.OK);
+//        }
+//        return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+//    }
 }

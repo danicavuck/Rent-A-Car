@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Home page</title>
 </head>
 <body>
@@ -30,7 +31,9 @@
                     <button *ngIf="!loggedIn" mat-stroked-button color="accent" style="margin-right: 5px;" [routerLink]="['/login']"><i class="fa fa-sign-in"></i><span> Login</span></button>
                     <button *ngIf="!loggedIn" mat-stroked-button color="accent" [routerLink]="['/registration']"><i class="fa fa-user"></i><span> Register</span></button>
                     <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="['/advert']"><i class="fa fa-plus"></i><span> New Advert</span></button>
+                    <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="'/cart'"><i class="fa fa-cart-plus"></i><span> My Cart</span></button>                    
                     <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="['/user']"><i class="fa fa-user"></i><span> My profile</span></button>
+                    <button *ngIf="loggedIn" mat-flat-button color="primary" [routerLink]="'/rent-requests'"><i class="fa fa-id-card"></i><span> Rent Requests</span></button>                      
                 </div>
             </form>
             <div class="advanced-section">
@@ -173,7 +176,11 @@
                         <p>Posted by: {{advert.publisher}} </p>
                     </div>
                     <div class="button-container">
+
+                        <button id="btn1"  mat-stroked-button color="primary" [routerLink]="'/details'"><i class="fa fa-info"></i><span> Details</span></button>
+                        <button id= "btn2" *ngIf="loggedIn" mat-stroked-button color="primary" (click)="onAddToCart(advert.uuid)"><i class="fa fa-cart-plus"></i><span> Add to cart</span></button>
                         <button mat-stroked-button color="primary" (click)="routToDetails(advert)"><i class="fa fa-info"></i><span> Details</span></button>
+
                     </div>
                 </div>
             </div>

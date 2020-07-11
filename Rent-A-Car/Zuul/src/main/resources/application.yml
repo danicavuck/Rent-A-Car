@@ -29,6 +29,9 @@ zuul:
     posting-service:
       path: /posting-service/**
       url: http://localhost:8085/posting-service/
+    renting-service:
+      path: /renting-service/**
+      url: http://localhost:8086/renting-service
     review-service:
       path: /review-service/**
       url: http://localhost:8087/review-service/

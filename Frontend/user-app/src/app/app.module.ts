@@ -33,6 +33,11 @@ import { AddAdvertComponent } from './UserSection/add-advert/add-advert.componen
 import { ReviewComponent } from './review/review.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AdvertComponent } from './advert/advert.component';
+import { ShoppingCartComponent } from './shopping-cart/shopping-cart.component';
+import { CartServiceComponent } from './service/cart-service/cart-service.component';
+import { RentRequestsComponent } from './UserSection/rent-requests/rent-requests.component';
+import { RentRequestDetailsComponent } from './service/rent-request-details/rent-request-details.component';
+import { DetailsComponent } from './UserSection/rent-requests/details/details.component';
 import { ProfileComponent } from './UserSection/profile/profile.component';
 import { MessageComponent } from './message/message.component';
 import { InboxComponent } from './inbox/inbox.component';
@@ -53,6 +58,9 @@ const appRouts: Routes = [
   { path: 'advert', component: AddAdvertComponent },
   { path: 'details', component: AdvertComponent },
   { path: 'home', component: HomepageComponent },
+  { path: 'cart', component:ShoppingCartComponent},
+  { path: 'rent-requests', component:RentRequestsComponent},
+  { path: 'rent-requests/details', component: DetailsComponent},
   { path: '', redirectTo : '/home', pathMatch : 'full' },
   { path: '**', component : PageNotFoundComponent }
 ];
@@ -75,12 +83,18 @@ const appRouts: Routes = [
     AddAdvertComponent,
     ReviewComponent,
     AdvertComponent,
+    ShoppingCartComponent,
+    CartServiceComponent,
+    RentRequestsComponent,
+    RentRequestDetailsComponent,
+    DetailsComponent,
     ProfileComponent,
     MessageComponent,
     InboxComponent,
     InboxContactsComponent,
     InboxMessangerComponent,
     ManagingEntitiesComponent
+
   ],
   entryComponents: [
     ReviewComponent,

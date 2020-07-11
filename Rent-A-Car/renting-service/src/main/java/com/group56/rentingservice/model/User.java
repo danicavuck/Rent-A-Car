@@ -2,10 +2,10 @@ package com.group56.rentingservice.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,12 +19,7 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String registrationNumber;
-    private boolean isActive = true;
-    private boolean isBlocked = false;
-    private int numberOfAdvertsCancelled;
-    private int numberOfAdvertsPosted = 0;
+
+
+
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-
+import { Observable } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+import { CartServiceComponent } from '../service/cart-service/cart-service.component';
 
 @Component({
   selector: 'app-homepage',
@@ -39,6 +41,10 @@ export class HomepageComponent implements OnInit {
   };
   imageURL: string;
   response: Response;
+  blob: Blob;
+  cart: string[];
+
+
 
   brands : Brand[] = [];
 
@@ -50,6 +56,7 @@ export class HomepageComponent implements OnInit {
 
 
   bodyTypes: BodyType[] = [];
+
 
   min = Date();
   rentSpan: RentSpan = {
@@ -75,17 +82,60 @@ export class HomepageComponent implements OnInit {
     until: new Date()
   };
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router,private cartService : CartServiceComponent) {
+    
+   }
 
   ngOnInit(): void {
+    this.cartService.removeAllAdverts();
     let status = localStorage.getItem('loggedIn');
     status === 'true' ? this.loggedIn = true : this.loggedIn = false;
+    //this.test();
     this.fetchAdverts();
     this.fetchBrand();
     this.fetchBodyType();
     this.fetchModels();
     this.fetchFuelType();
     this.fetchTransmission();
+  }
+
+  async test() {
+    const apiEndpoint = 'http://localhost:8080/posting-service/advert/test';
+    this.http.get(apiEndpoint).subscribe(response => {
+     
+        console.log("pogodio");
+    }, err => {
+      console.log('nie pogodio ', err);
+    });
+  }
+
+  
+  onAddToCart(uuid : string) : void {
+    this.cart = this.cartService.getFromCart();
+    console.log(this.cart);
+      if(this.cart == null)
+      {
+        this.cart = [];
+        this.cart.push(uuid);
+        this.cartService.addAdvertsToCart(this.cart)
+        let n  = this.cartService.getAdvertNumber();
+        n += 1;
+        this.cartService.setAdvertNumber(n);
+
+      }else
+      {
+        let tempAdvert = this.cart.find(id => id == uuid);
+          if(tempAdvert == null)
+          {
+            this.cart.push(uuid);
+            this.cartService.addAdvertsToCart(this.cart);
+            let n  = this.cartService.getAdvertNumber();
+            n += 1;
+            this.cartService.setAdvertNumber(n);
+          }   
+          console.log("This advert already in cart!");
+      }
+
   }
 
   async fetchAdverts() {
