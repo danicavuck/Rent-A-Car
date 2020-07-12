@@ -33,6 +33,7 @@ public class Advert implements Serializable {
     private boolean isActive;
     private boolean isSharedWithReviewService;
     private boolean isSharedWithSearchService;
+    private boolean isSharedWithRentService;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
     private User publisher;

@@ -40,7 +40,6 @@ public class RentRequestService {
 
     //bundle - single
     public ResponseEntity<?> addRentRequest(@RequestBody RentRequestDTO rentRequestDTO){
-        testing();
         User user = userRepository.findUserByUsername(rentRequestDTO.getUsername());
         if(user != null) {
             ArrayList<String> owners = new ArrayList<>();
@@ -50,7 +49,7 @@ public class RentRequestService {
                 adverts.add(advertRepository.findAdvertByUuid(UUID.fromString(id)));
             }
             for (Advert a : adverts) {
-                owners.add(a.getPublisher().getUsername());
+                owners.add(a.getPublisher());
             }
             if (verifyAllEqualUsingALoop(owners)) {
                 if (rentRequestDTO.isBundle()) {
@@ -64,7 +63,7 @@ public class RentRequestService {
                 ArrayList<Advert> adverts1 = new ArrayList<>();
                 adverts1.add(a);
                 RentRequest rr = RentRequest.builder().advertList(adverts1).active(true).bundle(false).
-                        publisherUsername(a.getPublisher().getUsername()).requestUsername(user.getUsername()).
+                        publisherUsername(a.getPublisher()).requestUsername(user.getUsername()).
                         rentRequestStatus(RentRequestStatus.PENDING).build();
                 rentRequestRepository.save(rr);
             }
@@ -82,32 +81,32 @@ public class RentRequestService {
         return true;
     }
 
-    public ResponseEntity<?> testing() {
-        User u = User.builder().username("daxydana").password("022312035").build();
-        User user = User.builder().password("skinny").username("Skinny Pete").build();
-        userRepository.save(u);
-        userRepository.save(user);
-        Advert advert = Advert.builder()
-                .car(null)
-                .carLocation("Kraljevo")
-                .rentFrom(LocalDateTime.now())
-                .rentUntil(LocalDateTime.now().plusMonths(3))
-                .price(BigDecimal.valueOf(200L))
-                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
-                .publisher(u)
-                .build();
-
-        advertRepository.save(advert);
-        ArrayList<Advert> adverts = new ArrayList<Advert>();
-        adverts.add(advert);
-        RentRequest rentRequest = RentRequest.builder().requestUsername("Skinny Pete").publisherUsername(u.getUsername()).rentRequestStatus(RentRequestStatus.PENDING)
-                .active(true).advertList(adverts).bundle(true).timeStart(LocalDateTime.now()).timeEnd(LocalDateTime.now().plusMonths(1))
-                .uuid(UUID.randomUUID()).build();
-
-
-        rentRequestRepository.save(rentRequest);
-        return new ResponseEntity<>("Rent request created!",HttpStatus.CREATED);
-    }
+//    public ResponseEntity<?> testing() {
+//        User u = User.builder().username("daxydana").password("022312035").build();
+//        User user = User.builder().password("skinny").username("Skinny Pete").build();
+//        userRepository.save(u);
+//        userRepository.save(user);
+//        Advert advert = Advert.builder()
+//                .car(null)
+//                .carLocation("Kraljevo")
+//                .rentFrom(LocalDateTime.now())
+//                .rentUntil(LocalDateTime.now().plusMonths(3))
+//                .price(BigDecimal.valueOf(200L))
+//                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
+//                .publisher(u)
+//                .build();
+//
+//        advertRepository.save(advert);
+//        ArrayList<Advert> adverts = new ArrayList<Advert>();
+//        adverts.add(advert);
+//        RentRequest rentRequest = RentRequest.builder().requestUsername("Skinny Pete").publisherUsername(u.getUsername()).rentRequestStatus(RentRequestStatus.PENDING)
+//                .active(true).advertList(adverts).bundle(true).timeStart(LocalDateTime.now()).timeEnd(LocalDateTime.now().plusMonths(1))
+//                .uuid(UUID.randomUUID()).build();
+//
+//
+//        rentRequestRepository.save(rentRequest);
+//        return new ResponseEntity<>("Rent request created!",HttpStatus.CREATED);
+//    }
 
 
     public ResponseEntity<?> getRentRequestsForOwner(String username){

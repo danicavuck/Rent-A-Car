@@ -20,7 +20,7 @@ import java.util.List;
 @EnableEurekaClient
 public class SearchServiceApplication {
 	public static final String TOPIC_EXCHANGE_NAME = "advert-exchange-topic";
-	public static final String MESSAGE_QUEUE = "advert-update";
+	public static final String MESSAGE_QUEUE = "advert-search-update";
 	public static final String BINDING = "advert.update.#";
 
 	@Bean

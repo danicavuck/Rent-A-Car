@@ -2,6 +2,7 @@ package com.group56.authservice.service;
 
 import com.group56.authservice.DTO.LoginDTO;
 import com.group56.authservice.DTO.UserDTO;
+import com.group56.authservice.DTO.UserRentingDTO;
 import com.group56.authservice.enumeration.Role;
 import com.group56.authservice.model.Authorization;
 import com.group56.authservice.model.User;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -61,6 +63,7 @@ public class UserService {
         return User.builder().username(userDTO.getUsername()).password(userDTO.getPassword())
                 .firstName(userDTO.getFirstName()).lastName(userDTO.getLastName())
                 .isActive(true).isBlocked(false).isSharedWithAdmin(false).isBlocked(false)
+                .isSharedWithRenting(false)
                 .address(userDTO.getAddress())
                 .email(userDTO.getEmail()).build();
     }
@@ -120,4 +123,24 @@ public class UserService {
         }
     }
 
+    public ResponseEntity<?> getNewUsersForRentingService() {
+        List<User> allUsers = userRepository.findAll();
+        allUsers = allUsers.stream().filter(user -> !user.isSharedWithRenting()).collect(Collectors.toList());
+
+        List<UserRentingDTO> dtos = modelToDto(allUsers);
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
+    }
+
+    private List<UserRentingDTO> modelToDto(List<User> allUsers) {
+        List<UserRentingDTO> dtos = new ArrayList<>();
+        for(User user : allUsers) {
+            UserRentingDTO singleDto = UserRentingDTO.builder()
+                    .username(user.getUsername())
+                    .build();
+            user.setSharedWithRenting(true);
+            userRepository.save(user);
+            dtos.add(singleDto);
+        }
+        return dtos;
+    }
 }

@@ -25,4 +25,5 @@ public class User {
     private boolean isActive;
     private boolean isBlocked;
     private boolean isSharedWithAdmin;
+    private boolean isSharedWithRenting;
 }

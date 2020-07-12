@@ -43,9 +43,9 @@ public class RentRequestController {
     }
 
 
-    @GetMapping("/test")
-    public ResponseEntity<?> testing() {
-        return rentRequestService.testing();
-    }
+//    @GetMapping("/test")
+//    public ResponseEntity<?> testing() {
+//        return rentRequestService.testing();
+//    }
 
 }

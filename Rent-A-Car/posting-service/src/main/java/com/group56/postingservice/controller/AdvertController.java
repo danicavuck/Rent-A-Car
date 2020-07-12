@@ -106,6 +106,11 @@ public class AdvertController {
         return advertService.getAdvertsForSearchService();
     }
 
+    @GetMapping("/rent-service")
+    public ResponseEntity<?> getAdvertsForRentService() {
+        return advertService.getAdvertsForRentService();
+    }
+
 
     @GetMapping("/test")
     public ResponseEntity<?> testing() {

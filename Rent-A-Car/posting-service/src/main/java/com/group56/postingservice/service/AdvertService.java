@@ -72,13 +72,14 @@ public class AdvertService {
                 advert.setPublisher(user);
                 advert.setSharedWithReviewService(false);
                 advert.setSharedWithSearchService(false);
+                advert.setSharedWithRentService(false);
                 advert.setActive(true);
                 advertRepository.save(advert);
 
                 String msg = "ADVERT_ADDED";
                 messagePublisher.sendAMessageToQueue(msg);
                 logger.info("------------------------------------------------------------\n\n\n");
-                logger.info(advert.getDescription());
+
                 return new ResponseEntity<>(advert.getUuid().toString(), HttpStatus.OK);
             }
             return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
@@ -269,6 +270,21 @@ public class AdvertService {
         allAdverts.forEach(advert ->  {
             if(!advert.isSharedWithSearchService()) {
                 advert.setSharedWithSearchService(true);
+                advertRepository.save(advert);
+                notShared.add(advert);
+            }
+        });
+
+        return new ResponseEntity<>(advertSearchDTO(notShared), HttpStatus.OK);
+    }
+
+    public ResponseEntity<?> getAdvertsForRentService() {
+        List<Advert> allAdverts = advertRepository.findAll();
+        List<Advert> notShared = new ArrayList<>();
+
+        allAdverts.forEach(advert ->  {
+            if(!advert.isSharedWithRentService()) {
+                advert.setSharedWithRentService(true);
                 advertRepository.save(advert);
                 notShared.add(advert);
             }

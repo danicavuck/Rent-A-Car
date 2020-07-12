@@ -20,22 +20,23 @@ public class Advert {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID uuid;
     private String description;
     private String carLocation;
     private LocalDateTime rentFrom;
     private LocalDateTime rentUntil;
+    private LocalDateTime availableForRentFrom;
+    private LocalDateTime availableForRentUntil;
     private boolean isProtectionAvailable;
     private BigDecimal protectionPrice;
     private BigDecimal price;
+    private String publisher;
+    private String uuid;
     private boolean isActive;
-    private boolean isSharedWithReviewService;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
-    private User publisher;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "car_id")
     private Car car;
+
 
 
     @ManyToMany
