@@ -25,7 +25,7 @@ public class RentRequest {
     @Column
     private boolean bundle;
     @Column
-    private UUID uuid;
+    private String uuid;
 
     //user that made the request
     @Column

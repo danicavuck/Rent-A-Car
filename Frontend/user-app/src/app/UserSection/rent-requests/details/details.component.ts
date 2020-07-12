@@ -61,7 +61,8 @@ interface Advert {
 
 export interface RentRequestDetailsDTO {
   uuid : string;
-  username: string;
+  requestUsername: string;
+  publisherUsername : string;
   bundle : boolean;
   timeStart : string;
   timeEnd : string;

@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface AdvertRepository extends JpaRepository<Advert,Long> {
    Advert findAdvertById(Long id);
    ArrayList<Advert> findAdvertsByPublisher(User user);
-   Advert findAdvertByUuid(UUID uuid);
+   Advert findAdvertByUuid(String uuid);
 
 }

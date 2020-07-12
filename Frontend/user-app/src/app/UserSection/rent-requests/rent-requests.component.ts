@@ -10,21 +10,23 @@ import { RentRequestDetailsComponent } from 'src/app/service/rent-request-detail
 })
 export class RentRequestsComponent implements OnInit {
 
-  public displayColumns: string[] = ['username', 'bundle', 'dateStart','timeStart', 'dateEnd','timeEnd', 'actions'];
+  public displayColumns: string[] = ['username', 'bundle', 'description','location', 'actions'];
   public model : Array<RentRequestDetailsDTO>;
+  public modelMyRequests : Array<RentRequestDetailsDTO>;
 
   constructor(private router:Router,private http: HttpClient, private service : RentRequestDetailsComponent) { 
-    this.test();
-    this.getRequests();
+    
   }
 
   ngOnInit(): void {
+    this.getRequestsOwner();
+    this.getRequestsRequestor();
   }
   
-  async getRequests() {
+  async getRequestsOwner() {
     let username:string = localStorage.getItem('username');
     console.log(username);
-    const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/'+ username;
+    const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/owner/'+ username;
 
     this.http.get(apiEndpoint).subscribe(response => {
       this.model = response as Array<RentRequestDetailsDTO>;
@@ -34,6 +36,23 @@ export class RentRequestsComponent implements OnInit {
       console.log('Unable to fetch rent requests',err);
     });
   }
+
+  async getRequestsRequestor() {
+    let username:string = localStorage.getItem('username');
+    console.log(username);
+    const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/requestor/'+ username;
+
+    this.http.get(apiEndpoint).subscribe(response => {
+      this.modelMyRequests = response as Array<RentRequestDetailsDTO>;
+      console.log(this.model);
+      console.log(response);
+    }, err => {
+      console.log('Unable to fetch rent requests',err);
+    });
+  }
+
+
+  
 
   async test() {
     const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/test';
@@ -54,7 +73,7 @@ export class RentRequestsComponent implements OnInit {
     let username : string = localStorage.getItem('username')
     const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/accept/'+ username;
     this.http.post(apiEndpoint, uuid, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.getRequests();
+      this.getRequestsOwner();
     }, err => {
       console.log('Unable to accept request', err);
     });
@@ -64,7 +83,7 @@ export class RentRequestsComponent implements OnInit {
     let username : string = localStorage.getItem('username')
     const apiEndpoint = 'http://localhost:8080/renting-service/rentRequest/decline/'+ username;;
     this.http.post(apiEndpoint, uuid, {responseType: 'text', withCredentials: true}).subscribe(response => {
-      this.getRequests();
+      this.getRequestsOwner();
     }, err => {
       console.log('Unable to decline request: ', uuid);
     });
@@ -84,12 +103,14 @@ export class RentRequestsComponent implements OnInit {
 }
 export interface RentRequestDetailsDTO {
   uuid : string;
-  username: string;
+  requestUsername: string;
+  publisherUsername : string;
   bundle : boolean;
   timeStart : string;
   timeEnd : string;
   dateStart: string;
   dateEnd: string;
   advertsUUIDs : string[];
+  description : string;
+  carLocation : string;
 };
-

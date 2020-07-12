@@ -28,16 +28,18 @@ export class RentRequestDetailsComponent implements OnInit {
 
 
 }
-
 export interface RentRequestDetailsDTO {
   uuid : string;
-  username: string;
+  requestUsername: string;
+  publisherUsername : string;
   bundle : boolean;
   timeStart : string;
   timeEnd : string;
   dateStart: string;
   dateEnd: string;
   advertsUUIDs : string[];
+  description : string;
+  carLocation : string;
 };
 
 

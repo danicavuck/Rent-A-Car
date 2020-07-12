@@ -25,9 +25,14 @@ public class RentRequestController {
         return rentRequestService.addRentRequest(rentRequestDTO);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/owner/{username}")
     public ResponseEntity<?> getRentRequestsForOwner(@PathVariable("username") String user){
         return rentRequestService.getRentRequestsForOwner(user);
+    }
+
+    @GetMapping("/requestor/{username}")
+    public ResponseEntity<?> getRentRequestsForRequestor(@PathVariable("username") String user){
+        return rentRequestService.getRentRequestsForRequestor(user);
     }
 
 

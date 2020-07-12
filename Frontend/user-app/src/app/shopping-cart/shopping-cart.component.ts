@@ -75,6 +75,8 @@ export class ShoppingCartComponent implements OnInit {
     this.http.post(apiEndpoint,rentRequest,{responseType: "text"}).subscribe(response => {
         console.log(response);
         this.router.navigateByUrl("/home");
+        this.cartService.setAdvertNumber(0);
+        this.cartService.removeAllAdverts();
     }, err => {
       console.log('Unable make rent request: ', err);
     });

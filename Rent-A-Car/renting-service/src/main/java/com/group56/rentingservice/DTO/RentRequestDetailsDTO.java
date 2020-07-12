@@ -13,11 +13,16 @@ import java.util.ArrayList;
 @ToString
 public class RentRequestDetailsDTO {
     private String uuid;
-    private String username;
+    private String requestUsername;
+    private String publisherUsername;
     private boolean bundle;
     private String timeStart;
     private String timeEnd;
     private String dateStart;
     private String dateEnd;
     private ArrayList<String> advertUUIDs;
+    private String description;
+    private String carLocation;
+
+
 }

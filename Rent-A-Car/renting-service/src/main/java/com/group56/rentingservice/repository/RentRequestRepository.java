@@ -12,7 +12,7 @@ import java.util.UUID;
 @Repository
 public interface RentRequestRepository extends JpaRepository<RentRequest,Long> {
     ArrayList<RentRequest> findRentRequestByPublisherUsername(String username);
-    RentRequest findRentRequestByUuid(UUID uuid);
-    ArrayList<RentRequest> findRentRequestByPublisherUsernameAndActiveTrue(String username);
+    RentRequest findRentRequestByUuid(String uuid);
+    ArrayList<RentRequest> findRentRequestByRequestUsername(String username);
 
 }
