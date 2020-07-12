@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -56,5 +57,25 @@ public class UserService {
                 .address(user.getAddress())
                 .numberOfAdvertsCancelled(user.getNumberOfAdvertsCancelled())
                 .build();
+    }
+
+    public void handleModifiedData() {
+        RestTemplate restTemplate = new RestTemplate();
+        String apiEndpoint = "http://localhost:8080/admin-service/user/modified";
+        ResponseEntity<User[]> response = restTemplate.getForEntity(apiEndpoint, User[].class);
+        User[] users = response.getBody();
+
+        for(int i = 0; i<users.length; i++) {
+            modifyAndSaveUser(users[i]);
+        }
+    }
+
+    private void modifyAndSaveUser(User modifiedUser) {
+        User user = userRepository.findUserByUsername(modifiedUser.getUsername());
+        if(user != null) {
+            user.setActive(modifiedUser.isActive());
+            user.setBlocked(modifiedUser.isBlocked());
+            userRepository.save(user);
+        }
     }
 }

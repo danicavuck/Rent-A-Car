@@ -47,7 +47,7 @@ public class ReviewService {
         }
 
         Comment comment = Comment.builder()
-                .uuid(UUID.randomUUID())
+                .uuid(UUID.randomUUID().toString())
                 .text(commentDTO.getText())
                 .advert(advert)
                 .username(commentDTO.getUsername())
@@ -92,7 +92,6 @@ public class ReviewService {
         List<Comment> relevantComments = new ArrayList<>();
 
         comments.forEach(comment -> {
-            //if(comment.getAdvert().getUuid().equals(uuid))
             if(comment.getCommentStatus().equals(CommentStatus.APPROVED)) {
                 relevantComments.add(comment);
             }
@@ -102,8 +101,7 @@ public class ReviewService {
     }
 
     public ResponseEntity<?> approveComment(CommentDTO commentDTO) {
-        UUID uuid = UUID.fromString(commentDTO.getUuid());
-        Comment comment = commentRepository.findCommentByUuid(uuid);
+        Comment comment = commentRepository.findCommentByUuid(commentDTO.getUuid());
         if(comment != null) {
             comment.setCommentStatus(CommentStatus.APPROVED);
             commentRepository.save(comment);
@@ -113,8 +111,7 @@ public class ReviewService {
     }
 
     public ResponseEntity<?> declineComment(CommentDTO commentDTO) {
-        UUID uuid = UUID.fromString(commentDTO.getUuid());
-        Comment comment = commentRepository.findCommentByUuid(uuid);
+        Comment comment = commentRepository.findCommentByUuid(commentDTO.getUuid());
         if(comment != null) {
             comment.setCommentStatus(CommentStatus.DECLINED);
             commentRepository.save(comment);
@@ -123,31 +120,4 @@ public class ReviewService {
         return new ResponseEntity<>("Comment is not found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> test() {
-        Comment comment1 = Comment.builder()
-                .uuid(UUID.fromString("15fb7c38-d686-44fc-8c9c-156161e5697f"))
-                .text("Really satisfied with advert")
-                .mark(10)
-                .username("Skinny Pete")
-                .commentStatus(CommentStatus.PENDING)
-                .build();
-        Comment comment2 = Comment.builder()
-                .uuid(UUID.fromString("75fb7c38-d686-44fc-8c9c-156161e5697f"))
-                .text("Scam")
-                .mark(1)
-                .username("Troll")
-                .commentStatus(CommentStatus.PENDING)
-                .build();
-        Comment comment3 = Comment.builder()
-                .uuid(UUID.fromString("95fb7c38-d686-44fc-8c9c-156161e5697f"))
-                .text("Could be better")
-                .mark(5)
-                .username("Pessimist")
-                .commentStatus(CommentStatus.PENDING)
-                .build();
-        commentRepository.save(comment1);
-        commentRepository.save(comment2);
-        commentRepository.save(comment3);
-        return new ResponseEntity<>("Comments added", HttpStatus.OK);
-    }
 }

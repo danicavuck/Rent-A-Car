@@ -79,7 +79,7 @@ export class AddAdvertComponent implements OnInit {
     this.http.post(apiEndpoint, this.data, {responseType: 'text', withCredentials: true}).subscribe(response => {
       this.saveImages(response);
     }, err => {
-      console.log('Error', err);
+      alert(err.error);
     });
   }
 

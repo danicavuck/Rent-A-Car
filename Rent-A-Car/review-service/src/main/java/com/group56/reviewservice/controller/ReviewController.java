@@ -43,9 +43,4 @@ public class ReviewController {
     public ResponseEntity<?> getCommentsForAdvert(@PathVariable("advertUUID") UUID uuid) {
         return reviewService.getCommentsForAdvert(uuid);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> test() {
-        return reviewService.test();
-    }
 }

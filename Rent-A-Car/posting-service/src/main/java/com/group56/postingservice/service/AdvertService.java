@@ -82,7 +82,10 @@ public class AdvertService {
 
                 return new ResponseEntity<>(advert.getUuid().toString(), HttpStatus.OK);
             }
-            return new ResponseEntity<>("User already posted 3 adverts!",HttpStatus.FORBIDDEN);
+            if(user.isBlocked()) {
+                return new ResponseEntity<>("You have been banned from admin",HttpStatus.FORBIDDEN);
+            }
+            return new ResponseEntity<>("You have reached limit of 3 adverts",HttpStatus.FORBIDDEN);
         }
 
         return new ResponseEntity<>("User not found!" , HttpStatus.UNAUTHORIZED);

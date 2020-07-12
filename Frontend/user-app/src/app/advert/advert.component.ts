@@ -29,6 +29,7 @@ export class AdvertComponent implements OnInit {
     const apiEndpoint = 'http://localhost:8080/review-service/comment/' + uuid;
     this.http.get(apiEndpoint).subscribe(data => {
       this.comments = data as Array<Comment>;
+      console.log('Comments: ', this.comments);
     }, err => {
       console.log('Could not fetch comments!');
     });
