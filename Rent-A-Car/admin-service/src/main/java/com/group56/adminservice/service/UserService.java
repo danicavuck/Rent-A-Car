@@ -39,8 +39,8 @@ public class UserService {
                 user.setBlocked(true);
                 user.setModified(true);
                 userRepository.save(user);
-                messagePublisher.sendAMessageToQueue("USER_MODIFIED");
 
+                messagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is blocked!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
@@ -56,6 +56,8 @@ public class UserService {
                 user.setBlocked(false);
                 user.setModified(true);
                 userRepository.save(user);
+
+                messagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is activated!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User deleted!", HttpStatus.NOT_FOUND);
@@ -71,6 +73,8 @@ public class UserService {
                 user.setActive(false);
                 user.setModified(true);
                 userRepository.save(user);
+
+                messagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is successfully deleted!", HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);

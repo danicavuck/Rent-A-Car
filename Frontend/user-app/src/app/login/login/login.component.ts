@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
 
     if(this.performCheck()) {
       const apiEndpoint = 'http://localhost:8080/auth-service/login';
-      console.log(this.model);
       this.http.post(apiEndpoint, this.model, {
         responseType: 'text', withCredentials: true
       }).subscribe(data => {
@@ -46,7 +45,7 @@ export class LoginComponent implements OnInit {
             default: console.log('Invalid response');       
           }
       }, err => {
-        console.log('Error: ' + err);
+        alert(err.error);
       });
     }
   }

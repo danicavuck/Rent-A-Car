@@ -50,6 +50,9 @@ public class UserService {
     public ResponseEntity<?> logInUser(LoginDTO loginDTO, HttpSession session) {
         User user = userRepository.findByUsername(loginDTO.getUsername());
         if(user.getPassword().equals(loginDTO.getPassword())) {
+            if(!user.isActive()) {
+                return new ResponseEntity<>("Your account has been suspended by admin", HttpStatus.FORBIDDEN);
+            }
             session.setAttribute("ROLE", Role.USER);
             session.setAttribute("USERNAME", user.getUsername());
             return new ResponseEntity<>("USER", HttpStatus.OK);
