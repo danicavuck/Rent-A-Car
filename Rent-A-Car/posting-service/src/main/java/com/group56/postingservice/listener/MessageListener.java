@@ -23,12 +23,19 @@ public class MessageListener {
     }
 
     public void listenForMessages(byte[] bytes){
+        logger.info("message received");
         String event = new String(bytes, StandardCharsets.UTF_8);
         switch (event){
             case "USER_ADDED" : handleUserData();
                 break;
+            case "USER_MODIFIED" : handleModifiedData();
+                break;
             default: logger.error("Unknown data received from auth-service");
         }
+    }
+
+    private void handleModifiedData() {
+        userService.handleModifiedData();
     }
 
     private void handleUserData() {

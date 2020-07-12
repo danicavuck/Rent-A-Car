@@ -5,6 +5,7 @@ import com.group56.adminservice.client.SoapClient;
 import com.group56.adminservice.model.User;
 import com.group56.adminservice.repository.UserRepository;
 import com.group56.adminservice.utility.MessagePublisher;
+import com.group56.adminservice.utility.UserMessagePublisher;
 import com.group56.soap.GetUsersRequest;
 import com.group56.soap.GetUsersResponse;
 import com.group56.soap.UserXML;
@@ -23,12 +24,14 @@ public class UserService {
     private UserRepository userRepository;
     private SoapClient soapClient;
     private MessagePublisher messagePublisher;
+    private UserMessagePublisher userMessagePublisher;
 
     @Autowired
-    public UserService(UserRepository userRepository, SoapClient soapClient, MessagePublisher messagePublisher) {
+    public UserService(UserRepository userRepository, SoapClient soapClient, MessagePublisher messagePublisher, UserMessagePublisher userMessagePublisher) {
         this.userRepository = userRepository;
         this.soapClient = soapClient;
         this.messagePublisher = messagePublisher;
+        this.userMessagePublisher = userMessagePublisher;
     }
 
     @Transactional
@@ -41,6 +44,7 @@ public class UserService {
                 userRepository.save(user);
 
                 messagePublisher.sendAMessageToQueue("USER_MODIFIED");
+                userMessagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is blocked!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
@@ -58,6 +62,7 @@ public class UserService {
                 userRepository.save(user);
 
                 messagePublisher.sendAMessageToQueue("USER_MODIFIED");
+                userMessagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is activated!", HttpStatus.OK);
             }
             return new ResponseEntity<>("User deleted!", HttpStatus.NOT_FOUND);
@@ -75,6 +80,7 @@ public class UserService {
                 userRepository.save(user);
 
                 messagePublisher.sendAMessageToQueue("USER_MODIFIED");
+                userMessagePublisher.sendAMessageToQueue("USER_MODIFIED");
                 return new ResponseEntity<>("User is successfully deleted!", HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>("User is already deleted!", HttpStatus.NOT_FOUND);
